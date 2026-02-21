@@ -1,0 +1,13 @@
+{
+  "name": "saucedemo-e2e-cypress",
+  "version": "1.0.0",
+  "description": "Automação E2E Cypress para https://www.saucedemo.com/",
+  "private": true,
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
+  },
+  "devDependencies": {
+    "cypress": "^14.5.4"
+  }
+}
