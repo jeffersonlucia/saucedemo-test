@@ -48,9 +48,28 @@ jobs:
           path: mochawesome-report/
           retention-days: 30
 
+      - name: Parse test results
+        if: always()
+        run: |
+          if (Test-Path "cypress\reports\report.json") {
+            $report = Get-Content "cypress\reports\report.json" -Raw | ConvertFrom-Json
+            $stats = $report.stats
+            echo "## 📊 Cypress Test Summary" >> $env:GITHUB_STEP_SUMMARY
+            echo "" >> $env:GITHUB_STEP_SUMMARY
+            echo "| Metric | Count |" >> $env:GITHUB_STEP_SUMMARY
+            echo "|--------|-------|" >> $env:GITHUB_STEP_SUMMARY
+            echo "| ✅ Passing | $($stats.passes) |" >> $env:GITHUB_STEP_SUMMARY
+            echo "| ❌ Failing | $($stats.failures) |" >> $env:GITHUB_STEP_SUMMARY
+            echo "| ⏭️  Skipped | $($stats.skipped) |" >> $env:GITHUB_STEP_SUMMARY
+            echo "| 📋 Total | $($stats.tests) |" >> $env:GITHUB_STEP_SUMMARY
+            echo "| ⏱️ Duration | $([math]::Round($stats.duration/1000, 2))s |" >> $env:GITHUB_STEP_SUMMARY
+            echo "" >> $env:GITHUB_STEP_SUMMARY
+            echo "📄 **Full Report**: Check Artifacts → `cypress-reports/report.html`" >> $env:GITHUB_STEP_SUMMARY
+          }
+
       - name: Test Summary
         if: always()
         run: |
-          echo "## 📊 Cypress Test Report" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Tests executed successfully!" >> $GITHUB_STEP_SUMMARY
-          echo "📄 Report available in Artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "✨ **CI Pipeline Completed**" >> $env:GITHUB_STEP_SUMMARY
+          echo "" >> $env:GITHUB_STEP_SUMMARY
+          echo "📍 Workflow: $(gh run view ${{ github.run_id }} --json name -q .name)" >> $env:GITHUB_STEP_SUMMARY
