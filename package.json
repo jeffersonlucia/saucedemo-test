@@ -8,6 +8,8 @@
     "cypress:run": "cypress run"
   },
   "devDependencies": {
-    "cypress": "^14.5.4"
+    "cypress": "^14.5.4",
+    "mochawesome": "^7.1.4",
+    "mochawesome-report-generator": "^6.3.2"
   }
 }
