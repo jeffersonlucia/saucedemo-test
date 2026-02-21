@@ -52,25 +52,31 @@ jobs:
       - name: Parse test results
         if: always()
         run: |
-          if (Test-Path "cypress\reports\report.json") {
-            $report = Get-Content "cypress\reports\report.json" -Raw | ConvertFrom-Json
-            $stats = $report.stats
-            echo "## Resumo de Testes Cypress" >> $env:GITHUB_STEP_SUMMARY
-            echo "" >> $env:GITHUB_STEP_SUMMARY
-            echo "| Metrica | Quantidade |" >> $env:GITHUB_STEP_SUMMARY
-            echo "|---------|------------|" >> $env:GITHUB_STEP_SUMMARY
-            echo "| Sucesso | $($stats.passes) |" >> $env:GITHUB_STEP_SUMMARY
-            echo "| Falha | $($stats.failures) |" >> $env:GITHUB_STEP_SUMMARY
-            echo "| Ignorados | $($stats.skipped) |" >> $env:GITHUB_STEP_SUMMARY
-            echo "| Total | $($stats.tests) |" >> $env:GITHUB_STEP_SUMMARY
-            echo "| Duracao | $([math]::Round($stats.duration/1000, 2))s |" >> $env:GITHUB_STEP_SUMMARY
-            echo "" >> $env:GITHUB_STEP_SUMMARY
-            echo "**Relatorio Completo**: Verifique Artifacts → cypress-reports/report.html" >> $env:GITHUB_STEP_SUMMARY
-          }
+          if [ -f "cypress/reports/report.json" ]; then
+            PASSES=$(jq '.stats.passes' cypress/reports/report.json)
+            FAILURES=$(jq '.stats.failures' cypress/reports/report.json)
+            SKIPPED=$(jq '.stats.skipped' cypress/reports/report.json)
+            TESTS=$(jq '.stats.tests' cypress/reports/report.json)
+            DURATION=$(jq '.stats.duration' cypress/reports/report.json | awk '{printf "%.2f\n", $1/1000}')
+            
+            echo "## Resumo de Testes Cypress" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Metrica | Quantidade |" >> $GITHUB_STEP_SUMMARY
+            echo "|---------|------------|" >> $GITHUB_STEP_SUMMARY
+            echo "| Sucesso | $PASSES |" >> $GITHUB_STEP_SUMMARY
+            echo "| Falha | $FAILURES |" >> $GITHUB_STEP_SUMMARY
+            echo "| Ignorados | $SKIPPED |" >> $GITHUB_STEP_SUMMARY
+            echo "| Total | $TESTS |" >> $GITHUB_STEP_SUMMARY
+            echo "| Duracao | ${DURATION}s |" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Relatorio Completo**: Verifique Artifacts → cypress-reports/report.html" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Arquivo de relatorio nao encontrado"
+          fi
 
       - name: Test Summary
         if: always()
         run: |
-          echo "**Pipeline CI Finalizado**" >> $env:GITHUB_STEP_SUMMARY
-          echo "" >> $env:GITHUB_STEP_SUMMARY
-          echo "Workflow: $(gh run view ${{ github.run_id }} --json name -q .name)" >> $env:GITHUB_STEP_SUMMARY
+          echo "**Pipeline CI Finalizado**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Workflow: ${{ github.workflow }}" >> $GITHUB_STEP_SUMMARY
