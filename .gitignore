@@ -4,3 +4,9 @@ cypress/videos/
 cypress/screenshots/
 cypress/reports/
 mochawesome-report/
+
+# Testes manuais (local apenas)
+manual-testing-evidence/
+TESTE-MANUAL-SUMARIO.txt
+manual-testing-report.txt
+cypress/e2e/manual-tests-*.spec.js
