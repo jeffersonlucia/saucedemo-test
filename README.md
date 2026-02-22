@@ -48,7 +48,7 @@ npx mochawesome-report-generator cypress/reports/report.json -f report -p mochaw
 
 ## CI/CD - GitHub Actions
 
-- Trigger: Push para main/master ou Pull Requests
+- Trigger: Push para main ou Acessar aba Actions, clicar no workflow CI - Cypress-> Run workflow -> Run workflow dentro da main
 - Ambiente: Ubuntu Latest + Node.js 20
 - Reporter: Mochawesome (HTML + JSON)
 - Artefatos: Salvos por 30 dias
@@ -59,39 +59,6 @@ npx mochawesome-report-generator cypress/reports/report.json -f report -p mochaw
 3. Veja sumário com resulados dos testes
 4. Artifacts: Baixe cypress-reports com relatório HTML completo
 
-## Estrutura
-
-```
-cypress/
-├── e2e/                    Testes E2E
-│   ├── login.spec.js
-│   └── purchase.spec.js
-├── fixtures/               Dados de teste
-│   └── users.json
-├── support/                Suporte e commands
-│   ├── commands.js
-│   └── e2e.js
-└── reports/                Relatórios (gerado no CI)
-
-.github/workflows/
-└── cypress.yml             Workflow CI/CD
-
-cypress.config.js           Configuração Cypress
-package.json                Dependências
-```
-
-## Commands Customizados
-
-```javascript
-// Login
-cy.login('standard_user', 'secret_sauce')
-
-// Adicionar ao carrinho
-cy.addToCart('sauce-labs-backpack')
-
-// Ir ao carrinho
-cy.goToCart()
-```
 
 ## Informações
 
