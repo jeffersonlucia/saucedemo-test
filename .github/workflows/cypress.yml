@@ -40,9 +40,7 @@ jobs:
       - name: Merge test reports
         if: always()
         run: |
-          cd cypress/reports
-          npx mochawesome-merge --reportDir . --reportFileExtension json -o merged-report.json
-          cd ../..
+          npx mochawesome-merge cypress/reports/*.json -o cypress/reports/merged-report.json
 
       - name: Generate HTML report
         if: always()
