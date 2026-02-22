@@ -33,7 +33,7 @@ jobs:
         run: npx cypress install
 
       - name: Run Cypress tests
-        run: npx cypress run --spec "cypress/e2e/**/*.spec.*"
+        run: npx cypress run --spec "cypress/e2e/**/*.spec.*" --reporter mochawesome --reporter-options "reportDir=cypress/reports,overwrite=false,html=false,json=true"
         env:
           CI: true
 
