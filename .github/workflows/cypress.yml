@@ -37,9 +37,16 @@ jobs:
         env:
           CI: true
 
+      - name: Merge test reports
+        if: always()
+        run: |
+          cd cypress/reports
+          npx mochawesome-merge --reportDir . --reportFileExtension json -o merged-report.json
+          cd ../..
+
       - name: Generate HTML report
         if: always()
-        run: npx mochawesome-report-generator cypress/reports/report.json -f report -p mochawesome-report
+        run: npx mochawesome-report-generator cypress/reports/merged-report.json -f report -p mochawesome-report
 
       - name: Upload test reports
         if: always()
@@ -52,12 +59,12 @@ jobs:
       - name: Parse test results
         if: always()
         run: |
-          if [ -f "cypress/reports/report.json" ]; then
-            PASSES=$(jq '.stats.passes' cypress/reports/report.json)
-            FAILURES=$(jq '.stats.failures' cypress/reports/report.json)
-            SKIPPED=$(jq '.stats.skipped' cypress/reports/report.json)
-            TESTS=$(jq '.stats.tests' cypress/reports/report.json)
-            DURATION=$(jq '.stats.duration' cypress/reports/report.json | awk '{printf "%.2f\n", $1/1000}')
+          if [ -f "cypress/reports/merged-report.json" ]; then
+            PASSES=$(jq '.stats.passes' cypress/reports/merged-report.json)
+            FAILURES=$(jq '.stats.failures' cypress/reports/merged-report.json)
+            SKIPPED=$(jq '.stats.skipped' cypress/reports/merged-report.json)
+            TESTS=$(jq '.stats.tests' cypress/reports/merged-report.json)
+            DURATION=$(jq '.stats.duration' cypress/reports/merged-report.json | awk '{printf "%.2f\n", $1/1000}')
             
             echo "## Resumo de Testes Cypress" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY

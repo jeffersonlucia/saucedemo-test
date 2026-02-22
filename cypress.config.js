@@ -2,8 +2,8 @@ module.exports = {
   reporter: 'mochawesome',
   reporterOptions: {
     reportDir: 'cypress/reports',
-    reportFilename: 'report',
-    overwrite: true,
+    reportFilename: 'report-[name]',
+    overwrite: false,
     html: true,
     json: true,
   },
