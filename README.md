@@ -1,75 +1,46 @@
-# SauceDemo E2E Cypress Tests
+# Whiskey Club OS
 
-[![CI - Cypress](https://github.com/jeffersonlucia/saucedemo-test/actions/workflows/cypress.yml/badge.svg?branch=main)](https://github.com/jeffersonlucia/saucedemo-test/actions/workflows/cypress.yml)
+Plataforma white-label de gerenciamento de clubes de whiskey, com **flavorização por cliente/unidade**, app Flutter multi-plataforma e orquestração de **múltiplos agentes de IA** (cada um com um “chapéu” de especialista).
 
-Automação de testes E2E para o site [SauceDemo](https://www.saucedemo.com/) usando Cypress 14.5.4.
+## O que há neste repositório
 
-## Testes
+| Pasta | Conteúdo |
+|-------|----------|
+| [`docs/`](docs/) | Visão de produto, requisitos, arquitetura, equipe, roadmap, orquestração |
+| [`agents/`](agents/) | Personas e prompts para agentes (PM, PO, UX, DevOps, etc.) |
+| [`mock/`](mock/index.html) | Protótipo HTML interativo (base de UI/UX) |
+| [`notion/`](notion/) | Estrutura de databases e CSVs para importar no Notion |
+| [`app/flutter/`](app/flutter/) | Esqueleto do app Flutter com flavors documentados |
+| [`legacy/`](legacy/) | Projeto anterior (Cypress SauceDemo) — referência apenas |
 
-### Teste de Login (login.spec.js)
-- Valida login como standard_user
-- Verifica redirecionamento para /inventory.html
-- Confirma exibição da página de produtos
+## Como começar
 
-### Teste de Fluxo de Compra (purchase.spec.js)
-- Login como standard_user
-- Adiciona 3 produtos ao carrinho (Backpack, Bike Light, Bolt T-Shirt)
-- Valida badge do carrinho
-- Preenche dados de checkout
-- Finaliza a compra
-- Valida mensagem de sucesso: "Thank you for your order!"
+1. Abra o mock: `open mock/index.html` (ou sirva com `python3 -m http.server 8080` na pasta `mock/`).
+2. Leia [`docs/00-INDICE.md`](docs/00-INDICE.md) — índice de toda a documentação.
+3. Configure o Notion seguindo [`notion/README.md`](notion/README.md).
+4. Orquestre agentes com [`docs/08-ORQUESTRACAO-AGENTES.md`](docs/08-ORQUESTRACAO-AGENTES.md).
 
-## Execução Local
+## Personas do produto
 
-### Pré-requisitos
-- Node.js 20+
-- npm 11+
+- **Dono do clube** — cadastro, estoque, eventos, assinaturas, relatórios.
+- **Membro** — degustações, reservas, histórico, benefícios do clube.
+- **Admin da plataforma** — onboarding de novos clubes (tenants), billing, suporte.
 
-### Instalação
-```bash
-npm install
-```
+## Flavors (cliente / unidade)
 
-### Rodar Testes
-```bash
-# Modo headless (sem UI)
-npm run cypress:run
+Cada **cliente** (marca do clube) e cada **unidade** (filial) pode ter:
 
-# Com interface interativa
-npm run cypress:open
-```
+- Identidade visual (cores, logo, fontes)
+- Bundle ID / applicationId distintos
+- API base URL e chaves por ambiente
+- Feature flags (ex.: módulo de leilão, integração iFood de harmonização)
 
-### Gerar Relatório
-```bash
-npx cypress run
-npx mochawesome-report-generator cypress/reports/report.json -f report -p mochawesome-report
-# Abrir: mochawesome-report/report.html
-```
+Detalhes em [`docs/04-ARQUITETURA-FLAVORS.md`](docs/04-ARQUITETURA-FLAVORS.md).
 
-## CI/CD - GitHub Actions
+## Próximo passo recomendado
 
-- Trigger: Push para main ou Acessar aba Actions, clicar no workflow CI - Cypress-> Run workflow -> Run workflow dentro da main
-- Ambiente: Ubuntu Latest + Node.js 20
-- Reporter: Mochawesome (HTML + JSON)
-- Artefatos: Salvos por 30 dias
+Executar **Fase 0 — Discovery** (2 semanas de calendário de referência) com os agentes `requirements-analyst`, `product-owner` e `ux-ui-designer` em paralelo, usando o mock HTML como referência visual compartilhada.
 
-### Acompanhar Execução
-1. Acesse Actions no repositório
-2. Clique em CI - Cypress (última execução)
-3. Veja sumário com resulados dos testes
-4. Artifacts: Baixe cypress-reports com relatório HTML completo
+## Licença
 
-
-## Informações
-
-- Cypress: 14.5.4 (última versão anterior a 15)
-- Node: 20.x
-- Linguagem: JavaScript
-- Reporter: Mochawesome com relatórios HTML automáticos
-
-## Debug
-
-Para debug local:
-```bash
-npx cypress open
-```
+Proprietário — definir antes do lançamento público.

@@ -1,0 +1,7 @@
+Nome,História,Tipo,Agente,Status,Pontos
+Configurar flutter_flavorizr,US-1.1,Dev,flutter-dev,Backlog,2
+Documentar dart-define por flavor,US-1.1,Doc,tech-lead,Backlog,1
+Schema tenants + RLS,US-1.1,DB,dba,Backlog,3
+Revisar mock com dono simulado,,Discovery,client-club-owner,Em andamento,1
+Priorizar backlog MVP,,Gestão,product-owner,Backlog,2
+Pipeline lint flutter,,DevOps,devops,Backlog,2

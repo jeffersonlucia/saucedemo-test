@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Whiskey Club OS — Mock UI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0d0b09;
+      --surface: #1a1612;
+      --surface-2: #252019;
+      --amber: #c9a227;
+      --amber-dim: #8a7020;
+      --text: #f5f0e8;
+      --muted: #9a8f82;
+      --success: #4a9b6e;
+      --danger: #c45c4a;
+      --radius: 12px;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+    .shell { max-width: 1200px; margin: 0 auto; padding: 1rem 1.25rem 3rem; }
+    header {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: 1rem; padding: 1rem 0 1.5rem; border-bottom: 1px solid var(--surface-2);
+    }
+    .brand { display: flex; align-items: center; gap: 0.75rem; }
+    .brand-icon {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--amber), var(--amber-dim));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem;
+    }
+    .brand h1 {
+      font-family: var(--font-display);
+      font-size: 1.75rem; font-weight: 600;
+    }
+    .brand small { display: block; color: var(--muted); font-size: 0.75rem; font-family: var(--font-body); }
+    .controls { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+    select, button {
+      font-family: inherit; font-size: 0.875rem;
+      border-radius: 8px; border: 1px solid var(--surface-2);
+      background: var(--surface); color: var(--text);
+      padding: 0.5rem 0.75rem; cursor: pointer;
+    }
+    button.primary {
+      background: var(--amber); color: #1a1408; border-color: var(--amber); font-weight: 600;
+    }
+    button.ghost { background: transparent; }
+    .role-tabs { display: flex; gap: 0.25rem; margin: 1.5rem 0; }
+    .role-tabs button { flex: 1; max-width: 200px; }
+    .role-tabs button.active { background: var(--amber); color: #1a1408; border-color: var(--amber); }
+    .grid { display: grid; gap: 1rem; }
+    @media (min-width: 768px) {
+      .grid-4 { grid-template-columns: repeat(4, 1fr); }
+      .grid-2 { grid-template-columns: 1fr 1fr; }
+      .grid-3 { grid-template-columns: 2fr 1fr; }
+    }
+    .card {
+      background: var(--surface); border: 1px solid var(--surface-2);
+      border-radius: var(--radius); padding: 1.25rem;
+    }
+    .card h2, .card h3 { font-family: var(--font-display); font-weight: 600; }
+    .card h2 { font-size: 1.35rem; margin-bottom: 0.5rem; }
+    .card h3 { font-size: 1.1rem; margin-bottom: 0.75rem; }
+    .kpi { font-size: 1.75rem; font-weight: 700; color: var(--amber); }
+    .kpi-label { font-size: 0.8rem; color: var(--muted); }
+    .badge {
+      display: inline-block; font-size: 0.7rem; padding: 0.2rem 0.5rem;
+      border-radius: 999px; background: var(--surface-2); color: var(--amber);
+    }
+    .badge.gold { background: rgba(201, 162, 39, 0.2); }
+    .badge.warn { background: rgba(196, 92, 74, 0.2); color: var(--danger); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th, td { text-align: left; padding: 0.6rem 0.4rem; border-bottom: 1px solid var(--surface-2); }
+    th { color: var(--muted); font-weight: 500; font-size: 0.7rem; text-transform: uppercase; }
+    .hidden { display: none !important; }
+    .event-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.75rem 0; border-bottom: 1px solid var(--surface-2);
+    }
+    .event-item:last-child { border: none; }
+    .avatar {
+      width: 36px; height: 36px; border-radius: 50%; background: var(--surface-2);
+      display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem;
+    }
+    footer.mock-note {
+      margin-top: 2rem; padding: 1rem; text-align: center;
+      font-size: 0.75rem; color: var(--muted); border-top: 1px dashed var(--surface-2);
+    }
+    .flavor-banner {
+      font-size: 0.75rem; padding: 0.35rem 0.75rem; border-radius: 6px;
+      background: var(--surface-2); color: var(--amber); margin-top: 0.25rem;
+    }
+    input[type="search"] {
+      width: 100%; padding: 0.6rem; border-radius: 8px;
+      border: 1px solid var(--surface-2); background: var(--bg); color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+    .stars { color: var(--amber); letter-spacing: 2px; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="brand">
+        <div class="brand-icon" id="brandIcon">🥃</div>
+        <div>
+          <h1 id="clubName">Clube Malte & Fumo</h1>
+          <small id="unitLabel">Unidade São Paulo</small>
+          <div class="flavor-banner" id="flavorBanner">Flavor: client_a_sp · tenant: clube-malte</div>
+        </div>
+      </div>
+      <div class="controls">
+        <div>
+          <label for="flavorSelect">Flavor (cliente/unidade)</label><br />
+          <select id="flavorSelect" aria-label="Selecionar flavor">
+            <option value="client_a">client_a — Marca (geral)</option>
+            <option value="client_a_sp" selected>client_a_sp — Unidade SP</option>
+            <option value="client_b">client_b — Clube Highland (piloto 2)</option>
+          </select>
+        </div>
+        <div>
+          <label for="roleSelect">Papel (dev)</label><br />
+          <select id="roleSelect" aria-label="Alternar visão">
+            <option value="owner">Dono do clube</option>
+            <option value="member">Membro</option>
+          </select>
+        </div>
+      </div>
+    </header>
+
+    <nav class="role-tabs" aria-label="Visões do app">
+      <button type="button" class="active" data-role="owner" id="tabOwner">Gestão</button>
+      <button type="button" data-role="member" id="tabMember">Experiência membro</button>
+    </nav>
+
+    <!-- OWNER VIEW -->
+    <section id="viewOwner">
+      <div class="grid grid-4" style="margin-bottom: 1rem;">
+        <div class="card">
+          <div class="kpi-label">Membros ativos</div>
+          <div class="kpi">78</div>
+          <span class="badge">+3 este mês</span>
+        </div>
+        <div class="card">
+          <div class="kpi-label">MRR</div>
+          <div class="kpi">R$ 24.6k</div>
+        </div>
+        <div class="card">
+          <div class="kpi-label">Próximo evento</div>
+          <div class="kpi" style="font-size: 1.1rem;">Sáb, 14 jun</div>
+          <span class="badge">18/24 vagas</span>
+        </div>
+        <div class="card">
+          <div class="kpi-label">Alertas estoque</div>
+          <div class="kpi" style="color: var(--danger);">4</div>
+          <span class="badge warn">Ação necessária</span>
+        </div>
+      </div>
+      <div class="grid grid-3">
+        <div class="card">
+          <h2>Estoque crítico</h2>
+          <table>
+            <thead><tr><th>Garrafa</th><th>Qtd</th><th>Mín</th></tr></thead>
+            <tbody>
+              <tr><td>Glenfiddich 15</td><td>2</td><td>6</td></tr>
+              <tr><td>Laphroaig 10</td><td>1</td><td>4</td></tr>
+              <tr><td>Yamazaki 12</td><td>0</td><td>2</td></tr>
+            </tbody>
+          </table>
+          <button class="primary" style="margin-top: 1rem; width: 100%;">Registrar entrada</button>
+        </div>
+        <div class="card">
+          <h2>Eventos</h2>
+          <div class="event-item">
+            <div>
+              <strong>Noite Islay</strong><br />
+              <small style="color: var(--muted);">14/06 · 20h</small>
+            </div>
+            <span class="badge">6 vagas</span>
+          </div>
+          <div class="event-item">
+            <div>
+              <strong>Bourbon vs Rye</strong><br />
+              <small style="color: var(--muted);">28/06 · 19h30</small>
+            </div>
+            <span class="badge gold">Quase lotado</span>
+          </div>
+          <button class="ghost" style="width: 100%; margin-top: 0.5rem;">+ Novo evento</button>
+        </div>
+      </div>
+      <div class="card" style="margin-top: 1rem;">
+        <h2>Membros recentes</h2>
+        <table>
+          <thead><tr><th>Membro</th><th>Plano</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><span class="avatar">A</span> Ana Silva</td><td><span class="badge gold">Gold</span></td><td>Ativo</td></tr>
+            <tr><td><span class="avatar">M</span> Marcos Lima</td><td>Silver</td><td>Ativo</td></tr>
+            <tr><td><span class="avatar">P</span> Paula Rocha</td><td>Gold</td><td><span class="badge warn">Inadimplente</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- MEMBER VIEW -->
+    <section id="viewMember" class="hidden">
+      <div class="grid grid-2">
+        <div class="card">
+          <h2>Olá, Ana 👋</h2>
+          <p style="color: var(--muted); margin-bottom: 1rem;">Plano <span class="badge gold">Gold</span> · Benefício: 2 convites/mês</p>
+          <h3>Próximas degustações</h3>
+          <div class="event-item">
+            <div>
+              <strong>Noite Islay</strong><br />
+              <small style="color: var(--muted);">14/06 · Unidade SP</small>
+            </div>
+            <button class="primary">Reservar</button>
+          </div>
+          <div class="event-item">
+            <div>
+              <strong>Masterclass Speyside</strong><br />
+              <small style="color: var(--muted);">05/07</small>
+            </div>
+            <button class="ghost">Lista de espera</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Seu perfil de paladar</h3>
+          <p style="margin: 0.5rem 0;"><span class="badge">Fumado</span> <span class="badge">Frutado</span> <span class="badge">Especiado</span></p>
+          <h3 style="margin-top: 1.25rem;">Última nota</h3>
+          <p><strong>Laphroaig 10</strong> · evento 10/05</p>
+          <p class="stars">★★★★☆</p>
+          <p style="color: var(--muted); font-size: 0.9rem;">Turfa intensa, final longo. Harmonizou com chocolate 70%.</p>
+          <button class="ghost" style="margin-top: 1rem; width: 100%;">Ver histórico completo</button>
+        </div>
+      </div>
+      <div class="card" style="margin-top: 1rem;">
+        <h3>Explorar garrafas do clube</h3>
+        <input type="search" placeholder="Buscar por nome, destilaria..." aria-label="Buscar garrafas" />
+        <table>
+          <thead><tr><th>Garrafa</th><th>Estilo</th><th>ABV</th></tr></thead>
+          <tbody>
+            <tr><td>Ardbeg 10</td><td>Single Malt</td><td>46%</td></tr>
+            <tr><td>Buffalo Trace</td><td>Bourbon</td><td>40%</td></tr>
+            <tr><td>Hibiki Harmony</td><td>Blend</td><td>43%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="mock-note">
+      Mock base Whiskey Club OS · Referência para Flutter flavors e agentes UX/PO/Cliente.
+      Repo: <code>mock/index.html</code> · Não é produção.
+    </footer>
+  </div>
+
+  <script>
+    const flavors = {
+      client_a: {
+        clubName: 'Clube Malte & Fumo',
+        unitLabel: 'Todas as unidades',
+        banner: 'Flavor: client_a · tenant: clube-malte',
+        amber: '#c9a227',
+        icon: '🥃'
+      },
+      client_a_sp: {
+        clubName: 'Clube Malte & Fumo',
+        unitLabel: 'Unidade São Paulo',
+        banner: 'Flavor: client_a_sp · tenant: clube-malte · unit: sp',
+        amber: '#c9a227',
+        icon: '🥃'
+      },
+      client_b: {
+        clubName: 'Highland Society',
+        unitLabel: 'Unidade Curitiba',
+        banner: 'Flavor: client_b · tenant: highland-society',
+        amber: '#b87333',
+        icon: '🏔️'
+      }
+    };
+
+    const flavorSelect = document.getElementById('flavorSelect');
+    const roleSelect = document.getElementById('roleSelect');
+    const viewOwner = document.getElementById('viewOwner');
+    const viewMember = document.getElementById('viewMember');
+    const tabOwner = document.getElementById('tabOwner');
+    const tabMember = document.getElementById('tabMember');
+
+    function applyFlavor(key) {
+      const f = flavors[key] || flavors.client_a_sp;
+      document.getElementById('clubName').textContent = f.clubName;
+      document.getElementById('unitLabel').textContent = f.unitLabel;
+      document.getElementById('flavorBanner').textContent = f.banner;
+      document.getElementById('brandIcon').textContent = f.icon;
+      document.documentElement.style.setProperty('--amber', f.amber);
+    }
+
+    function setRole(role) {
+      const isOwner = role === 'owner';
+      viewOwner.classList.toggle('hidden', !isOwner);
+      viewMember.classList.toggle('hidden', isOwner);
+      tabOwner.classList.toggle('active', isOwner);
+      tabMember.classList.toggle('active', !isOwner);
+      roleSelect.value = role;
+    }
+
+    flavorSelect.addEventListener('change', () => applyFlavor(flavorSelect.value));
+    roleSelect.addEventListener('change', () => setRole(roleSelect.value));
+    tabOwner.addEventListener('click', () => setRole('owner'));
+    tabMember.addEventListener('click', () => setRole('member'));
+
+    applyFlavor('client_a_sp');
+    setRole('owner');
+  </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+Nome,Fase,Status,Prioridade
+E1 - Fundação e flavors,Fase 1 - Fundação,Planejado,Alta
+E2 - Autenticação,Fase 2 - MVP,Planejado,Alta
+E3 - Catálogo e estoque,Fase 2 - MVP,Planejado,Alta
+E4 - Eventos,Fase 2 - MVP,Planejado,Alta
+E5 - Assinaturas,Fase 2 - MVP,Planejado,Alta
+E6 - Dashboard,Fase 2 - MVP,Planejado,Média
+E7 - Qualidade e lançamento,Fase 3 - Lançamento,Planejado,Alta

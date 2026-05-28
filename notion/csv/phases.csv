@@ -1,0 +1,6 @@
+Nome,Status,Objetivo,Ordem
+Fase 0 - Discovery,Em andamento,Validar requisitos e mock,0
+Fase 1 - Fundação,Planejado,Flutter flavors + API skeleton,1
+Fase 2 - MVP,Planejado,Fluxos críticos ponta a ponta,2
+Fase 3 - Lançamento,Planejado,Stores e piloto real,3
+Fase 4 - Escala,Backlog,Multi-tenant self-service,4

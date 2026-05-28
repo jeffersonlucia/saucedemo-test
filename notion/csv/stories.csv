@@ -1,0 +1,8 @@
+ID,Título,Épico,Pontos,RF IDs,Status
+US-1.1,Flavors client_a e client_a_sp,E1 - Fundação e flavors,5,RF-001,Backlog
+US-2.1,Login membro,E2 - Autenticação,5,RF-002,Backlog
+US-3.1,Cadastro garrafa,E3 - Catálogo e estoque,5,RF-003,Backlog
+US-4.2,Reservar evento,E4 - Eventos,5,RF-004,Backlog
+US-5.2,Assinar plano com pagamento,E5 - Assinaturas,13,RF-005,Backlog
+US-6.1,Dashboard KPIs dono,E6 - Dashboard,8,RF-007,Backlog
+US-7.1,E2E críticos,E7 - Qualidade e lançamento,8,,Backlog

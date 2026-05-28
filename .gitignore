@@ -1,12 +1,24 @@
 node_modules/
 .env
-cypress/videos/
-cypress/screenshots/
-cypress/reports/
-mochawesome-report/
+.env.*
+!.env.example
 
-# Testes manuais (local apenas)
-manual-testing-evidence/
-TESTE-MANUAL-SUMARIO.txt
-manual-testing-report.txt
-cypress/e2e/manual-tests-*.spec.js
+# Legacy Cypress
+legacy/cypress/videos/
+legacy/cypress/screenshots/
+legacy/cypress/reports/
+legacy/mochawesome-report/
+
+# Flutter
+app/flutter/.dart_tool/
+app/flutter/.packages
+app/flutter/build/
+app/flutter/.flutter-plugins
+app/flutter/.flutter-plugins-dependencies
+
+# IDE
+.idea/
+*.iml
+
+# OS
+.DS_Store
