@@ -1,0 +1,26 @@
+Task,Especialidade,Estimativa,Status,Epico,Historia,Prioridade
+Definir North Star Metric do produto,PM,S,Not started,E0,F0 - Metricas de sucesso,P0
+Detalhar criterios de aceite do MVP,PO,M,Not started,E0,F0 - Escopo MVP,P0
+Mapear regras de negocio por tenant e unidade,Analista de Requisitos,M,Not started,E1,US01 - Configuracao multi-tenant,P0
+Desenhar jornada ponta a ponta do membro,UX,M,Not started,E2,US04 - Assinatura mensal,P0
+Criar design system base e tokens de marca,UI,M,Not started,E2,US04 - Assinatura mensal,P0
+Definir arquitetura de modulos Flutter,Tech Lead,M,Not started,E1,US01 - Configuracao multi-tenant,P0
+Criar bootstrap de flavors (ENV/TENANT/UNIT),Flutter,M,Not started,E1,US01 - Configuracao multi-tenant,P0
+Modelar schema multi-tenant no PostgreSQL,DBA,M,Not started,E1,US02 - Unidades e estoque,P0
+Implementar servico de autenticacao RBAC,Backend,L,Not started,E1,US03 - Perfis e permissoes,P0
+Configurar pipeline CI/CD com quality gates,DevOps,M,Not started,E6,US15 - Observabilidade em tempo real,P0
+Criar suite de testes API smoke e contrato,QA,M,Not started,E6,US16 - Lead time e qualidade,P0
+Construir modulo de catalogo e produtos,Backend,L,Not started,E3,US07 - Compra de garrafas e kits,P0
+Construir modulo de pedidos e checkout,Backend,L,Not started,E3,US07 - Compra de garrafas e kits,P0
+Criar painel web de operacao por unidade,Frontend,L,Not started,E3,US09 - Controle de ruptura,P1
+Construir app membro (catalogo + carrinho),Flutter,L,Not started,E3,US07 - Compra de garrafas e kits,P0
+Construir app operador (estoque + check-in),Flutter,L,Not started,E4,US11 - Controle de lotacao,P1
+Implementar agenda de eventos e reservas,Backend,M,Not started,E4,US10 - Reserva de degustacao,P1
+Implementar pontos e niveis de fidelidade,Backend,M,Not started,E5,US13 - Acumulo de pontos,P1
+Instrumentar logs, traces e dashboards,DevOps,M,Not started,E6,US15 - Observabilidade em tempo real,P0
+Criar runbook de incidentes e suporte,Documentacao,S,Not started,E6,US15 - Observabilidade em tempo real,P1
+Executar testes E2E do fluxo critico,QA,M,Not started,E3,US07 - Compra de garrafas e kits,P0
+Validar proposta com simulador dono do clube,Cliente Simulado,S,Not started,E0,F0 - Validacao de valor,P0
+Validar UX com simulador cliente final,Cliente Simulado,S,Not started,E0,F0 - Validacao de experiencia,P0
+Escrever guia tecnico de onboarding para devs,Documentacao,S,Not started,E0,F1 - Fundacao tecnica,P1
+Escrever guia de usuario para gestor e membro,Documentacao,M,Not started,E2,US04 - Assinatura mensal,P1

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Whiskey Club Manager - Mock Base</title>
+    <style>
+      :root {
+        --bg: #0f1115;
+        --card: #171a21;
+        --card-soft: #1f2430;
+        --text: #f3f6ff;
+        --muted: #a9b3c7;
+        --accent: #c08a3e;
+        --accent-2: #8f5b1d;
+        --ok: #35c46b;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, Arial, sans-serif;
+        color: var(--text);
+        background: linear-gradient(180deg, #0a0c10, var(--bg));
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 28px;
+        background: rgba(12, 15, 20, 0.95);
+        border-bottom: 1px solid #2a3242;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      }
+
+      .pill {
+        background: #20273a;
+        border: 1px solid #33415f;
+        color: var(--muted);
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+      }
+
+      main {
+        max-width: 1200px;
+        margin: 28px auto;
+        padding: 0 20px 40px;
+      }
+
+      .hero {
+        background: radial-gradient(circle at top left, #273048, #181c25 55%);
+        border: 1px solid #2f3b55;
+        border-radius: 18px;
+        padding: 26px;
+        margin-bottom: 20px;
+      }
+
+      .hero h1 {
+        margin: 0 0 10px 0;
+        font-size: 26px;
+      }
+
+      .hero p {
+        margin: 0;
+        color: var(--muted);
+        max-width: 860px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid #2a3242;
+        border-radius: 14px;
+        padding: 16px;
+      }
+
+      .card h3 {
+        margin: 0 0 8px 0;
+        font-size: 16px;
+      }
+
+      .card small {
+        color: var(--muted);
+      }
+
+      .metric {
+        font-size: 28px;
+        margin: 8px 0;
+      }
+
+      .metric.ok {
+        color: var(--ok);
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
+      .list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .list li {
+        border-bottom: 1px solid #2a3242;
+        padding: 10px 0;
+        color: #d8e0f0;
+      }
+
+      .list li:last-child {
+        border-bottom: 0;
+      }
+
+      .tag {
+        display: inline-block;
+        margin-left: 8px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        color: #10141d;
+        background: var(--accent);
+      }
+
+      footer {
+        margin-top: 20px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      @media (max-width: 860px) {
+        .split {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <div class="logo"></div>
+        <strong>Whiskey Club Manager</strong>
+      </div>
+      <div class="pill">ENV: dev | TENANT: clube-premium | UNIT: pinheiros</div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1>Painel unificado para dono do clube e membro final</h1>
+        <p>
+          Mock base para orientar UX/UI e desenvolvimento. Esta estrutura mostra
+          os modulos centrais do produto: assinaturas, catalogo, pedidos, eventos,
+          fidelidade e operacao por unidade.
+        </p>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <h3>Membros ativos</h3>
+          <div class="metric">1,284</div>
+          <small>+8.2% vs ciclo anterior</small>
+        </article>
+        <article class="card">
+          <h3>MRR de assinaturas</h3>
+          <div class="metric">R$ 186.400</div>
+          <small>Receita recorrente total do tenant</small>
+        </article>
+        <article class="card">
+          <h3>Ruptura de estoque</h3>
+          <div class="metric ok">2.1%</div>
+          <small>Meta menor que 3%</small>
+        </article>
+        <article class="card">
+          <h3>Eventos do mes</h3>
+          <div class="metric">14</div>
+          <small>Taxa media de ocupacao: 87%</small>
+        </article>
+      </section>
+
+      <section class="split">
+        <article class="card">
+          <h3>Backoffice do dono/gestor</h3>
+          <ul class="list">
+            <li>Gestao de unidades e equipe <span class="tag">RBAC</span></li>
+            <li>Catalogo por unidade <span class="tag">estoque local</span></li>
+            <li>Campanhas de fidelidade <span class="tag">CRM</span></li>
+            <li>Relatorios executivos <span class="tag">BI</span></li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>App do membro (cliente final)</h3>
+          <ul class="list">
+            <li>Assinar plano mensal e gerenciar renovacao</li>
+            <li>Comprar garrafas, kits e edicoes limitadas</li>
+            <li>Reservar degustacoes e acompanhar agenda</li>
+            <li>Acumular pontos e resgatar beneficios</li>
+          </ul>
+        </article>
+      </section>
+
+      <footer>
+        Proximo passo: converter este mock em prototipo navegavel no Figma e em
+        componentes Flutter/Web para o MVP.
+      </footer>
+    </main>
+  </body>
+</html>
