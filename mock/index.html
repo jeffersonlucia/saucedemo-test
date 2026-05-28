@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WhiskeyCLUB — App Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== DESIGN TOKENS ===== */
+    :root {
+      --amber: #D4A843;
+      --amber-dark: #8B6914;
+      --amber-light: #F0C96A;
+      --bg: #111111;
+      --surface: #1C1C1E;
+      --surface-2: #2C2C2E;
+      --surface-3: #3A3A3C;
+      --text-primary: #F5F5F0;
+      --text-secondary: #AEAEB2;
+      --text-tertiary: #636366;
+      --success: #34C759;
+      --danger: #FF3B30;
+      --warning: #FF9500;
+      --border: rgba(255,255,255,0.08);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Inter', -apple-system, sans-serif;
+      --shadow: 0 4px 24px rgba(0,0,0,0.4);
+      --glow: 0 0 20px rgba(212,168,67,0.15);
+    }
+
+    /* ===== RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== LAYOUT ===== */
+    .app-wrapper {
+      display: flex;
+      gap: 0;
+      min-height: 100vh;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* ===== PHONE FRAME ===== */
+    .phone-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 24px;
+      min-width: 420px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .phone-label {
+      font-family: var(--font-serif);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 16px;
+      opacity: 0.8;
+    }
+
+    .phone-frame {
+      width: 320px;
+      height: 680px;
+      background: var(--surface);
+      border-radius: 48px;
+      border: 2px solid rgba(212,168,67,0.2);
+      overflow: hidden;
+      box-shadow: var(--shadow), var(--glow), inset 0 0 0 1px rgba(255,255,255,0.04);
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    /* ===== PHONE SCREEN SWITCHER ===== */
+    .screen { display: none; flex-direction: column; height: 100%; overflow: hidden; }
+    .screen.active { display: flex; }
+
+    /* ===== STATUS BAR ===== */
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 24px 8px;
+      font-size: 12px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .status-bar-icons { display: flex; gap: 4px; align-items: center; }
+
+    /* ===== SCROLLABLE CONTENT ===== */
+    .screen-content {
+      flex: 1;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+    .screen-content::-webkit-scrollbar { display: none; }
+
+    /* ===== BOTTOM NAV ===== */
+    .bottom-nav {
+      display: flex;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 8px 0 20px;
+      flex-shrink: 0;
+    }
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 6px 0;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      background: none;
+      color: var(--text-tertiary);
+      font-family: var(--font-sans);
+    }
+    .nav-item.active { color: var(--amber); }
+    .nav-item svg { width: 22px; height: 22px; }
+    .nav-item span { font-size: 10px; font-weight: 500; }
+
+    /* ===== SIDE PANEL ===== */
+    .side-panel {
+      flex: 1;
+      padding: 40px 48px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--surface-3) transparent;
+    }
+
+    .panel-title {
+      font-family: var(--font-serif);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--amber);
+      margin-bottom: 8px;
+    }
+    .panel-subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    /* ===== SCREEN NAVIGATION BUTTONS ===== */
+    .screen-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+    .screen-btn {
+      padding: 8px 16px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font-sans);
+    }
+    .screen-btn:hover { border-color: var(--amber); color: var(--amber); }
+    .screen-btn.active { background: var(--amber); color: #000; border-color: var(--amber); font-weight: 600; }
+
+    /* ===== DOCUMENTATION SECTIONS ===== */
+    .doc-section {
+      margin-bottom: 40px;
+      padding: 24px;
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+    }
+    .doc-section h3 {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      color: var(--amber);
+      margin-bottom: 16px;
+    }
+    .doc-section p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+    .doc-section ul { list-style: none; padding: 0; }
+    .doc-section ul li {
+      padding: 6px 0;
+      font-size: 13px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .doc-section ul li:last-child { border-bottom: none; }
+    .doc-section ul li::before { content: "◆"; color: var(--amber); font-size: 8px; flex-shrink: 0; }
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(212,168,67,0.15);
+      color: var(--amber);
+      margin-left: auto;
+    }
+    .tag.green { background: rgba(52,199,89,0.15); color: var(--success); }
+    .tag.blue { background: rgba(10,132,255,0.15); color: #0A84FF; }
+
+    /* ===== AGENT CARDS ===== */
+    .agent-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .agent-card {
+      padding: 16px;
+      background: var(--surface-2);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+    .agent-card .agent-emoji { font-size: 24px; margin-bottom: 8px; }
+    .agent-card .agent-name { font-size: 12px; font-weight: 600; color: var(--amber); margin-bottom: 4px; }
+    .agent-card .agent-role { font-size: 11px; color: var(--text-secondary); }
+
+    /* ===== UI COMPONENTS (inside phone) ===== */
+
+    /* HEADER */
+    .app-header {
+      padding: 0 20px 16px;
+      background: var(--surface);
+    }
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .app-logo {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--amber);
+      letter-spacing: -0.3px;
+    }
+    .app-logo span { color: var(--text-primary); }
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--amber), var(--amber-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: #000;
+      flex-shrink: 0;
+    }
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface-2);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+    }
+    .search-bar svg { color: var(--text-tertiary); flex-shrink: 0; }
+    .search-bar span { font-size: 13px; color: var(--text-tertiary); }
+
+    /* SECTION TITLE */
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px 10px;
+    }
+    .section-title h3 {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      color: var(--text-primary);
+    }
+    .section-title a { font-size: 12px; color: var(--amber); text-decoration: none; }
+
+    /* FEATURED CARD */
+    .featured-card {
+      margin: 0 20px 20px;
+      background: linear-gradient(135deg, #2C1810 0%, #1A0A00 100%);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid rgba(212,168,67,0.2);
+      position: relative;
+    }
+    .featured-card::before {
+      content: '';
+      position: absolute;
+      top: -20px; right: -20px;
+      width: 100px; height: 100px;
+      background: radial-gradient(circle, rgba(212,168,67,0.15), transparent);
+      border-radius: 50%;
+    }
+    .featured-inner { padding: 20px; }
+    .featured-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      background: rgba(212,168,67,0.2);
+      border-radius: 100px;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--amber);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .featured-title {
+      font-family: var(--font-serif);
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+    .featured-subtitle { font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; }
+    .featured-footer { display: flex; align-items: center; justify-content: space-between; }
+    .featured-meta { display: flex; gap: 12px; }
+    .featured-meta-item { font-size: 11px; color: var(--text-secondary); }
+    .featured-meta-item strong { color: var(--text-primary); display: block; }
+    .btn-sm {
+      padding: 7px 14px;
+      background: var(--amber);
+      color: #000;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+    }
+
+    /* WHISKEY CARDS */
+    .whiskey-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 0 20px 20px;
+    }
+    .whiskey-card {
+      background: var(--surface-2);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .whiskey-card:hover { transform: translateY(-2px); border-color: rgba(212,168,67,0.3); }
+    .whiskey-img {
+      height: 90px;
+      background: linear-gradient(135deg, #2C1810, #3D2B1F);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      position: relative;
+    }
+    .whiskey-img-badge {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: rgba(0,0,0,0.6);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 9px;
+      color: var(--amber);
+      font-weight: 600;
+    }
+    .whiskey-info { padding: 10px; }
+    .whiskey-name { font-size: 12px; font-weight: 600; margin-bottom: 2px; line-height: 1.3; }
+    .whiskey-origin { font-size: 10px; color: var(--text-secondary); margin-bottom: 6px; }
+    .whiskey-footer { display: flex; align-items: center; justify-content: space-between; }
+    .stars { font-size: 9px; color: var(--amber); }
+    .whiskey-price { font-size: 11px; color: var(--amber); font-weight: 600; }
+
+    /* EVENT CARDS */
+    .events-list { padding: 0 20px 100px; }
+    .event-card {
+      background: var(--surface-2);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 12px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+    .event-date-box {
+      width: 46px;
+      height: 52px;
+      background: rgba(212,168,67,0.1);
+      border-radius: var(--radius-sm);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid rgba(212,168,67,0.2);
+    }
+    .event-date-box .day { font-size: 20px; font-weight: 700; color: var(--amber); line-height: 1; }
+    .event-date-box .month { font-size: 10px; color: var(--amber); text-transform: uppercase; }
+    .event-info { flex: 1; }
+    .event-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
+    .event-meta { font-size: 11px; color: var(--text-secondary); margin-bottom: 6px; }
+    .event-footer { display: flex; gap: 6px; align-items: center; }
+    .pill {
+      padding: 3px 8px;
+      border-radius: 100px;
+      font-size: 10px;
+      font-weight: 500;
+    }
+    .pill-amber { background: rgba(212,168,67,0.15); color: var(--amber); }
+    .pill-green { background: rgba(52,199,89,0.15); color: var(--success); }
+    .pill-blue { background: rgba(10,132,255,0.15); color: #0A84FF; }
+    .pill-red { background: rgba(255,59,48,0.15); color: var(--danger); }
+
+    /* WHISKEY DETAIL */
+    .detail-hero {
+      height: 180px;
+      background: linear-gradient(135deg, #2C1810 0%, #1A0A00 50%, #3D2B1F 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+      position: relative;
+    }
+    .detail-back {
+      position: absolute;
+      top: 52px;
+      left: 16px;
+      width: 32px;
+      height: 32px;
+      background: rgba(0,0,0,0.5);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .detail-heart {
+      position: absolute;
+      top: 52px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      background: rgba(0,0,0,0.5);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .detail-body { padding: 20px; }
+    .detail-type-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      background: rgba(212,168,67,0.15);
+      color: var(--amber);
+      border-radius: 100px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .detail-name {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+    .detail-distillery { font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; }
+    .detail-specs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .spec-item {
+      background: var(--surface-2);
+      padding: 12px 8px;
+      text-align: center;
+    }
+    .spec-value { font-size: 16px; font-weight: 700; color: var(--amber); display: block; }
+    .spec-label { font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; }
+    .tasting-section h4 {
+      font-family: var(--font-serif);
+      font-size: 14px;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+    .tasting-note {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      align-items: flex-start;
+    }
+    .tasting-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--amber);
+      margin-top: 4px;
+      flex-shrink: 0;
+    }
+    .tasting-note-content {}
+    .tasting-note-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-tertiary); margin-bottom: 2px; }
+    .tasting-note-text { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+    /* PROFILE SCREEN */
+    .profile-header {
+      background: linear-gradient(180deg, #2C1810 0%, var(--surface) 100%);
+      padding: 24px 20px;
+      text-align: center;
+    }
+    .profile-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--amber), var(--amber-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 700;
+      color: #000;
+      margin: 0 auto 12px;
+      border: 3px solid rgba(212,168,67,0.4);
+    }
+    .profile-name { font-family: var(--font-serif); font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .profile-plan { font-size: 12px; color: var(--amber); }
+    .profile-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin: 0 20px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .stat-item { background: var(--surface-2); padding: 14px 8px; text-align: center; }
+    .stat-value { font-size: 20px; font-weight: 700; color: var(--amber); display: block; }
+    .stat-label { font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; }
+
+    /* PASSPORT */
+    .passport-section { padding: 20px 20px 100px; }
+    .passport-title {
+      font-family: var(--font-serif);
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+    .passport-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .passport-item {
+      aspect-ratio: 1;
+      background: var(--surface-2);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      border: 1px solid var(--border);
+      position: relative;
+    }
+    .passport-item.locked { opacity: 0.3; filter: grayscale(1); }
+    .passport-item .check {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 14px;
+      height: 14px;
+      background: var(--success);
+      border-radius: 50%;
+      font-size: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ADMIN DASHBOARD */
+    .admin-header {
+      padding: 0 20px 16px;
+      background: var(--surface);
+    }
+    .admin-title {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .admin-subtitle { font-size: 12px; color: var(--text-secondary); }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 0 20px 16px;
+    }
+    .kpi-card {
+      background: var(--surface-2);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      border: 1px solid var(--border);
+    }
+    .kpi-label { font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; margin-bottom: 4px; }
+    .kpi-value { font-size: 22px; font-weight: 700; color: var(--text-primary); }
+    .kpi-change { font-size: 11px; color: var(--success); margin-top: 2px; }
+    .kpi-icon { font-size: 20px; margin-bottom: 6px; }
+
+    /* LOGIN SCREEN */
+    .login-screen { padding: 32px 24px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .login-logo {
+      font-family: var(--font-serif);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--amber);
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .login-tagline { text-align: center; font-size: 13px; color: var(--text-secondary); margin-bottom: 40px; }
+    .form-group { margin-bottom: 16px; }
+    .form-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; display: block; }
+    .form-input {
+      width: 100%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      font-size: 14px;
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      outline: none;
+    }
+    .form-input:focus { border-color: var(--amber); }
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      background: var(--amber);
+      color: #000;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      margin-top: 8px;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: var(--amber-light); }
+    .divider {
+      text-align: center;
+      position: relative;
+      margin: 20px 0;
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+    .divider::before, .divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 35%;
+      height: 1px;
+      background: var(--border);
+    }
+    .divider::before { left: 0; }
+    .divider::after { right: 0; }
+    .btn-social {
+      width: 100%;
+      padding: 12px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+      cursor: pointer;
+      font-family: var(--font-sans);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .login-footer { text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
+    .login-footer a { color: var(--amber); text-decoration: none; }
+
+    /* MEMBERSHIP SCREEN */
+    .plan-card {
+      margin: 0 20px 12px;
+      background: var(--surface-2);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      border: 2px solid var(--border);
+      transition: border-color 0.2s;
+      cursor: pointer;
+    }
+    .plan-card.featured { border-color: var(--amber); background: rgba(212,168,67,0.06); }
+    .plan-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+    .plan-name { font-family: var(--font-serif); font-size: 17px; font-weight: 700; }
+    .plan-price { text-align: right; }
+    .plan-price .amount { font-size: 20px; font-weight: 700; color: var(--amber); }
+    .plan-price .period { font-size: 11px; color: var(--text-tertiary); }
+    .plan-features { list-style: none; }
+    .plan-features li {
+      font-size: 12px;
+      color: var(--text-secondary);
+      padding: 4px 0;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .plan-features li::before { content: "✓"; color: var(--success); font-weight: 700; }
+    .plan-badge {
+      background: var(--amber);
+      color: #000;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 100px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .app-wrapper { flex-direction: column; }
+      .phone-container { min-width: unset; position: relative; height: auto; padding: 24px 16px; }
+      .side-panel { padding: 24px 20px; }
+      .agent-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ===== SCROLLBAR ===== */
+    .side-panel::-webkit-scrollbar { width: 4px; }
+    .side-panel::-webkit-scrollbar-track { background: transparent; }
+    .side-panel::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 4px; }
+
+    /* NOTIFICATION DOT */
+    .notif-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--danger);
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    /* BADGE COUNT */
+    .badge-count {
+      background: var(--danger);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 100px;
+      margin-left: 4px;
+    }
+
+    /* PROGRESS BAR */
+    .progress-bar {
+      height: 4px;
+      background: var(--surface-3);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--amber-dark), var(--amber));
+      border-radius: 2px;
+      transition: width 0.5s;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-wrapper">
+
+    <!-- ===== PHONE FRAME ===== -->
+    <div class="phone-container">
+      <div class="phone-label">WhiskeyCLUB Prototype</div>
+      <div class="phone-frame">
+
+        <!-- ===== SCREEN: LOGIN ===== -->
+        <div class="screen active" id="screen-login">
+          <div class="status-bar" style="background: var(--surface);">
+            <span>9:41</span>
+            <div class="status-bar-icons">
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4" y="2" width="3" height="10" rx="1"/><rect x="8" y="1" width="3" height="11" rx="1"/><rect x="12" y="0" width="3" height="12" rx="1" opacity="0.3"/></svg>
+              <svg width="16" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 0 0-6 0zm-4-4l2 2a7.074 7.074 0 0 1 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+              <svg width="25" height="12" viewBox="0 0 25 12" fill="currentColor"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity="0.35" fill="none"/><rect x="2" y="2" width="18" height="8" rx="2" opacity="0.5"/><rect x="22" y="4" width="2" height="4" rx="1"/></svg>
+            </div>
+          </div>
+          <div class="screen-content">
+            <div class="login-screen">
+              <div>
+                <div style="text-align: center; font-size: 48px; margin-bottom: 12px;">🥃</div>
+                <div class="login-logo">WhiskeyCLUB</div>
+                <div class="login-tagline">Seu clube de whiskey, no bolso</div>
+              </div>
+              <div>
+                <div class="form-group">
+                  <label class="form-label">E-mail</label>
+                  <input class="form-input" type="email" value="carlos@example.com" readonly />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Senha</label>
+                  <input class="form-input" type="password" value="••••••••" readonly />
+                </div>
+                <div style="text-align: right; margin-bottom: 8px;">
+                  <a style="font-size: 12px; color: var(--amber); text-decoration: none;">Esqueci minha senha</a>
+                </div>
+                <button class="btn-primary" onclick="showScreen('home')">Entrar</button>
+                <div class="divider">ou continue com</div>
+                <button class="btn-social" onclick="showScreen('home')">
+                  <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                  Entrar com Google
+                </button>
+                <button class="btn-social" onclick="showScreen('home')">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11"/></svg>
+                  Entrar com Apple
+                </button>
+              </div>
+              <div class="login-footer">
+                Não tem conta? <a onclick="showScreen('home')">Criar agora</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== SCREEN: HOME ===== -->
+        <div class="screen" id="screen-home">
+          <div class="status-bar" style="background: var(--surface); padding-bottom: 0;">
+            <span>9:41</span>
+            <div class="status-bar-icons">
+              <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4" y="2" width="3" height="10" rx="1"/><rect x="8" y="1" width="3" height="11" rx="1"/><rect x="12" y="0" width="3" height="12" rx="1" opacity="0.3"/></svg>
+              <svg width="25" height="12" viewBox="0 0 25 12" fill="currentColor"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity="0.35" fill="none"/><rect x="2" y="2" width="18" height="8" rx="2" opacity="0.5"/><rect x="22" y="4" width="2" height="4" rx="1"/></svg>
+            </div>
+          </div>
+          <div class="app-header">
+            <div class="header-top">
+              <div>
+                <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 2px;">Bem-vindo de volta,</div>
+                <div class="app-logo">Whiskey<span>CLUB</span></div>
+              </div>
+              <div style="display:flex; gap:10px; align-items:center;">
+                <div style="position:relative;">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--text-secondary);"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                  <div class="notif-dot"></div>
+                </div>
+                <div class="avatar">CA</div>
+              </div>
+            </div>
+            <div class="search-bar" onclick="showScreen('catalog')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span>Buscar whiskies, destilarias...</span>
+            </div>
+          </div>
+
+          <div class="screen-content">
+            <div class="featured-card" onclick="showScreen('detail')">
+              <div class="featured-inner">
+                <div class="featured-badge">⭐ Destaque do mês</div>
+                <div class="featured-title">Glenfiddich 18 Anos<br>Small Batch Reserve</div>
+                <div class="featured-subtitle">Single Malt · Speyside, Escócia</div>
+                <div class="featured-footer">
+                  <div class="featured-meta">
+                    <div class="featured-meta-item"><strong>18 anos</strong>Idade</div>
+                    <div class="featured-meta-item"><strong>40%</strong>ABV</div>
+                    <div class="featured-meta-item"><strong>94pts</strong>Score</div>
+                  </div>
+                  <button class="btn-sm">Ver mais</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-title">
+              <h3>🔥 Populares no Clube</h3>
+              <a onclick="showScreen('catalog')">Ver todos</a>
+            </div>
+            <div class="whiskey-grid">
+              <div class="whiskey-card" onclick="showScreen('detail')">
+                <div class="whiskey-img">🥃<div class="whiskey-img-badge">12y</div></div>
+                <div class="whiskey-info">
+                  <div class="whiskey-name">Macallan 12 Double Cask</div>
+                  <div class="whiskey-origin">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Speyside</div>
+                  <div class="whiskey-footer">
+                    <div class="stars">★★★★★</div>
+                    <div class="whiskey-price">R$450</div>
+                  </div>
+                </div>
+              </div>
+              <div class="whiskey-card" onclick="showScreen('detail')">
+                <div class="whiskey-img" style="background: linear-gradient(135deg, #1A1000, #3D2B00);">🍯<div class="whiskey-img-badge">12y</div></div>
+                <div class="whiskey-info">
+                  <div class="whiskey-name">Buffalo Trace Bourbon</div>
+                  <div class="whiskey-origin">🇺🇸 Kentucky</div>
+                  <div class="whiskey-footer">
+                    <div class="stars">★★★★☆</div>
+                    <div class="whiskey-price">R$210</div>
+                  </div>
+                </div>
+              </div>
+              <div class="whiskey-card" onclick="showScreen('detail')">
+                <div class="whiskey-img" style="background: linear-gradient(135deg, #0A1A0A, #1A3320);">🌿<div class="whiskey-img-badge">15y</div></div>
+                <div class="whiskey-info">
+                  <div class="whiskey-name">Nikka Yoichi Single Malt</div>
+                  <div class="whiskey-origin">🇯🇵 Hokkaido</div>
+                  <div class="whiskey-footer">
+                    <div class="stars">★★★★★</div>
+                    <div class="whiskey-price">R$890</div>
+                  </div>
+                </div>
+              </div>
+              <div class="whiskey-card" onclick="showScreen('detail')">
+                <div class="whiskey-img" style="background: linear-gradient(135deg, #1A0A1A, #2C1A2C);">🌸<div class="whiskey-img-badge">18y</div></div>
+                <div class="whiskey-info">
+                  <div class="whiskey-name">Jameson 18 Limited</div>
+                  <div class="whiskey-origin">🇮🇪 Cork, Irlanda</div>
+                  <div class="whiskey-footer">
+                    <div class="stars">★★★★☆</div>
+                    <div class="whiskey-price">R$620</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-title">
+              <h3>📅 Próximos Eventos</h3>
+              <a onclick="showScreen('events')">Ver todos</a>
+            </div>
+            <div style="padding: 0 20px 100px;">
+              <div class="event-card" onclick="showScreen('events')">
+                <div class="event-date-box"><div class="day">14</div><div class="month">Jun</div></div>
+                <div class="event-info">
+                  <div class="event-title">Masterclass: Single Malts da Escócia</div>
+                  <div class="event-meta">📍 Clube · 19h · 5 whiskies</div>
+                  <div class="event-footer">
+                    <span class="pill pill-green">Gratuito</span>
+                    <span class="pill pill-amber">12/20 vagas</span>
+                  </div>
+                </div>
+              </div>
+              <div class="event-card" onclick="showScreen('events')">
+                <div class="event-date-box"><div class="day">21</div><div class="month">Jun</div></div>
+                <div class="event-info">
+                  <div class="event-title">Jantar Harmonização: Whiskies & Charque</div>
+                  <div class="event-meta">📍 Restaurante Ember · 20h</div>
+                  <div class="event-footer">
+                    <span class="pill pill-amber">R$280</span>
+                    <span class="pill pill-red">3 vagas!</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bottom-nav">
+            <button class="nav-item active" onclick="showScreen('home')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+              <span>Home</span>
+            </button>
+            <button class="nav-item" onclick="showScreen('catalog')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <span>Catálogo</span>
+            </button>
+            <button class="nav-item" onclick="showScreen('events')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span>Eventos</span>
+            </button>
+            <button class="nav-item" onclick="showScreen('profile')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>Perfil</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ===== SCREEN: CATALOG ===== -->
+        <div class="screen" id="screen-catalog">
+          <div class="status-bar" style="background: var(--surface);"><span>9:41</span></div>
+          <div class="app-header">
+            <div class="header-top">
+              <div class="app-logo">Catálogo</div>
+              <div style="display:flex; gap:8px;">
+                <div style="width:32px; height:32px; background:var(--surface-2); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                </div>
+              </div>
+            </div>
+            <div class="search-bar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span>Macallan, Bourbon, Japão...</span>
+            </div>
+            <div style="display:flex; gap:8px; padding: 12px 0 0; overflow-x: auto; scrollbar-width: none;">
+              <span class="pill pill-amber" style="white-space:nowrap; cursor:pointer; padding: 5px 12px;">Todos</span>
+              <span class="pill" style="background:var(--surface-2); white-space:nowrap; cursor:pointer; padding: 5px 12px; color: var(--text-secondary);">Single Malt</span>
+              <span class="pill" style="background:var(--surface-2); white-space:nowrap; cursor:pointer; padding: 5px 12px; color: var(--text-secondary);">Bourbon</span>
+              <span class="pill" style="background:var(--surface-2); white-space:nowrap; cursor:pointer; padding: 5px 12px; color: var(--text-secondary);">Japonês</span>
+              <span class="pill" style="background:var(--surface-2); white-space:nowrap; cursor:pointer; padding: 5px 12px; color: var(--text-secondary);">Irlandês</span>
+            </div>
+          </div>
+          <div class="screen-content">
+            <div style="padding: 8px 20px; font-size: 12px; color: var(--text-secondary);">47 whiskies disponíveis</div>
+            <div class="whiskey-grid" style="padding-bottom:100px;">
+              <div class="whiskey-card" onclick="showScreen('detail')"><div class="whiskey-img">🥃<div class="whiskey-img-badge">18y</div></div><div class="whiskey-info"><div class="whiskey-name">Glenfiddich 18 Small Batch</div><div class="whiskey-origin">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Speyside</div><div class="whiskey-footer"><div class="stars">★★★★★</div><div class="whiskey-price">R$780</div></div></div></div>
+              <div class="whiskey-card" onclick="showScreen('detail')"><div class="whiskey-img">🏺<div class="whiskey-img-badge">12y</div></div><div class="whiskey-info"><div class="whiskey-name">Macallan 12 Double Cask</div><div class="whiskey-origin">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Speyside</div><div class="whiskey-footer"><div class="stars">★★★★★</div><div class="whiskey-price">R$450</div></div></div></div>
+              <div class="whiskey-card" onclick="showScreen('detail')"><div class="whiskey-img" style="background: linear-gradient(135deg, #1A1000, #3D2B00);">🍯<div class="whiskey-img-badge">Nm</div></div><div class="whiskey-info"><div class="whiskey-name">Buffalo Trace Bourbon</div><div class="whiskey-origin">🇺🇸 Kentucky</div><div class="whiskey-footer"><div class="stars">★★★★☆</div><div class="whiskey-price">R$210</div></div></div></div>
+              <div class="whiskey-card" onclick="showScreen('detail')"><div class="whiskey-img" style="background: linear-gradient(135deg, #0A1A0A, #1A3320);">🌿<div class="whiskey-img-badge">15y</div></div><div class="whiskey-info"><div class="whiskey-name">Nikka Yoichi Single Malt</div><div class="whiskey-origin">🇯🇵 Hokkaido</div><div class="whiskey-footer"><div class="stars">★★★★★</div><div class="whiskey-price">R$890</div></div></div></div>
+              <div class="whiskey-card" onclick="showScreen('detail')"><div class="whiskey-img" style="background: linear-gradient(135deg, #1A0A00, #401A0A);">🔥<div class="whiskey-img-badge">12y</div></div><div class="whiskey-info"><div class="whiskey-name">Ardbeg 10 Years</div><div class="whiskey-origin">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Islay</div><div class="whiskey-footer"><div class="stars">★★★★★</div><div class="whiskey-price">R$520</div></div></div></div>
+              <div class="whiskey-card" onclick="showScreen('detail')"><div class="whiskey-img" style="background: linear-gradient(135deg, #1A1A0A, #2C2C1A);">✨<div class="whiskey-img-badge">25y</div></div><div class="whiskey-info"><div class="whiskey-name">Yamazaki 25 Anos</div><div class="whiskey-origin">🇯🇵 Osaka</div><div class="whiskey-footer"><div class="stars">★★★★★</div><div class="whiskey-price">R$4.200</div></div></div></div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <button class="nav-item" onclick="showScreen('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg><span>Home</span></button>
+            <button class="nav-item active" onclick="showScreen('catalog')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Catálogo</span></button>
+            <button class="nav-item" onclick="showScreen('events')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Eventos</span></button>
+            <button class="nav-item" onclick="showScreen('profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Perfil</span></button>
+          </div>
+        </div>
+
+        <!-- ===== SCREEN: DETAIL ===== -->
+        <div class="screen" id="screen-detail">
+          <div class="status-bar" style="position:absolute; top:0; left:0; right:0; z-index:10; background:transparent;"><span style="opacity:0">9:41</span></div>
+          <div class="screen-content">
+            <div class="detail-hero">
+              🥃
+              <div class="detail-back" onclick="showScreen('catalog')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+              </div>
+              <div class="detail-heart">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--amber)" stroke="var(--amber)" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </div>
+            </div>
+            <div class="detail-body">
+              <div class="detail-type-badge">Single Malt · Speyside</div>
+              <div class="detail-name">Glenfiddich 18 Anos<br>Small Batch Reserve</div>
+              <div class="detail-distillery">Destilaria Glenfiddich · Dufftown, Escócia</div>
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px;">
+                <span style="color:var(--amber); font-size:14px;">★★★★★</span>
+                <span style="font-size:12px; color:var(--text-secondary);">4.8 · 23 avaliações</span>
+                <span class="pill pill-green" style="margin-left:auto;">Provado ✓</span>
+              </div>
+              <div class="detail-specs">
+                <div class="spec-item"><span class="spec-value">18</span><span class="spec-label">Anos</span></div>
+                <div class="spec-item"><span class="spec-value">40%</span><span class="spec-label">ABV</span></div>
+                <div class="spec-item"><span class="spec-value">94</span><span class="spec-label">Pontos</span></div>
+              </div>
+              <div class="tasting-section">
+                <h4>Notas de Degustação</h4>
+                <div class="tasting-note"><div class="tasting-dot"></div><div class="tasting-note-content"><div class="tasting-note-label">Cor</div><div class="tasting-note-text">Âmbar dourado profundo com reflexos cobre</div></div></div>
+                <div class="tasting-note"><div class="tasting-dot"></div><div class="tasting-note-content"><div class="tasting-note-label">Nariz</div><div class="tasting-note-text">Flores de laranjeira, nozes torradas, mel de acácia e baunilha suave</div></div></div>
+                <div class="tasting-note"><div class="tasting-dot"></div><div class="tasting-note-content"><div class="tasting-note-label">Paladar</div><div class="tasting-note-text">Amadeirado rico, frutas secas, canela, carvalho tostado e especiarias</div></div></div>
+                <div class="tasting-note"><div class="tasting-dot"></div><div class="tasting-note-content"><div class="tasting-note-label">Final</div><div class="tasting-note-text">Longo e aquecido, com notas de chocolate amargo e carvalho persistente</div></div></div>
+              </div>
+              <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);">
+                <button class="btn-primary" style="margin-bottom: 8px;">Avaliar este Whiskey</button>
+                <button class="btn-primary" style="background: var(--surface-2); color: var(--text-primary);">Adicionar ao Passaporte</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== SCREEN: EVENTS ===== -->
+        <div class="screen" id="screen-events">
+          <div class="status-bar" style="background: var(--surface);"><span>9:41</span></div>
+          <div class="app-header">
+            <div class="header-top">
+              <div class="app-logo">Eventos</div>
+            </div>
+            <div style="display:flex; gap:8px; padding-top: 4px;">
+              <span class="pill pill-amber" style="padding: 5px 14px; cursor:pointer;">Próximos</span>
+              <span class="pill" style="background:var(--surface-2); padding:5px 14px; cursor:pointer; color:var(--text-secondary);">Inscritos</span>
+              <span class="pill" style="background:var(--surface-2); padding:5px 14px; cursor:pointer; color:var(--text-secondary);">Passados</span>
+            </div>
+          </div>
+          <div class="screen-content">
+            <div class="events-list">
+              <div class="event-card"><div class="event-date-box"><div class="day">14</div><div class="month">Jun</div></div><div class="event-info"><div class="event-title">Masterclass: Single Malts da Escócia</div><div class="event-meta">📍 Sede do Clube · 19h00</div><div class="event-footer"><span class="pill pill-green">Gratuito</span><span class="pill pill-amber">12/20 vagas</span></div></div></div>
+              <div class="event-card"><div class="event-date-box"><div class="day">21</div><div class="month">Jun</div></div><div class="event-info"><div class="event-title">Jantar Harmonização: Whiskies & Charque</div><div class="event-meta">📍 Restaurante Ember · 20h00</div><div class="event-footer"><span class="pill pill-amber">R$280</span><span class="pill pill-red">3 vagas!</span></div></div></div>
+              <div class="event-card"><div class="event-date-box"><div class="day">05</div><div class="month">Jul</div></div><div class="event-info"><div class="event-title">Noite de Bourbon: Kentucky Classics</div><div class="event-meta">💻 Online · 20h00</div><div class="event-footer"><span class="pill pill-blue">Online</span><span class="pill pill-green">Inscrito ✓</span></div></div></div>
+              <div class="event-card"><div class="event-date-box"><div class="day">20</div><div class="month">Jul</div></div><div class="event-info"><div class="event-title">Visita à Destilaria: Wild Turkey Experience</div><div class="event-meta">✈️ Kentucky · 3 dias</div><div class="event-footer"><span class="pill pill-amber">R$4.800</span><span class="pill pill-amber">VIP</span></div></div></div>
+              <div class="event-card"><div class="event-date-box"><div class="day">10</div><div class="month">Ago</div></div><div class="event-info"><div class="event-title">Whiskey & Jazz Night</div><div class="event-meta">📍 Bar Bourbon St. · 21h00</div><div class="event-footer"><span class="pill pill-amber">R$120</span><span class="pill pill-amber">20/30 vagas</span></div></div></div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <button class="nav-item" onclick="showScreen('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg><span>Home</span></button>
+            <button class="nav-item" onclick="showScreen('catalog')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Catálogo</span></button>
+            <button class="nav-item active" onclick="showScreen('events')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Eventos</span></button>
+            <button class="nav-item" onclick="showScreen('profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Perfil</span></button>
+          </div>
+        </div>
+
+        <!-- ===== SCREEN: PROFILE ===== -->
+        <div class="screen" id="screen-profile">
+          <div class="status-bar" style="background: #2C1810;"><span>9:41</span></div>
+          <div class="screen-content">
+            <div class="profile-header">
+              <div class="profile-avatar">CA</div>
+              <div class="profile-name">Carlos Andrade</div>
+              <div class="profile-plan">🥃 Membro Premium · 847 pontos</div>
+            </div>
+            <div class="progress-bar" style="margin: 16px 20px 8px;">
+              <div class="progress-fill" style="width: 68%;"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding:0 20px; margin-bottom:16px;">
+              <span style="font-size:11px; color:var(--text-tertiary);">847 pts</span>
+              <span style="font-size:11px; color:var(--text-tertiary);">Próximo nível: 1.000 pts</span>
+            </div>
+            <div class="profile-stats">
+              <div class="stat-item"><span class="stat-value">34</span><span class="stat-label">Whiskies</span></div>
+              <div class="stat-item"><span class="stat-value">8</span><span class="stat-label">Eventos</span></div>
+              <div class="stat-item"><span class="stat-value">12</span><span class="stat-label">Reviews</span></div>
+            </div>
+            <div class="passport-section">
+              <div class="passport-title">🗺️ Meu Passaporte de Whiskies</div>
+              <div class="passport-grid">
+                <div class="passport-item">🥃<div class="check">✓</div></div>
+                <div class="passport-item">🏴󠁧󠁢󠁳󠁣󠁴󠁿<div class="check">✓</div></div>
+                <div class="passport-item">🇯🇵<div class="check">✓</div></div>
+                <div class="passport-item">🇺🇸<div class="check">✓</div></div>
+                <div class="passport-item">🇮🇪<div class="check">✓</div></div>
+                <div class="passport-item">🍷<div class="check">✓</div></div>
+                <div class="passport-item locked">🌊</div>
+                <div class="passport-item locked">🏔️</div>
+              </div>
+              <div style="margin-top: 20px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                  <span style="font-size:13px; font-weight:600;">Conquistas</span>
+                  <span style="font-size:12px; color:var(--amber);">Ver todas</span>
+                </div>
+                <div style="display:flex; gap:10px; overflow-x:auto; scrollbar-width:none; padding-bottom:8px;">
+                  <div style="flex-shrink:0; text-align:center;">
+                    <div style="width:52px; height:52px; background: rgba(212,168,67,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:4px; border: 1px solid rgba(212,168,67,0.3);">🥇</div>
+                    <div style="font-size:9px; color:var(--text-secondary); width:52px; text-align:center;">Primeira Prova</div>
+                  </div>
+                  <div style="flex-shrink:0; text-align:center;">
+                    <div style="width:52px; height:52px; background: rgba(212,168,67,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:4px; border: 1px solid rgba(212,168,67,0.3);">🌍</div>
+                    <div style="font-size:9px; color:var(--text-secondary); width:52px; text-align:center;">Viajante</div>
+                  </div>
+                  <div style="flex-shrink:0; text-align:center;">
+                    <div style="width:52px; height:52px; background: rgba(212,168,67,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:4px; border: 1px solid rgba(212,168,67,0.3);">📝</div>
+                    <div style="font-size:9px; color:var(--text-secondary); width:52px; text-align:center;">Crítico</div>
+                  </div>
+                  <div style="flex-shrink:0; text-align:center;">
+                    <div style="width:52px; height:52px; background: var(--surface-3); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:4px; opacity:0.3; filter:grayscale(1);">🏆</div>
+                    <div style="font-size:9px; color:var(--text-tertiary); width:52px; text-align:center;">50 Provas</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <button class="nav-item" onclick="showScreen('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg><span>Home</span></button>
+            <button class="nav-item" onclick="showScreen('catalog')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Catálogo</span></button>
+            <button class="nav-item" onclick="showScreen('events')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Eventos</span></button>
+            <button class="nav-item active" onclick="showScreen('profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Perfil</span></button>
+          </div>
+        </div>
+
+        <!-- ===== SCREEN: ADMIN ===== -->
+        <div class="screen" id="screen-admin">
+          <div class="status-bar" style="background: var(--surface);"><span>9:41</span></div>
+          <div class="screen-content">
+            <div class="admin-header">
+              <div class="header-top">
+                <div>
+                  <div class="admin-title">Dashboard</div>
+                  <div class="admin-subtitle">Clube dos Mestres do Malte · Junho 2026</div>
+                </div>
+                <div class="avatar" style="background: linear-gradient(135deg, #8B6914, #D4A843);">GM</div>
+              </div>
+            </div>
+            <div class="kpi-grid">
+              <div class="kpi-card"><div class="kpi-icon">👥</div><div class="kpi-label">Membros Ativos</div><div class="kpi-value">38</div><div class="kpi-change">+3 este mês</div></div>
+              <div class="kpi-card"><div class="kpi-icon">💰</div><div class="kpi-label">MRR</div><div class="kpi-value">R$5.2k</div><div class="kpi-change">+12% vs. mês ant.</div></div>
+              <div class="kpi-card"><div class="kpi-icon">📅</div><div class="kpi-label">Próx. Eventos</div><div class="kpi-value">3</div><div class="kpi-change">47 inscrições totais</div></div>
+              <div class="kpi-card" style="border-color: rgba(255,59,48,0.3);"><div class="kpi-icon">⚠️</div><div class="kpi-label">Inadimplentes</div><div class="kpi-value" style="color: var(--danger);">2</div><div class="kpi-change" style="color: var(--danger);">R$378 em risco</div></div>
+            </div>
+            <div class="section-title"><h3>👥 Membros Recentes</h3><a>Ver todos</a></div>
+            <div style="padding: 0 20px 100px;">
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <div style="background: var(--surface-2); border-radius: var(--radius-md); padding: 12px 14px; display:flex; align-items:center; gap:12px; border: 1px solid var(--border);">
+                  <div class="avatar" style="width:36px; height:36px; font-size:13px; flex-shrink:0;">MF</div>
+                  <div style="flex:1;">
+                    <div style="font-size:13px; font-weight:600;">Marcos Ferreira</div>
+                    <div style="font-size:11px; color:var(--text-secondary);">Premium · Entrou há 2 dias</div>
+                  </div>
+                  <span class="pill pill-green">Ativo</span>
+                </div>
+                <div style="background: var(--surface-2); border-radius: var(--radius-md); padding: 12px 14px; display:flex; align-items:center; gap:12px; border: 1px solid var(--border);">
+                  <div class="avatar" style="width:36px; height:36px; font-size:13px; flex-shrink:0; background: linear-gradient(135deg, #6B3E2E, #A0522D);">LS</div>
+                  <div style="flex:1;">
+                    <div style="font-size:13px; font-weight:600;">Luciana Santos</div>
+                    <div style="font-size:11px; color:var(--text-secondary);">VIP · Entrou há 1 semana</div>
+                  </div>
+                  <span class="pill pill-amber">VIP</span>
+                </div>
+                <div style="background: var(--surface-2); border-radius: var(--radius-md); padding: 12px 14px; display:flex; align-items:center; gap:12px; border: 1px solid rgba(255,59,48,0.2);">
+                  <div class="avatar" style="width:36px; height:36px; font-size:13px; flex-shrink:0; background: linear-gradient(135deg, #333, #555);">RP</div>
+                  <div style="flex:1;">
+                    <div style="font-size:13px; font-weight:600;">Roberto Pires</div>
+                    <div style="font-size:11px; color:var(--text-secondary);">Premium · Venc. há 3 dias</div>
+                  </div>
+                  <span class="pill pill-red">Inadim.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <button class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>Dashboard</span></button>
+            <button class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Membros</span></button>
+            <button class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Eventos</span></button>
+            <button class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Relatórios</span></button>
+          </div>
+        </div>
+
+        <!-- ===== SCREEN: MEMBERSHIP ===== -->
+        <div class="screen" id="screen-membership">
+          <div class="status-bar" style="background: var(--surface);"><span>9:41</span></div>
+          <div style="padding: 16px 20px; background: var(--surface); border-bottom: 1px solid var(--border);">
+            <div style="font-family: var(--font-serif); font-size: 20px; font-weight: 700;">Planos de Assinatura</div>
+            <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Escolha o melhor plano para você</div>
+          </div>
+          <div class="screen-content" style="padding-top:16px; padding-bottom:100px;">
+            <div class="plan-card">
+              <div class="plan-header">
+                <div><div class="plan-name">Free</div><div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">Para conhecer o clube</div></div>
+                <div class="plan-price"><span class="amount">R$0</span><br><span class="period">/mês</span></div>
+              </div>
+              <ul class="plan-features">
+                <li>Acesso ao catálogo público</li>
+                <li>Eventos abertos</li>
+                <li>Perfil básico</li>
+              </ul>
+            </div>
+            <div class="plan-card featured">
+              <div class="plan-header">
+                <div><div class="plan-name">Premium</div><div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">O mais popular</div></div>
+                <div class="plan-price"><div style="display:flex; align-items:center; gap:6px; justify-content:flex-end;"><span class="plan-badge">POPULAR</span></div><span class="amount">R$189</span><br><span class="period">/mês</span></div>
+              </div>
+              <ul class="plan-features">
+                <li>Kit mensal com 3 garrafas</li>
+                <li>Acesso a todos os eventos</li>
+                <li>Catálogo completo + avaliações</li>
+                <li>Passaporte de whiskies</li>
+                <li>Pontos e conquistas</li>
+                <li>Suporte prioritário</li>
+              </ul>
+              <button class="btn-primary" style="margin-top:14px;">Assinar agora</button>
+            </div>
+            <div class="plan-card">
+              <div class="plan-header">
+                <div><div class="plan-name">VIP</div><div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">Experiência exclusiva</div></div>
+                <div class="plan-price"><span class="amount">R$390</span><br><span class="period">/mês</span></div>
+              </div>
+              <ul class="plan-features">
+                <li>Tudo do Premium</li>
+                <li>Kit premium com 5 garrafas raras</li>
+                <li>Acesso antecipado a novidades</li>
+                <li>Sommelier pessoal (chat)</li>
+                <li>Eventos VIP exclusivos</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- phone-frame -->
+    </div><!-- phone-container -->
+
+    <!-- ===== SIDE PANEL ===== -->
+    <div class="side-panel">
+      <div class="panel-title">🥃 WhiskeyCLUB</div>
+      <div class="panel-subtitle">
+        Protótipo interativo do app de gerenciamento de clube de whiskey.<br>
+        Navegue pelas telas usando os botões abaixo ou os controles dentro do app.
+      </div>
+
+      <!-- SCREEN NAVIGATION -->
+      <div class="screen-nav">
+        <button class="screen-btn" onclick="showScreen('login'); setActiveBtn(this)">🔑 Login</button>
+        <button class="screen-btn active" onclick="showScreen('home'); setActiveBtn(this)">🏠 Home</button>
+        <button class="screen-btn" onclick="showScreen('catalog'); setActiveBtn(this)">📚 Catálogo</button>
+        <button class="screen-btn" onclick="showScreen('detail'); setActiveBtn(this)">🥃 Detalhe</button>
+        <button class="screen-btn" onclick="showScreen('events'); setActiveBtn(this)">📅 Eventos</button>
+        <button class="screen-btn" onclick="showScreen('profile'); setActiveBtn(this)">👤 Perfil</button>
+        <button class="screen-btn" onclick="showScreen('admin'); setActiveBtn(this)">⚙️ Admin</button>
+        <button class="screen-btn" onclick="showScreen('membership'); setActiveBtn(this)">💎 Planos</button>
+      </div>
+
+      <!-- PRODUCT OVERVIEW -->
+      <div class="doc-section">
+        <h3>Sobre o Produto</h3>
+        <p>
+          <strong style="color: var(--text-primary);">WhiskeyCLUB</strong> é uma plataforma SaaS white-label para gestão de clubes de whiskey.
+          Cada cliente recebe um app Flutter personalizado com sua identidade visual, publicado nas lojas com seu nome.
+          O backend é multi-tenant, compartilhado e isolado por Row Level Security.
+        </p>
+      </div>
+
+      <!-- SCREENS INDEX -->
+      <div class="doc-section">
+        <h3>Telas do Protótipo</h3>
+        <ul>
+          <li>Login<span class="tag">Auth</span></li>
+          <li>Home — Feed com destaques e próximos eventos<span class="tag green">MVP</span></li>
+          <li>Catálogo — Grid de whiskies com filtros e busca<span class="tag green">MVP</span></li>
+          <li>Detalhe do Whiskey — Ficha técnica + notas<span class="tag green">MVP</span></li>
+          <li>Eventos — Lista com inscrição e check-in<span class="tag green">MVP</span></li>
+          <li>Perfil — Passaporte, pontos e conquistas<span class="tag green">MVP</span></li>
+          <li>Dashboard Admin — KPIs, membros, alertas<span class="tag green">MVP</span></li>
+          <li>Planos de Assinatura — Checkout<span class="tag green">MVP</span></li>
+        </ul>
+      </div>
+
+      <!-- TEAM / AGENTS -->
+      <div class="doc-section">
+        <h3>Time de Agentes</h3>
+        <div class="agent-grid">
+          <div class="agent-card"><div class="agent-emoji">🎯</div><div class="agent-name">agent-pm</div><div class="agent-role">Product Manager</div></div>
+          <div class="agent-card"><div class="agent-emoji">📋</div><div class="agent-name">agent-po</div><div class="agent-role">Product Owner</div></div>
+          <div class="agent-card"><div class="agent-emoji">📐</div><div class="agent-name">agent-ux</div><div class="agent-role">UX Designer</div></div>
+          <div class="agent-card"><div class="agent-emoji">🎨</div><div class="agent-name">agent-ui</div><div class="agent-role">UI Designer</div></div>
+          <div class="agent-card"><div class="agent-emoji">📝</div><div class="agent-name">agent-ra</div><div class="agent-role">Req. Analyst</div></div>
+          <div class="agent-card"><div class="agent-emoji">🏗️</div><div class="agent-name">agent-tl</div><div class="agent-role">Tech Lead</div></div>
+          <div class="agent-card"><div class="agent-emoji">⚙️</div><div class="agent-name">agent-back-1</div><div class="agent-role">Backend (Auth+Pay)</div></div>
+          <div class="agent-card"><div class="agent-emoji">⚙️</div><div class="agent-name">agent-back-2</div><div class="agent-role">Backend (Catalog)</div></div>
+          <div class="agent-card"><div class="agent-emoji">📱</div><div class="agent-name">agent-flutter-1</div><div class="agent-role">Flutter (Member)</div></div>
+          <div class="agent-card"><div class="agent-emoji">📱</div><div class="agent-name">agent-flutter-2</div><div class="agent-role">Flutter (Admin)</div></div>
+          <div class="agent-card"><div class="agent-emoji">🚀</div><div class="agent-name">agent-devops</div><div class="agent-role">DevOps / SRE</div></div>
+          <div class="agent-card"><div class="agent-emoji">🗄️</div><div class="agent-name">agent-dba</div><div class="agent-role">Database Admin</div></div>
+          <div class="agent-card"><div class="agent-emoji">🧪</div><div class="agent-name">agent-qa</div><div class="agent-role">QA Engineer</div></div>
+          <div class="agent-card"><div class="agent-emoji">📖</div><div class="agent-name">agent-docs</div><div class="agent-role">Tech Writer</div></div>
+          <div class="agent-card"><div class="agent-emoji">🏪</div><div class="agent-name">agent-client-owner</div><div class="agent-role">Sim: Dono do Clube</div></div>
+          <div class="agent-card"><div class="agent-emoji">🥃</div><div class="agent-name">agent-client-user</div><div class="agent-role">Sim: Membro Final</div></div>
+        </div>
+      </div>
+
+      <!-- TECH STACK -->
+      <div class="doc-section">
+        <h3>Stack Tecnológica</h3>
+        <ul>
+          <li>Flutter 3.x + Dart 3<span class="tag blue">Mobile/Web</span></li>
+          <li>BLoC/Cubit · Go Router · Dio · Hive<span class="tag">Flutter</span></li>
+          <li>Node.js 20 + TypeScript + Fastify<span class="tag blue">Backend</span></li>
+          <li>PostgreSQL 16 + Prisma ORM<span class="tag">Banco</span></li>
+          <li>Redis 7 (cache + queues)<span class="tag">Cache</span></li>
+          <li>Firebase FCM (push notifications)<span class="tag">Push</span></li>
+          <li>Stripe / Asaas (pagamentos)<span class="tag">Payments</span></li>
+          <li>GitHub Actions (CI/CD)<span class="tag">DevOps</span></li>
+          <li>AWS / Railway (infra)<span class="tag">Cloud</span></li>
+          <li>Sentry + Grafana (monitoramento)<span class="tag">Obs.</span></li>
+        </ul>
+      </div>
+
+      <!-- PHASES -->
+      <div class="doc-section">
+        <h3>Fases do Projeto</h3>
+        <ul>
+          <li><strong style="color:var(--text-primary)">Fase 0 — Discovery</strong> Sprints 0-1 · Setup e fundação<span class="tag green">Atual</span></li>
+          <li><strong style="color:var(--text-primary)">Fase 1 — MVP</strong> Sprints 2-8 · Clube piloto operando</li>
+          <li><strong style="color:var(--text-primary)">Fase 2 — Escala</strong> Sprints 9-18 · 3+ clubes pagantes</li>
+          <li><strong style="color:var(--text-primary)">Fase 3 — Produto Maduro</strong> Sprints 19+ · Plataforma SaaS</li>
+        </ul>
+      </div>
+
+      <!-- DOCS LINKS -->
+      <div class="doc-section">
+        <h3>Documentação do Projeto</h3>
+        <ul>
+          <li>00 — Visão Geral do Projeto</li>
+          <li>01 — Requisitos Funcionais e Não-Funcionais</li>
+          <li>02 — Estrutura do Time</li>
+          <li>03 — Stack Tecnológica</li>
+          <li>04 — Arquitetura do Sistema</li>
+          <li>05 — Fases e Marcos</li>
+          <li>06 — Histórias de Usuário</li>
+          <li>07 — Granularização de Tasks</li>
+          <li>08 — Flutter Flavors Guide</li>
+          <li>09 — Orquestração Multi-Agente</li>
+          <li>10 — Estrutura Notion</li>
+          <li>11 — Schema do Banco de Dados</li>
+          <li>12 — Design das APIs REST</li>
+          <li>13 — Plano de Execução</li>
+        </ul>
+      </div>
+
+      <div style="text-align:center; padding: 32px 0; font-size:12px; color:var(--text-tertiary);">
+        WhiskeyCLUB Prototype v1.0 · Gerado pelo sistema multi-agente<br>
+        <span style="color: var(--amber);">🥃 Planejado com precisão. Executado com maestria.</span>
+      </div>
+    </div><!-- side-panel -->
+
+  </div><!-- app-wrapper -->
+
+  <script>
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById('screen-' + id);
+      if (target) target.classList.add('active');
+    }
+
+    function setActiveBtn(btn) {
+      document.querySelectorAll('.screen-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    // Sync screen-btn with initial state
+    document.addEventListener('DOMContentLoaded', () => {
+      const homeBtns = document.querySelectorAll('.screen-btn');
+      // home is shown by default, so the "Home" button (index 1) should be active
+    });
+  </script>
+</body>
+</html>
