@@ -4,13 +4,24 @@
 
 Permitir que o mesmo codigo Flutter entregue experiencias diferentes por cliente e unidade, sem criar forks do produto.
 
+## Decisao atual do MVP
+
+O MVP usara um app Flutter unico com shells por persona:
+
+- Admin/owner/manager.
+- Staff/check-in.
+- Membro final.
+- Web responsivo.
+
+O primeiro flavor/tenant de trabalho sera `bar_do_jao`, com config remota do tenant `bar-do-jao`.
+
 ## Conceitos
 
 | Conceito | Descricao |
 | --- | --- |
-| Tenant | Cliente contratante, por exemplo "Whiskey House" |
+| Tenant | Cliente contratante, por exemplo "Bar do Jao" |
 | Unit | Unidade fisica ou operacional do tenant |
-| Flavor | Build/configuracao de app, por exemplo `whiskey_house_prod` |
+| Flavor | Build/configuracao de app, por exemplo `bar_do_jao_staging` |
 | Brand | Identidade visual aplicada ao app |
 | Feature flag | Habilita/desabilita modulo por tenant/unidade |
 
@@ -25,7 +36,7 @@ Exemplos:
 - `dev`
 - `staging`
 - `prod`
-- `whiskey_house_prod`
+- `bar_do_jao_staging`
 - `oak_club_prod`
 
 ### Camada 2 - Configuracao remota por tenant
@@ -54,7 +65,7 @@ Depois do login, o usuario escolhe ou recebe uma unidade ativa. A unidade define
 ## Estrutura sugerida
 
 ```text
-apps/member_app/
+apps/flutter_app/
   lib/
     main.dart
     bootstrap/
@@ -67,29 +78,28 @@ apps/member_app/
   assets/
     brands/
       default/
-      whiskey_house/
-      oak_club/
+      bar_do_jao/
   flavors/
     dev.json
     staging.json
     prod.json
-    whiskey_house_prod.json
+    bar_do_jao_staging.json
 ```
 
 ## Exemplo de config JSON
 
 ```json
 {
-  "flavor": "whiskey_house_prod",
-  "environment": "production",
-  "tenantSlug": "whiskey-house",
+  "flavor": "bar_do_jao_staging",
+  "environment": "staging",
+  "tenantSlug": "bar-do-jao",
   "apiBaseUrl": "https://api.whiskeyclubos.com",
   "brand": {
-    "name": "Whiskey House",
-    "primaryColor": "#B87935",
+    "name": "Bar do Jao",
+    "primaryColor": "#C47A2C",
     "secondaryColor": "#1D120C",
-    "accentColor": "#F4C67A",
-    "logoAsset": "assets/brands/whiskey_house/logo.png"
+    "accentColor": "#F5C978",
+    "logoAsset": "assets/brands/bar_do_jao/logo.png"
   },
   "features": {
     "events": true,
@@ -104,8 +114,8 @@ apps/member_app/
 
 ```bash
 flutter run \
-  --flavor whiskey_house_prod \
-  --dart-define=APP_CONFIG=flavors/whiskey_house_prod.json
+  --flavor bar_do_jao_staging \
+  --dart-define=APP_CONFIG=flavors/bar_do_jao_staging.json
 ```
 
 ## Padrao de carregamento

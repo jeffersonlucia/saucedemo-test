@@ -8,6 +8,8 @@ Este ambiente nao possui credenciais/API do Notion. Este arquivo e um blueprint 
 
 Nome: Whiskey Club OS - Produto, Execucao e Lancamento.
 
+Pagina destacada recomendada: MVP Bar do Jao.
+
 Secoes:
 
 1. Norte do produto.
@@ -19,6 +21,16 @@ Secoes:
 7. Clientes piloto.
 8. Documentacao.
 9. Decisoes e riscos.
+
+## Registro inicial recomendado
+
+Crie uma pagina ou item fixado com:
+
+- MVP: app Flutter unico para admin, staff, membro e web.
+- Cliente piloto: Bar do Jao.
+- Fonte do escopo: `docs/09-mvp-bar-do-jao.md`.
+- Fonte da rodada multi-agente: `docs/10-primeira-rodada-multi-agente.md`.
+- ADRs: `docs/adr/0001-mvp-stack-e-escopo.md` e `docs/adr/0002-app-flutter-unico.md`.
 
 ## Databases
 
@@ -224,7 +236,7 @@ Propriedades:
 
 | Nome | Tipo | Exemplo |
 | --- | --- | --- |
-| Cliente | Title | Whiskey House |
+| Cliente | Title | Bar do Jao |
 | Status | Select | Prospect, Entrevista, Piloto, Ativo, Pausado |
 | Unidades | Number | 2 |
 | Membros | Number | 180 |

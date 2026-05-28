@@ -4,6 +4,20 @@
 
 Arquitetura recomendada: Flutter para apps mobile e web, backend modular API-first, banco relacional multi-tenant e infraestrutura cloud com CI/CD desde o inicio.
 
+## Decisao atual do MVP
+
+Para o Bar do Jao, a decisao oficial e:
+
+- Flutter unico para admin, staff, membro final e web.
+- Backend NestJS + TypeScript.
+- PostgreSQL compartilhado com `tenant_id` obrigatorio.
+- Prisma para ORM/migrations.
+- REST `/v1` + OpenAPI.
+- JWT access/refresh + RBAC por tenant/unidade.
+- Billing manual/simulado no piloto.
+
+Detalhes e consequencias estao registrados em `docs/adr/0001-mvp-stack-e-escopo.md` e `docs/adr/0002-app-flutter-unico.md`.
+
 ## Stack recomendada
 
 | Camada | Escolha recomendada | Motivo |
@@ -101,7 +115,7 @@ Evolucao possivel:
 
 ## Estrategia de app Flutter
 
-- Monorepo futuro com `apps/member_app`, `apps/admin_app`, `packages/design_system`, `packages/core`.
+- Monorepo do MVP com `apps/flutter_app`, `apps/api`, `packages/design_system` e `packages/api_contracts`.
 - Clean Architecture pragmatico: presentation, application, domain, data.
 - State management: Riverpod ou Bloc. Recomendada: Riverpod pela produtividade.
 - Rotas: GoRouter.

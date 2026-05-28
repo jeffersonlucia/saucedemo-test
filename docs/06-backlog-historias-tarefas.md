@@ -8,6 +8,23 @@ Legenda:
 - P1: importante para piloto.
 - P2: evolucao pos-MVP.
 
+## Escopo fechado do MVP Bar do Jao
+
+O backlog abaixo continua como base ampla do produto. Para execucao imediata, o escopo fechado esta em `docs/09-mvp-bar-do-jao.md` e a ordem P0 consolidada e:
+
+1. Provisionar tenant Bar do Jao.
+2. Criar unidade principal.
+3. Configurar branding/flavor remoto.
+4. Login e RBAC.
+5. Planos e beneficios.
+6. Membros.
+7. Eventos.
+8. Reservas.
+9. Check-in.
+10. Dashboard.
+11. Documentacao.
+12. Testes P0.
+
 ## Epico 1 - Fundacao multi-tenant
 
 ### US-001 - Criar tenant

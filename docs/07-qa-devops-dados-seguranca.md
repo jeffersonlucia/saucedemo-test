@@ -1,5 +1,13 @@
 # 07 - QA, DevOps, dados e seguranca
 
+## Decisao atual para o MVP Bar do Jao
+
+- PostgreSQL compartilhado com `tenant_id` obrigatorio.
+- Entidades P0: tenants, units, brand configs, feature flags, users, memberships, refresh tokens, members, tags, plans, benefits, subscriptions, events, reservations, checkins e audit_logs.
+- Entidades P1: estoque basico e notificacoes.
+- Testes obrigatorios: login, RBAC, reserva, check-in, concorrencia de capacidade e cross-tenant.
+- Release piloto exige seed `bar-do-jao`, logs, backup, runbook e smoke test.
+
 ## Estrategia de qualidade
 
 ### Piramide de testes

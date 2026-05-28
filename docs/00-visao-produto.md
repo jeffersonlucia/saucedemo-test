@@ -8,6 +8,14 @@ Whiskey Club OS.
 
 Uma plataforma white-label para clubes de whiskey gerenciarem membros, unidades, assinaturas, eventos, degustacoes, estoque, reservas, beneficios e comunicacao com clientes finais.
 
+## Decisao atual do MVP
+
+- Cliente piloto: Bar do Jao.
+- App: Flutter unico para admin, staff, membro final e web responsivo.
+- Escopo P0 fechado em `docs/09-mvp-bar-do-jao.md`.
+- Primeira rodada multi-agente consolidada em `docs/10-primeira-rodada-multi-agente.md`.
+- Pagamento real e estoque completo nao entram no primeiro MVP.
+
 O produto deve atender dois publicos ao mesmo tempo:
 
 1. Dono/operador do clube: precisa controlar operacao, receita, membros, estoque, agenda, unidades e indicadores.

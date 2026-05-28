@@ -1,5 +1,14 @@
 # 05 - Roadmap, fases e entregas
 
+## Estado atual
+
+Estamos na transicao entre a Fase 0 e a Fase 2:
+
+- Fase 0: plano, requisitos, backlog, mock e primeira rodada multi-agente concluidos.
+- Decisao de MVP: app Flutter unico para admin, membro e web.
+- Cliente piloto: Bar do Jao.
+- Proximo foco: base tecnica executavel e primeira fatia vertical `tenant + unidade + branding + auth`.
+
 ## Fase 0 - Fundacao do produto
 
 ### Objetivo
