@@ -1,75 +1,64 @@
-# SauceDemo E2E Cypress Tests
+# Whiskey Club OS
 
-[![CI - Cypress](https://github.com/jeffersonlucia/saucedemo-test/actions/workflows/cypress.yml/badge.svg?branch=main)](https://github.com/jeffersonlucia/saucedemo-test/actions/workflows/cypress.yml)
+Repositorio de planejamento, prototipacao e orquestracao multi-agente para um produto de gerenciamento de clubes de whiskey com app Flutter flavorizado por cliente/unidade.
 
-Automação de testes E2E para o site [SauceDemo](https://www.saucedemo.com/) usando Cypress 14.5.4.
+## Objetivo
 
-## Testes
+Criar a base para lancar um produto B2B2C onde cada clube de whiskey possa operar com identidade propria, unidades, membros, assinaturas, eventos, degustacoes, estoque, reservas e comunicacao com clientes finais.
 
-### Teste de Login (login.spec.js)
-- Valida login como standard_user
-- Verifica redirecionamento para /inventory.html
-- Confirma exibição da página de produtos
+Este repositorio contem:
 
-### Teste de Fluxo de Compra (purchase.spec.js)
-- Login como standard_user
-- Adiciona 3 produtos ao carrinho (Backpack, Bike Light, Bolt T-Shirt)
-- Valida badge do carrinho
-- Preenche dados de checkout
-- Finaliza a compra
-- Valida mensagem de sucesso: "Thank you for your order!"
+- Plano de produto e requisitos iniciais.
+- Arquitetura sugerida para Flutter, backend, dados e DevOps.
+- Estrutura de time e agentes especialistas para execucao paralela.
+- Backlog com epicos, historias e tarefas granularizadas.
+- Modelo de workspace Notion para gestao do projeto.
+- Mock HTML inicial em `index.html`.
 
-## Execução Local
+## Estrutura
 
-### Pré-requisitos
-- Node.js 20+
-- npm 11+
-
-### Instalação
-```bash
-npm install
+```text
+.
+├── index.html
+├── docs/
+│   ├── 00-visao-produto.md
+│   ├── 01-requisitos.md
+│   ├── 02-arquitetura-stack.md
+│   ├── 03-flutter-flavorizacao.md
+│   ├── 04-time-agentes.md
+│   ├── 05-roadmap-entregas.md
+│   ├── 06-backlog-historias-tarefas.md
+│   ├── 07-qa-devops-dados-seguranca.md
+│   ├── 08-operacao-lancamento.md
+│   └── notion/
+│       └── workspace-notion.md
+└── cypress/
 ```
 
-### Rodar Testes
-```bash
-# Modo headless (sem UI)
-npm run cypress:run
+## Como usar agora
 
-# Com interface interativa
-npm run cypress:open
-```
+1. Leia `docs/00-visao-produto.md` para alinhar o produto.
+2. Use `docs/notion/workspace-notion.md` para criar os databases no Notion.
+3. Abra `index.html` no navegador para revisar o mock base.
+4. Distribua os documentos de agentes em `docs/04-time-agentes.md` para orquestrar especialistas em paralelo.
+5. Transforme as historias de `docs/06-backlog-historias-tarefas.md` em issues/boards.
 
-### Gerar Relatório
-```bash
-npx cypress run
-npx mochawesome-report-generator cypress/reports/report.json -f report -p mochawesome-report
-# Abrir: mochawesome-report/report.html
-```
+## Principios de execucao
 
-## CI/CD - GitHub Actions
+- Comecar com um MVP multi-tenant simples, mas preparado para white-label.
+- Separar claramente produto, app Flutter, backend, dados, DevOps, QA e operacao.
+- Usar flavorizacao por cliente/unidade para identidade visual, configuracao, features e endpoints.
+- Validar cedo com dois simuladores de cliente: dono do clube e cliente final.
+- Documentar decisoes tecnicas para reduzir retrabalho entre agentes.
 
-- Trigger: Push para main ou Acessar aba Actions, clicar no workflow CI - Cypress-> Run workflow -> Run workflow dentro da main
-- Ambiente: Ubuntu Latest + Node.js 20
-- Reporter: Mochawesome (HTML + JSON)
-- Artefatos: Salvos por 30 dias
+## Mock
 
-### Acompanhar Execução
-1. Acesse Actions no repositório
-2. Clique em CI - Cypress (última execução)
-3. Veja sumário com resulados dos testes
-4. Artifacts: Baixe cypress-reports com relatório HTML completo
+O arquivo `index.html` e um prototipo estatico para alinhar UX/UI, linguagem visual e principais jornadas antes da implementacao Flutter.
 
+## Notion
 
-## Informações
+Nao ha credenciais de API do Notion neste ambiente. Por isso, foi criada uma estrutura importavel/copiavel em `docs/notion/workspace-notion.md`, com databases, propriedades, templates e views sugeridas.
 
-- Cypress: 14.5.4 (última versão anterior a 15)
-- Node: 20.x
-- Linguagem: JavaScript
-- Reporter: Mochawesome com relatórios HTML automáticos
+## Testes existentes
 
-## Debug
-
-Para debug local:
-```bash
-npx cypress open
-```
+O repositorio ja possuia automacao Cypress. Ela foi mantida como base futura para testes E2E do mock/produto, mas ainda aponta para o exemplo anterior e deve ser reconfigurada quando a aplicacao real comecar.

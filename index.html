@@ -1,0 +1,907 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Whiskey Club OS - Mock</title>
+  <style>
+    :root {
+      --bg: #120d0a;
+      --panel: #1f1610;
+      --panel-soft: #2a1d14;
+      --card: #2e2118;
+      --text: #fff8ed;
+      --muted: #c8aa82;
+      --gold: #d99a45;
+      --gold-soft: #f5c978;
+      --green: #60c18c;
+      --red: #d86b62;
+      --line: rgba(255, 248, 237, 0.12);
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.32);
+      --radius: 24px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(217, 154, 69, 0.22), transparent 34rem),
+        radial-gradient(circle at 85% 15%, rgba(245, 201, 120, 0.12), transparent 25rem),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: rgba(18, 13, 10, 0.86);
+      border-right: 1px solid var(--line);
+      padding: 28px 22px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 30px;
+    }
+
+    .brand-mark {
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+      display: grid;
+      place-items: center;
+      color: #21140d;
+      font-weight: 900;
+      letter-spacing: -0.08em;
+      box-shadow: 0 14px 40px rgba(217, 154, 69, 0.25);
+    }
+
+    .brand h1 {
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .brand span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .tenant-card {
+      background: linear-gradient(145deg, rgba(217, 154, 69, 0.16), rgba(255, 255, 255, 0.03));
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px;
+      margin-bottom: 26px;
+    }
+
+    .tenant-card small {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 10px;
+    }
+
+    .tenant-card strong {
+      display: block;
+      margin-top: 6px;
+      font-size: 16px;
+    }
+
+    .tenant-card p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .nav {
+      display: grid;
+      gap: 8px;
+    }
+
+    .nav a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border-radius: 16px;
+      color: #ead6bd;
+      font-size: 14px;
+    }
+
+    .nav a.active,
+    .nav a:hover {
+      background: rgba(217, 154, 69, 0.16);
+      color: var(--text);
+    }
+
+    .nav b {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--gold-soft);
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 11px;
+    }
+
+    main {
+      padding: 32px;
+      max-width: 1480px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 26px;
+    }
+
+    .eyebrow {
+      color: var(--gold-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .topbar h2 {
+      margin: 8px 0 0;
+      font-size: clamp(28px, 4vw, 48px);
+      letter-spacing: -0.05em;
+      line-height: 0.98;
+    }
+
+    .topbar p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      max-width: 760px;
+      line-height: 1.6;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .button {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 12px 16px;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .button.primary {
+      background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+      color: #21140d;
+      border: 0;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .stats {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-bottom: 20px;
+    }
+
+    .stat,
+    .panel,
+    .phone {
+      background: rgba(31, 22, 16, 0.82);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .stat {
+      padding: 20px;
+      min-height: 138px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stat strong {
+      display: block;
+      margin-top: 16px;
+      font-size: 34px;
+      letter-spacing: -0.04em;
+    }
+
+    .trend {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .trend.warn {
+      color: var(--red);
+    }
+
+    .workspace {
+      grid-template-columns: minmax(0, 1.4fr) minmax(340px, 0.8fr);
+      align-items: start;
+    }
+
+    .panel {
+      padding: 22px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .panel-header h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--gold-soft);
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 800;
+      background: rgba(217, 154, 69, 0.09);
+    }
+
+    .event-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .event {
+      display: grid;
+      grid-template-columns: 74px minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+    }
+
+    .date {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      background: var(--panel-soft);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--gold-soft);
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .date small {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      margin-bottom: 4px;
+    }
+
+    .event h4 {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .event p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .progress {
+      min-width: 150px;
+    }
+
+    .progress span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .bar {
+      height: 9px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .bar i {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--gold-soft), var(--gold));
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .member-row,
+    .stock-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .member-row:last-child,
+    .stock-row:last-child {
+      border-bottom: 0;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(217, 154, 69, 0.16);
+      color: var(--gold-soft);
+      font-weight: 900;
+    }
+
+    .row-main {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .row-main strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .row-main span,
+    .stock-row span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .status {
+      padding: 6px 9px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #12301f;
+      background: #79d99f;
+    }
+
+    .status.warn {
+      color: #3a150f;
+      background: #f09a77;
+    }
+
+    .phone {
+      padding: 14px;
+      border-radius: 38px;
+      max-width: 390px;
+      margin: 0 auto;
+      background: #0b0908;
+    }
+
+    .phone-screen {
+      min-height: 720px;
+      border-radius: 30px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(217, 154, 69, 0.22), transparent 35%),
+        #17100c;
+      padding: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .mobile-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .mobile-top span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .member-card {
+      background: linear-gradient(145deg, #f5c978, #9f6124);
+      color: #21140d;
+      border-radius: 28px;
+      padding: 22px;
+      min-height: 186px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 22px 54px rgba(217, 154, 69, 0.22);
+    }
+
+    .member-card small {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 900;
+    }
+
+    .member-card h3 {
+      margin: 8px 0 0;
+      font-size: 26px;
+      letter-spacing: -0.04em;
+    }
+
+    .qr {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 3px;
+      width: 78px;
+      height: 78px;
+      align-self: flex-end;
+      background: rgba(255, 255, 255, 0.42);
+      padding: 7px;
+      border-radius: 14px;
+    }
+
+    .qr i {
+      background: #21140d;
+      border-radius: 2px;
+    }
+
+    .mobile-section {
+      margin-top: 22px;
+    }
+
+    .mobile-section h4 {
+      margin: 0 0 12px;
+      font-size: 16px;
+    }
+
+    .mobile-event {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 14px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--line);
+      margin-bottom: 10px;
+    }
+
+    .bottle {
+      width: 48px;
+      height: 64px;
+      border-radius: 18px 18px 10px 10px;
+      background: linear-gradient(180deg, #5b351b, #26150c);
+      border: 1px solid rgba(245, 201, 120, 0.24);
+      position: relative;
+    }
+
+    .bottle:before {
+      content: "";
+      position: absolute;
+      top: -14px;
+      left: 16px;
+      width: 16px;
+      height: 18px;
+      background: #5b351b;
+      border-radius: 6px 6px 0 0;
+    }
+
+    .mobile-event strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .mobile-event span {
+      color: var(--muted);
+      display: block;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .bottom-nav {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 18px;
+      background: rgba(0, 0, 0, 0.22);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 8px;
+    }
+
+    .bottom-nav a {
+      text-align: center;
+      padding: 10px 0;
+      color: var(--muted);
+      font-size: 11px;
+      border-radius: 16px;
+      font-weight: 800;
+    }
+
+    .bottom-nav a.active {
+      color: #21140d;
+      background: var(--gold-soft);
+    }
+
+    .flavor-strip {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .flavor {
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--line);
+    }
+
+    .flavor strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .flavor span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    @media (max-width: 1120px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        height: auto;
+      }
+
+      .stats,
+      .workspace,
+      .split {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .actions {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 680px) {
+      main {
+        padding: 20px;
+      }
+
+      .event {
+        grid-template-columns: 1fr;
+      }
+
+      .progress {
+        min-width: 0;
+      }
+
+      .flavor-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">WC</div>
+        <div>
+          <h1>Whiskey Club OS</h1>
+          <span>multi-tenant cockpit</span>
+        </div>
+      </div>
+
+      <div class="tenant-card">
+        <small>Flavor ativo</small>
+        <strong>Oak & Ember Club</strong>
+        <p>Unidade Jardins - tema premium aplicado por tenant e unidade.</p>
+      </div>
+
+      <nav class="nav" aria-label="Navegacao principal">
+        <a class="active" href="#">Dashboard <b>Admin</b></a>
+        <a href="#">Membros <b>248</b></a>
+        <a href="#">Eventos <b>12</b></a>
+        <a href="#">Reservas <b>89</b></a>
+        <a href="#">Estoque <b>7 alertas</b></a>
+        <a href="#">Planos <b>4</b></a>
+        <a href="#">Comunicados</a>
+        <a href="#">Branding e flavors</a>
+      </nav>
+    </aside>
+
+    <main>
+      <section class="topbar">
+        <div>
+          <div class="eyebrow">Mock base para produto Flutter</div>
+          <h2>Gestao premium para clubes de whiskey.</h2>
+          <p>
+            Um cockpit para donos e gerentes controlarem membros, eventos, reservas,
+            check-in, estoque e indicadores, com experiencia white-label para o cliente final.
+          </p>
+        </div>
+        <div class="actions">
+          <a class="button" href="docs/00-visao-produto.md">Ver plano</a>
+          <a class="button primary" href="docs/06-backlog-historias-tarefas.md">Backlog MVP</a>
+        </div>
+      </section>
+
+      <section class="grid stats" aria-label="Indicadores">
+        <article class="stat">
+          <span>Membros ativos</span>
+          <strong>248</strong>
+          <div class="trend">+12% no mes</div>
+        </article>
+        <article class="stat">
+          <span>Receita recorrente</span>
+          <strong>R$ 39,8k</strong>
+          <div class="trend">+8 assinaturas</div>
+        </article>
+        <article class="stat">
+          <span>Reservas proximas</span>
+          <strong>89</strong>
+          <div class="trend">76% ocupacao</div>
+        </article>
+        <article class="stat">
+          <span>Estoque baixo</span>
+          <strong>7</strong>
+          <div class="trend warn">acao necessaria</div>
+        </article>
+      </section>
+
+      <section class="grid workspace">
+        <div>
+          <article class="panel">
+            <div class="panel-header">
+              <h3>Agenda e reservas</h3>
+              <span class="pill">Unidade Jardins</span>
+            </div>
+            <div class="event-list">
+              <div class="event">
+                <div class="date"><span><small>MAI</small>30</span></div>
+                <div>
+                  <h4>Degustacao Speyside Single Malt</h4>
+                  <p>Plano Gold e Black - 20h30 - 2 garrafas raras no pairing.</p>
+                </div>
+                <div class="progress">
+                  <span>28/32 reservas</span>
+                  <div class="bar"><i style="width: 88%"></i></div>
+                </div>
+              </div>
+              <div class="event">
+                <div class="date"><span><small>JUN</small>06</span></div>
+                <div>
+                  <h4>Masterclass Bourbon & Rye</h4>
+                  <p>Aberto a membros ativos - lista de espera automatica.</p>
+                </div>
+                <div class="progress">
+                  <span>18/40 reservas</span>
+                  <div class="bar"><i style="width: 45%"></i></div>
+                </div>
+              </div>
+              <div class="event">
+                <div class="date"><span><small>JUN</small>14</span></div>
+                <div>
+                  <h4>Noite dos convidados</h4>
+                  <p>Beneficio Black - ate 2 convidados por membro.</p>
+                </div>
+                <div class="progress">
+                  <span>34/36 reservas</span>
+                  <div class="bar"><i style="width: 94%"></i></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <div class="split">
+            <article class="panel">
+              <div class="panel-header">
+                <h3>Membros recentes</h3>
+                <span class="pill">CRM</span>
+              </div>
+              <div class="member-row">
+                <div class="row-main">
+                  <div class="avatar">AM</div>
+                  <div><strong>Ana Martins</strong><span>Plano Black - ativa</span></div>
+                </div>
+                <span class="status">ok</span>
+              </div>
+              <div class="member-row">
+                <div class="row-main">
+                  <div class="avatar">RC</div>
+                  <div><strong>Rafael Costa</strong><span>Plano Gold - renovacao</span></div>
+                </div>
+                <span class="status">ok</span>
+              </div>
+              <div class="member-row">
+                <div class="row-main">
+                  <div class="avatar">LB</div>
+                  <div><strong>Luiz Braga</strong><span>Plano Silver - pendente</span></div>
+                </div>
+                <span class="status warn">acao</span>
+              </div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-header">
+                <h3>Estoque critico</h3>
+                <span class="pill">Inventario</span>
+              </div>
+              <div class="stock-row">
+                <div>
+                  <strong>Macallan 12 Double Cask</strong>
+                  <span>2 garrafas - minimo 4</span>
+                </div>
+                <span class="status warn">baixo</span>
+              </div>
+              <div class="stock-row">
+                <div>
+                  <strong>Ardbeg 10</strong>
+                  <span>1 garrafa - evento em 5 dias</span>
+                </div>
+                <span class="status warn">risco</span>
+              </div>
+              <div class="stock-row">
+                <div>
+                  <strong>Woodford Reserve</strong>
+                  <span>6 garrafas - saudavel</span>
+                </div>
+                <span class="status">ok</span>
+              </div>
+            </article>
+          </div>
+
+          <section class="flavor-strip" aria-label="Configuracoes de flavor">
+            <div class="flavor">
+              <strong>Brand tokens</strong>
+              <span>Cores, logo, radius e tipografia por tenant.</span>
+            </div>
+            <div class="flavor">
+              <strong>Feature flags</strong>
+              <span>Eventos, estoque, convidados e billing por cliente.</span>
+            </div>
+            <div class="flavor">
+              <strong>Unit context</strong>
+              <span>Agenda, estoque e equipe filtrados por unidade.</span>
+            </div>
+          </section>
+        </div>
+
+        <aside class="phone" aria-label="Mock mobile do cliente final">
+          <div class="phone-screen">
+            <div class="mobile-top">
+              <div>
+                <strong>Oak & Ember</strong>
+                <span>Boa noite, Bruno</span>
+              </div>
+              <span>Jardins</span>
+            </div>
+
+            <div class="member-card">
+              <div>
+                <small>Carteirinha Black</small>
+                <h3>Bruno Almeida</h3>
+              </div>
+              <div class="qr" aria-hidden="true">
+                <i></i><i></i><i></i><i></i><i></i>
+                <i></i><i style="opacity:.2"></i><i></i><i style="opacity:.2"></i><i></i>
+                <i></i><i></i><i style="opacity:.2"></i><i></i><i></i>
+                <i style="opacity:.2"></i><i></i><i></i><i style="opacity:.2"></i><i></i>
+                <i></i><i></i><i style="opacity:.2"></i><i></i><i></i>
+              </div>
+            </div>
+
+            <div class="mobile-section">
+              <h4>Proximas experiencias</h4>
+              <div class="mobile-event">
+                <div class="bottle"></div>
+                <div>
+                  <strong>Speyside Single Malt</strong>
+                  <span>30 mai - reserva confirmada</span>
+                </div>
+              </div>
+              <div class="mobile-event">
+                <div class="bottle"></div>
+                <div>
+                  <strong>Bourbon & Rye</strong>
+                  <span>06 jun - 18 vagas restantes</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mobile-section">
+              <h4>Beneficios do plano</h4>
+              <div class="mobile-event">
+                <div class="avatar">2x</div>
+                <div>
+                  <strong>Convidados mensais</strong>
+                  <span>Use ate 2 convites em eventos elegiveis.</span>
+                </div>
+              </div>
+              <div class="mobile-event">
+                <div class="avatar">15%</div>
+                <div>
+                  <strong>Desconto em experiencias</strong>
+                  <span>Aplicado automaticamente na reserva.</span>
+                </div>
+              </div>
+            </div>
+
+            <nav class="bottom-nav" aria-label="Navegacao mobile">
+              <a class="active" href="#">Home</a>
+              <a href="#">Eventos</a>
+              <a href="#">Clube</a>
+              <a href="#">Perfil</a>
+            </nav>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
