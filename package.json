@@ -1,7 +1,7 @@
 {
-  "name": "saucedemo-e2e-cypress",
-  "version": "1.0.0",
-  "description": "Automação E2E Cypress para https://www.saucedemo.com/",
+  "name": "whiskey-club-os",
+  "version": "0.1.0",
+  "description": "Planejamento, prototipo e automacao base para um app Flutter de gerenciamento de clubes de whiskey.",
   "private": true,
   "scripts": {
     "cypress:open": "cypress open",
