@@ -116,6 +116,18 @@ Flutter nao esta instalado neste ambiente, entao a validacao do app depende de s
 
 Criado `infra/docker/docker-compose.yml` com PostgreSQL 16.
 
+## Validacao tecnica executada
+
+- `npm run db:generate`: OK.
+- `npm run api:build`: OK.
+- `npm run api:test`: OK, ainda sem testes implementados.
+- `npm audit --omit=dev`: OK, 0 vulnerabilidades.
+- `npm audit`: OK, 0 vulnerabilidades.
+
+## Decisao de dependencias
+
+O Prisma foi fixado em `6.19.3` nesta base inicial. O Prisma 7 foi testado primeiro, mas trouxe uma dependencia de tooling com alerta de seguranca transitivo no audit. A versao 6.19.3 manteve o schema tradicional, passou nas validacoes e deixou a auditoria limpa.
+
 ## Decisoes de gestao
 
 1. Nao criar app admin separado.
@@ -157,8 +169,8 @@ Criado `infra/docker/docker-compose.yml` com PostgreSQL 16.
 | --- | --- | --- |
 | Flutter ausente no ambiente | Aberto | Setup de ambiente ou env setup agent |
 | Endpoints demo ainda sem banco | Controlado | Prisma schema/seed ja criados |
-| Cypress legado ainda aponta para repo antigo | Aberto | Reconfigurar quando houver app web rodando |
-| CI ainda focado em Cypress antigo | Aberto | Adicionar workflow API/Flutter depois da base validar |
+| Suite Cypress/SauceDemo legada | Resolvido | Removida por nao pertencer ao Whiskey Club OS |
+| CI do produto ainda nao existe | Aberto | Adicionar workflow API/Flutter depois da base validar |
 
 ## Proximo marco
 

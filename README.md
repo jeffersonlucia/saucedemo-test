@@ -51,9 +51,8 @@ Este repositorio contem:
 │       └── workspace-notion.md
 ├── infra/
 │   └── docker/
-├── packages/
-│   └── api_contracts/
-└── cypress/
+└── packages/
+    └── api_contracts/
 ```
 
 ## Como usar agora
@@ -105,6 +104,6 @@ O arquivo `index.html` e um prototipo estatico para alinhar UX/UI, linguagem vis
 
 Nao ha credenciais de API do Notion neste ambiente. Por isso, foi criada uma estrutura importavel/copiavel em `docs/notion/workspace-notion.md`, com databases, propriedades, templates e views sugeridas.
 
-## Testes existentes
+## Testes
 
-O repositorio ja possuia automacao Cypress. Ela foi mantida como base futura para testes E2E do mock/produto, mas ainda aponta para o exemplo anterior e deve ser reconfigurada quando a aplicacao real comecar.
+O legado Cypress/SauceDemo do repositorio anterior foi removido para evitar CI e dependencias irrelevantes. A nova estrategia de testes deve nascer em torno dos fluxos P0 do Whiskey Club OS: login, tenant isolation, reservas, check-in e dashboard.

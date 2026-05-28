@@ -12,13 +12,9 @@
     "api:test": "npm run test -w apps/api",
     "db:generate": "npm run prisma:generate -w apps/api",
     "db:migrate": "npm run prisma:migrate -w apps/api",
-    "db:seed": "npm run prisma:seed -w apps/api",
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "db:seed": "npm run prisma:seed -w apps/api"
   },
-  "devDependencies": {
-    "cypress": "^14.5.4",
-    "mochawesome": "^7.1.4",
-    "mochawesome-report-generator": "^6.3.2"
+  "overrides": {
+    "qs": "^6.15.2"
   }
 }

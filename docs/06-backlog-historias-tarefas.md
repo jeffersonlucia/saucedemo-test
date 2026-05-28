@@ -367,7 +367,7 @@ Tarefas:
 - Criar plano de testes.
 - Configurar testes unitarios backend.
 - Configurar testes Flutter.
-- Configurar E2E Cypress/Playwright.
+- Configurar E2E Playwright ou ferramenta equivalente para Flutter web.
 
 ## Fatias verticais sugeridas
 
