@@ -45,6 +45,7 @@ Este repositorio contem:
 │   ├── 10-primeira-rodada-multi-agente.md
 │   ├── 11-execucao-tecnica-dia-1.md
 │   ├── 12-browser-demo.md
+│   ├── 13-runbook-amanha.md
 │   ├── adr/
 │   │   ├── 0001-mvp-stack-e-escopo.md
 │   │   └── 0002-app-flutter-unico.md
@@ -58,11 +59,26 @@ Este repositorio contem:
 
 ## Como usar agora
 
-1. Leia `docs/09-mvp-bar-do-jao.md` para entender o MVP fechado.
-2. Leia `docs/10-primeira-rodada-multi-agente.md` para ver decisoes, contratos e prompts da proxima rodada.
-3. Use `docs/notion/workspace-notion.md` para criar os databases no Notion.
-4. Abra `index.html` no navegador para usar a demo interativa do Bar do Jao.
-5. Transforme as historias P0 em issues/boards.
+```bash
+npm install
+npm start
+```
+
+Abra `http://localhost:8080`.
+
+Para validar tudo:
+
+```bash
+npm run check
+```
+
+Runbook completo: `docs/13-runbook-amanha.md`.
+
+Leituras principais:
+
+1. `docs/09-mvp-bar-do-jao.md` para entender o MVP fechado.
+2. `docs/10-primeira-rodada-multi-agente.md` para decisoes e prompts da proxima rodada.
+3. `docs/notion/workspace-notion.md` para criar os databases no Notion.
 
 ## Demo no navegador
 
@@ -92,8 +108,7 @@ Com Node instalado:
 
 ```bash
 npm install
-npm run db:generate
-npm run api:build
+npm run check
 ```
 
 Com Docker/Postgres:

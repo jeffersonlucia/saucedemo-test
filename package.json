@@ -7,12 +7,18 @@
     "apps/api"
   ],
   "scripts": {
+    "start": "node scripts/serve-demo.mjs",
+    "run": "npm start",
+    "demo": "node scripts/serve-demo.mjs",
+    "demo:smoke": "node scripts/smoke-demo.mjs",
+    "demo:check-js": "node scripts/check-inline-js.mjs",
     "api:dev": "npm run start:dev -w apps/api",
     "api:build": "npm run build -w apps/api",
     "api:test": "npm run test -w apps/api",
     "db:generate": "npm run prisma:generate -w apps/api",
     "db:migrate": "npm run prisma:migrate -w apps/api",
-    "db:seed": "npm run prisma:seed -w apps/api"
+    "db:seed": "npm run prisma:seed -w apps/api",
+    "check": "npm run demo:check-js && npm run demo:smoke && npm run db:generate && npm run api:build && npm run api:test && npm audit"
   },
   "overrides": {
     "qs": "^6.15.2"

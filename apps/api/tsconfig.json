@@ -14,7 +14,8 @@
     "incremental": true,
     "strict": true,
     "skipLibCheck": true,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "types": ["node", "jest"]
   },
   "include": [
     "src/**/*.ts",

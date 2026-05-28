@@ -4,14 +4,14 @@ API NestJS do MVP Bar do Jao.
 
 ## Rodar localmente
 
-```bash
-cp apps/api/.env.example apps/api/.env
-docker compose -f infra/docker/docker-compose.yml up -d postgres
 npm install
-npm run db:generate
-npm run db:migrate
-npm run db:seed
 npm run api:dev
+```
+
+O banco e opcional neste momento porque os endpoints P0 usam dados em memoria. Para validar tudo:
+
+```bash
+npm run check
 ```
 
 ## Endpoints iniciais
@@ -21,6 +21,15 @@ npm run api:dev
 - `GET /v1/auth/me`
 - `GET /v1/tenants/current`
 - `GET /v1/tenants/current/config`
+- `GET /v1/admin/members`
+- `POST /v1/admin/members`
+- `GET /v1/plans`
+- `GET /v1/events`
+- `POST /v1/admin/events`
+- `POST /v1/events/:eventId/reservations`
+- `GET /v1/admin/reservations`
+- `POST /v1/admin/reservations/:reservationId/check-in`
+- `GET /v1/admin/reports/overview`
 - Swagger: `GET /docs`
 
 ## Login demo
@@ -35,4 +44,4 @@ npm run api:dev
 
 ## Observacao
 
-Os endpoints atuais de auth/tenant usam resposta demo para destravar a fatia vertical `tenant + branding + auth`. O schema Prisma e o seed ja estao prontos para conectar persistencia real nos proximos passos.
+Os endpoints atuais usam dados em memoria para destravar a fatia vertical P0 sem depender do banco. O schema Prisma e o seed ja estao prontos para conectar persistencia real nos proximos passos.
