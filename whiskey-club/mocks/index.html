@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Whiskey Club — Mock</title>
+<meta name="description" content="Mock visual estático da plataforma Whiskey Club. Base de referência para o time." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Cask DS tokens (default flavor: clube_demo) */
+    --bg-base: #0E0E10;
+    --bg-surface: #17171B;
+    --bg-surface-alt: #1F1F25;
+    --fg-primary: #F4F1EA;
+    --fg-secondary: #A7A39A;
+    --fg-muted: #6D6A63;
+    --accent: #C0A062;
+    --accent-alt: #8A6A2E;
+    --success: #5BB572;
+    --warning: #E2B341;
+    --danger: #D85959;
+    --divider: #2A2A30;
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-pill: 999px;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'Inter', -apple-system, system-ui, sans-serif;
+    --shadow-1: 0 1px 0 rgba(255,255,255,.02), 0 4px 16px rgba(0,0,0,.35);
+    --shadow-2: 0 8px 32px rgba(0,0,0,.45);
+  }
+
+  /* Flavor alternate via class toggle */
+  .flavor-piloto {
+    --accent: #B85C2A;
+    --accent-alt: #7E3F1B;
+    --bg-base: #100808;
+    --bg-surface: #1B1212;
+    --bg-surface-alt: #261919;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg-base); color: var(--fg-primary); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+  a { color: var(--accent); text-decoration: none; }
+  h1, h2, h3 { font-family: var(--font-display); margin: 0; }
+  small { color: var(--fg-secondary); }
+
+  /* Layout */
+  .app {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 100vh;
+  }
+  aside {
+    background: var(--bg-surface);
+    border-right: 1px solid var(--divider);
+    padding: 24px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  main {
+    padding: 32px 48px 80px;
+    max-width: 1240px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .logo-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-alt) 100%);
+    display: grid; place-items: center;
+    font-family: var(--font-display); font-weight: 700;
+    color: #1a1a1a;
+  }
+  .logo-name { font-family: var(--font-display); font-weight: 700; letter-spacing: .02em; }
+
+  nav.sections { display: flex; flex-direction: column; gap: 4px; }
+  nav.sections a {
+    color: var(--fg-secondary);
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    transition: background .12s ease, color .12s ease;
+  }
+  nav.sections a:hover, nav.sections a.active { background: var(--bg-surface-alt); color: var(--fg-primary); }
+
+  .flavor-switch {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--divider);
+  }
+  .flavor-switch label { display: block; color: var(--fg-muted); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; }
+  .flavor-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+  .flavor-pill {
+    background: var(--bg-surface-alt);
+    color: var(--fg-secondary);
+    border: 1px solid var(--divider);
+    border-radius: var(--radius-pill);
+    padding: 6px 12px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .flavor-pill.active { background: var(--accent); color: #1a1a1a; border-color: var(--accent); }
+
+  /* Section header */
+  .section-head { display: flex; align-items: end; justify-content: space-between; margin-bottom: 24px; }
+  .section-head h2 { font-size: 28px; }
+  .section-head p { margin: 4px 0 0; color: var(--fg-secondary); max-width: 64ch; }
+  .section { margin-bottom: 64px; }
+
+  /* Surface frame for mobile mocks */
+  .mobile-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .phone {
+    background: var(--bg-surface);
+    border: 1px solid var(--divider);
+    border-radius: 36px;
+    padding: 14px;
+    box-shadow: var(--shadow-2);
+    width: 320px;
+    margin: 0 auto;
+  }
+  .phone-screen {
+    background: var(--bg-base);
+    border-radius: 24px;
+    overflow: hidden;
+    height: 640px;
+    display: flex;
+    flex-direction: column;
+  }
+  .status-bar {
+    height: 28px;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 16px;
+    font-size: 11px; color: var(--fg-muted);
+  }
+  .screen-head {
+    padding: 8px 20px 4px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .screen-title { font-family: var(--font-display); font-size: 22px; }
+  .screen-body { padding: 12px 16px; overflow-y: auto; flex: 1; }
+  .tab-bar {
+    display: flex; justify-content: space-around;
+    padding: 8px 0 12px;
+    border-top: 1px solid var(--divider);
+    background: var(--bg-surface);
+  }
+  .tab { font-size: 11px; color: var(--fg-muted); display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .tab.active { color: var(--accent); }
+  .tab-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .8; }
+
+  /* Card primitives */
+  .card {
+    background: var(--bg-surface);
+    border: 1px solid var(--divider);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  .card.compact { padding: 12px; }
+  .card-row { display: flex; gap: 12px; align-items: center; }
+  .card-title { font-family: var(--font-display); font-size: 16px; margin-bottom: 4px; }
+  .meta { color: var(--fg-secondary); font-size: 12px; }
+  .tag {
+    display: inline-block; padding: 3px 8px; border-radius: var(--radius-pill);
+    font-size: 11px; background: var(--bg-surface-alt); color: var(--fg-secondary);
+    border: 1px solid var(--divider); margin-right: 4px;
+  }
+  .tag.accent { background: rgba(192,160,98,.12); color: var(--accent); border-color: rgba(192,160,98,.4); }
+  .tag.success { background: rgba(91,181,114,.10); color: var(--success); border-color: rgba(91,181,114,.35); }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 40px; padding: 0 16px;
+    border: 0; border-radius: var(--radius-md);
+    font-family: var(--font-body); font-weight: 600; font-size: 14px;
+    cursor: pointer;
+  }
+  .btn-primary { background: var(--accent); color: #1a1a1a; }
+  .btn-primary:hover { background: var(--accent-alt); color: var(--fg-primary); }
+  .btn-ghost { background: transparent; color: var(--fg-primary); border: 1px solid var(--divider); }
+  .btn-block { width: 100%; }
+
+  /* Membership card visual */
+  .member-card {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a1f10 50%, var(--accent) 200%);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    color: var(--fg-primary);
+    position: relative;
+    border: 1px solid rgba(192,160,98,.2);
+  }
+  .member-card .overline { font-size: 10px; letter-spacing: .12em; color: var(--accent); text-transform: uppercase; }
+  .member-card h3 { font-family: var(--font-display); font-size: 22px; margin-top: 6px; }
+  .member-card .meta { color: var(--fg-secondary); margin-top: 4px; }
+  .member-card .qr {
+    margin-top: 18px;
+    background: #F4F1EA;
+    border-radius: 8px;
+    width: 96px; height: 96px;
+    background-image:
+      linear-gradient(45deg, #000 25%, transparent 25%),
+      linear-gradient(-45deg, #000 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #000 75%),
+      linear-gradient(-45deg, transparent 75%, #000 75%);
+    background-size: 16px 16px;
+    background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+    margin-left: auto;
+  }
+  .member-card-foot { display: flex; justify-content: space-between; align-items: end; }
+
+  /* Event card */
+  .event-card { padding: 0; overflow: hidden; }
+  .event-img {
+    height: 96px;
+    background: linear-gradient(135deg, #2a2018 0%, #1a1410 100%);
+    position: relative;
+  }
+  .event-img::after {
+    content: '';
+    position: absolute; left: 12px; bottom: 12px;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--accent); opacity: .8;
+    box-shadow: 0 0 0 8px rgba(192,160,98,.18);
+  }
+  .event-body { padding: 12px 14px 14px; }
+  .event-meta { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+
+  /* Bottle card */
+  .bottle {
+    display: flex; flex-direction: column; align-items: center;
+    background: var(--bg-surface);
+    border: 1px solid var(--divider);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    text-align: center;
+  }
+  .bottle-img {
+    width: 56px; height: 120px;
+    background: linear-gradient(180deg, #3a2412 0%, #6a4520 50%, #a87440 100%);
+    border-radius: 8px 8px 12px 12px;
+    position: relative;
+    margin-bottom: 12px;
+  }
+  .bottle-img::before {
+    content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+    width: 20px; height: 14px; background: #2a1810; border-radius: 4px 4px 2px 2px;
+  }
+  .bottle-img::after {
+    content: ''; position: absolute; bottom: 20px; left: 8px; right: 8px; height: 32px;
+    background: #f4f1ea; border-radius: 2px;
+  }
+  .bottle h4 { font-family: var(--font-display); margin: 0; font-size: 14px; }
+
+  /* Backoffice */
+  .bo-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 24px;
+    background: var(--bg-surface);
+    border: 1px solid var(--divider);
+    border-radius: var(--radius-md);
+    margin-bottom: 16px;
+  }
+  .bo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .kpi { background: var(--bg-surface); border: 1px solid var(--divider); border-radius: var(--radius-md); padding: 16px; }
+  .kpi .label { color: var(--fg-secondary); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+  .kpi .value { font-family: var(--font-display); font-size: 28px; margin-top: 4px; }
+  .kpi .delta { font-size: 12px; margin-top: 4px; color: var(--success); }
+  .kpi .delta.bad { color: var(--danger); }
+
+  table.list {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-surface);
+    border: 1px solid var(--divider);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-top: 16px;
+  }
+  table.list th, table.list td { padding: 12px 16px; text-align: left; font-size: 14px; border-bottom: 1px solid var(--divider); }
+  table.list th { color: var(--fg-secondary); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+  table.list tr:last-child td { border-bottom: 0; }
+  table.list tr:hover td { background: var(--bg-surface-alt); }
+
+  /* Public landing */
+  .hero {
+    border-radius: var(--radius-lg);
+    padding: 56px 40px;
+    background: radial-gradient(circle at 80% 20%, rgba(192,160,98,.15), transparent 60%), var(--bg-surface);
+    border: 1px solid var(--divider);
+    overflow: hidden; position: relative;
+  }
+  .hero h1 { font-size: 48px; max-width: 16ch; line-height: 1.08; }
+  .hero .sub { color: var(--fg-secondary); max-width: 56ch; margin-top: 14px; font-size: 18px; }
+  .hero .cta-row { margin-top: 28px; display: flex; gap: 12px; }
+
+  /* PDV */
+  .pdv-screen {
+    display: grid; grid-template-columns: 1fr 320px; gap: 16px;
+  }
+  .pdv-list {
+    background: var(--bg-surface); border: 1px solid var(--divider); border-radius: var(--radius-md); padding: 8px;
+    max-height: 480px; overflow-y: auto;
+  }
+  .pdv-list-row {
+    display: flex; align-items: center; justify-content: space-between; padding: 12px;
+    border-bottom: 1px solid var(--divider);
+  }
+  .pdv-list-row:last-child { border-bottom: 0; }
+  .avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--bg-surface-alt); color: var(--accent);
+    display: grid; place-items: center; font-weight: 600; font-size: 13px;
+  }
+
+  /* Footer note */
+  footer {
+    margin-top: 80px;
+    padding: 24px 0;
+    border-top: 1px solid var(--divider);
+    color: var(--fg-muted);
+    font-size: 12px;
+  }
+
+  @media (max-width: 880px) {
+    .app { grid-template-columns: 1fr; }
+    aside { position: static; height: auto; }
+    main { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="logo">
+      <div class="logo-mark">W</div>
+      <div>
+        <div class="logo-name">Whiskey Club</div>
+        <small>Mock — base de referência</small>
+      </div>
+    </div>
+    <nav class="sections">
+      <a href="#mobile" class="active">App Mobile (Sócio)</a>
+      <a href="#backoffice">Backoffice (Dono)</a>
+      <a href="#pdv">PDV (Gerente)</a>
+      <a href="#public">Landing pública</a>
+      <a href="#ds">Design System</a>
+    </nav>
+    <div class="flavor-switch">
+      <label>Flavor (white-label)</label>
+      <div class="flavor-pills">
+        <button class="flavor-pill active" data-flavor="">Clube Demo</button>
+        <button class="flavor-pill" data-flavor="flavor-piloto">Clube Piloto</button>
+      </div>
+      <p style="color:var(--fg-muted); font-size:11px; margin-top:12px; line-height:1.5;">
+        Mude o flavor pra ver como todo o produto se adapta sem mexer em uma linha de markup.
+      </p>
+    </div>
+  </aside>
+
+  <main>
+    <!-- MOBILE -->
+    <section class="section" id="mobile">
+      <div class="section-head">
+        <div>
+          <h2>App Mobile — Sócio</h2>
+          <p>Telas-chave do app branded entregue para o sócio do clube. Visualização aproximada — refinamento final é no Figma.</p>
+        </div>
+      </div>
+      <div class="mobile-row">
+
+        <!-- Home -->
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="status-bar"><span>9:41</span><span>•••</span></div>
+            <div class="screen-head"><div class="screen-title">Boa noite, André</div></div>
+            <div class="screen-body">
+              <div class="member-card">
+                <div class="overline">Sócio · Gold</div>
+                <h3>André Vieira</h3>
+                <div class="meta">Nº 0142 · vence 30/11</div>
+                <div class="member-card-foot">
+                  <div>
+                    <div class="meta" style="margin-top:14px;">Carteirinha digital</div>
+                    <small style="color: var(--fg-muted);">QR rotativo · 58s</small>
+                  </div>
+                  <div class="qr" aria-label="QR fake"></div>
+                </div>
+              </div>
+
+              <div style="margin: 18px 0 8px; display:flex; justify-content:space-between; align-items:baseline;">
+                <strong>Próximo evento</strong>
+                <a href="#" style="font-size:12px;">Ver agenda</a>
+              </div>
+
+              <div class="card event-card">
+                <div class="event-img"></div>
+                <div class="event-body">
+                  <div class="card-title">Glenmorangie 18 — Vertical</div>
+                  <div class="meta">Sex, 14 jun · 20h · Unidade Pinheiros</div>
+                  <div class="event-meta">
+                    <span class="tag accent">Degustação</span>
+                    <span class="tag">Flight 5</span>
+                    <span class="tag">3 vagas</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-bar">
+              <div class="tab active"><div class="tab-dot"></div>Início</div>
+              <div class="tab"><div class="tab-dot"></div>Eventos</div>
+              <div class="tab"><div class="tab-dot"></div>Cellar</div>
+              <div class="tab"><div class="tab-dot"></div>Perfil</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Eventos lista -->
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="status-bar"><span>9:41</span><span>•••</span></div>
+            <div class="screen-head"><div class="screen-title">Eventos</div></div>
+            <div class="screen-body">
+              <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;">
+                <span class="tag accent">Todos</span>
+                <span class="tag">Degustação</span>
+                <span class="tag">Masterclass</span>
+                <span class="tag">Harmonização</span>
+              </div>
+              <div class="card event-card">
+                <div class="event-img"></div>
+                <div class="event-body">
+                  <div class="card-title">Glenmorangie 18 — Vertical</div>
+                  <div class="meta">14 jun · 3 vagas</div>
+                </div>
+              </div>
+              <div class="card event-card">
+                <div class="event-img" style="background: linear-gradient(135deg,#241818,#1a1010);"></div>
+                <div class="event-body">
+                  <div class="card-title">Sherry Cask Discovery</div>
+                  <div class="meta">22 jun · Waitlist</div>
+                </div>
+              </div>
+              <div class="card event-card">
+                <div class="event-img" style="background: linear-gradient(135deg,#1a2418,#101a13);"></div>
+                <div class="event-body">
+                  <div class="card-title">Whisky & Charuto — Pareamento</div>
+                  <div class="meta">5 jul · 12 vagas</div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-bar">
+              <div class="tab"><div class="tab-dot"></div>Início</div>
+              <div class="tab active"><div class="tab-dot"></div>Eventos</div>
+              <div class="tab"><div class="tab-dot"></div>Cellar</div>
+              <div class="tab"><div class="tab-dot"></div>Perfil</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cellar -->
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="status-bar"><span>9:41</span><span>•••</span></div>
+            <div class="screen-head"><div class="screen-title">Cellar</div></div>
+            <div class="screen-body">
+              <div style="display:flex; gap:8px; margin-bottom:12px;">
+                <span class="tag accent">Do Clube</span>
+                <span class="tag">Meu Cellar</span>
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div class="bottle">
+                  <div class="bottle-img"></div>
+                  <h4>Lagavulin 16</h4>
+                  <small style="color:var(--fg-secondary);">Islay · 43%</small>
+                </div>
+                <div class="bottle">
+                  <div class="bottle-img" style="background: linear-gradient(180deg,#1a3a2a,#3a6a52,#74a48a);"></div>
+                  <h4>Hibiki Harmony</h4>
+                  <small style="color:var(--fg-secondary);">Japonês · 43%</small>
+                </div>
+                <div class="bottle">
+                  <div class="bottle-img" style="background: linear-gradient(180deg,#3a1818,#6a3030,#a06060);"></div>
+                  <h4>Macallan 12 Sherry</h4>
+                  <small style="color:var(--fg-secondary);">Speyside · 40%</small>
+                </div>
+                <div class="bottle">
+                  <div class="bottle-img" style="background: linear-gradient(180deg,#3a2412,#7a5028,#c08a48);"></div>
+                  <h4>Glenfiddich 15</h4>
+                  <small style="color:var(--fg-secondary);">Speyside · 40%</small>
+                </div>
+              </div>
+            </div>
+            <div class="tab-bar">
+              <div class="tab"><div class="tab-dot"></div>Início</div>
+              <div class="tab"><div class="tab-dot"></div>Eventos</div>
+              <div class="tab active"><div class="tab-dot"></div>Cellar</div>
+              <div class="tab"><div class="tab-dot"></div>Perfil</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- BACKOFFICE -->
+    <section class="section" id="backoffice">
+      <div class="section-head">
+        <div>
+          <h2>Backoffice — Dono & Gerente</h2>
+          <p>Painel para Ricardo (dono) operar o clube: dashboard, sócios, eventos, cellar, financeiro.</p>
+        </div>
+      </div>
+
+      <div class="bo-head">
+        <div>
+          <strong>Clube Demo</strong> · <small>Unidade Pinheiros ▾</small>
+        </div>
+        <div>
+          <button class="btn btn-ghost" style="margin-right:8px;">⌘K Buscar</button>
+          <button class="btn btn-primary">+ Novo evento</button>
+        </div>
+      </div>
+
+      <div class="bo-grid">
+        <div class="kpi"><div class="label">Sócios ativos</div><div class="value">284</div><div class="delta">+12 no mês</div></div>
+        <div class="kpi"><div class="label">Receita mensal</div><div class="value">R$ 184k</div><div class="delta">+8% MoM</div></div>
+        <div class="kpi"><div class="label">Churn</div><div class="value">2.1%</div><div class="delta bad">+0.4% MoM</div></div>
+        <div class="kpi"><div class="label">Próximos eventos</div><div class="value">6</div><div class="delta">+2 vs. último mês</div></div>
+      </div>
+
+      <table class="list">
+        <thead>
+          <tr><th>Sócio</th><th>Plano</th><th>Status</th><th>Último evento</th><th>Renova em</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>André Vieira</td><td><span class="tag accent">Gold</span></td><td><span class="tag success">Ativo</span></td><td>Glenfarclas 25 · 2 sem</td><td>30/11</td></tr>
+          <tr><td>Camila Reis</td><td><span class="tag">Guest</span></td><td><span class="tag">Avulso</span></td><td>Whisky & Jazz · 4 sem</td><td>—</td></tr>
+          <tr><td>Bruno Costa</td><td><span class="tag accent">Gold</span></td><td><span class="tag success">Ativo</span></td><td>Hibiki Vertical · 6 dias</td><td>22/12</td></tr>
+          <tr><td>Marina Toledo</td><td><span class="tag accent">Platinum</span></td><td><span class="tag success">Ativo</span></td><td>Sherry Discovery · 1 dia</td><td>05/01</td></tr>
+          <tr><td>Felipe Andrade</td><td><span class="tag">Silver</span></td><td><span class="tag" style="color:var(--warning); border-color:var(--warning);">Em renovação</span></td><td>Charutos · 18 dias</td><td>03/06</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- PDV -->
+    <section class="section" id="pdv">
+      <div class="section-head">
+        <div>
+          <h2>PDV — Modo Evento (tablet)</h2>
+          <p>Marina escaneia o QR do sócio na chegada, vê o perfil, marca presença e gera o relatório do evento ao final.</p>
+        </div>
+      </div>
+      <div class="pdv-screen">
+        <div class="pdv-list">
+          <div class="pdv-list-row">
+            <div style="display:flex; gap:12px; align-items:center;">
+              <div class="avatar">AV</div>
+              <div>
+                <div><strong>André Vieira</strong></div>
+                <small style="color:var(--fg-secondary);">Gold · adora Speyside · provou Glenfarclas 25</small>
+              </div>
+            </div>
+            <span class="tag success">Check-in</span>
+          </div>
+          <div class="pdv-list-row">
+            <div style="display:flex; gap:12px; align-items:center;">
+              <div class="avatar">MT</div>
+              <div>
+                <div><strong>Marina Toledo</strong></div>
+                <small style="color:var(--fg-secondary);">Platinum · curte Japonês</small>
+              </div>
+            </div>
+            <span class="tag success">Check-in</span>
+          </div>
+          <div class="pdv-list-row">
+            <div style="display:flex; gap:12px; align-items:center;">
+              <div class="avatar">BC</div>
+              <div>
+                <div><strong>Bruno Costa</strong></div>
+                <small style="color:var(--fg-secondary);">Gold · 2 eventos seguidos</small>
+              </div>
+            </div>
+            <span class="tag">Confirmado</span>
+          </div>
+          <div class="pdv-list-row">
+            <div style="display:flex; gap:12px; align-items:center;">
+              <div class="avatar">CR</div>
+              <div>
+                <div><strong>Camila Reis</strong></div>
+                <small style="color:var(--fg-secondary);">Guest · 1ª vez aqui</small>
+              </div>
+            </div>
+            <span class="tag">Confirmado</span>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="card-title">Glenmorangie 18 — Vertical</div>
+            <div class="meta">Hoje · 20h · capacidade 18</div>
+            <hr style="border:0; border-top:1px solid var(--divider); margin:14px 0;">
+            <div style="display:flex; justify-content:space-between; font-size:13px;">
+              <span>Confirmados</span><strong>18</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:13px; margin-top:6px;">
+              <span>Check-in</span><strong style="color:var(--success);">12</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:13px; margin-top:6px;">
+              <span>Waitlist</span><strong>4</strong>
+            </div>
+            <button class="btn btn-primary btn-block" style="margin-top:16px;">📷 Escanear QR</button>
+            <button class="btn btn-ghost btn-block" style="margin-top:8px;">Encerrar evento</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PUBLIC -->
+    <section class="section" id="public">
+      <div class="section-head">
+        <div>
+          <h2>Landing pública do clube</h2>
+          <p>Cada clube tem sua presença pública em <code>/[slug-do-clube]</code>. Visitantes podem comprar evento avulso e pedir pra virar sócio.</p>
+        </div>
+      </div>
+      <div class="hero">
+        <h1>Whisky raro,<br/>noites memoráveis.</h1>
+        <p class="sub">O Clube Demo cura encontros para apreciadores. Degustações, masterclasses e harmonizações em ambiente reservado — sem fila, sem ostentação vazia.</p>
+        <div class="cta-row">
+          <button class="btn btn-primary">Conhecer agenda</button>
+          <button class="btn btn-ghost">Quero ser sócio</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- DS -->
+    <section class="section" id="ds">
+      <div class="section-head">
+        <div>
+          <h2>Design System — Cask</h2>
+          <p>Tokens base do DS. Flavors sobrescrevem tokens, não componentes.</p>
+        </div>
+      </div>
+      <div class="bo-grid">
+        <div class="kpi"><div class="label">Cor — accent</div><div style="height:48px; border-radius:var(--radius-sm); background:var(--accent); margin-top:8px;"></div><div class="meta">muda por flavor</div></div>
+        <div class="kpi"><div class="label">Cor — surface</div><div style="height:48px; border-radius:var(--radius-sm); background:var(--bg-surface); border:1px solid var(--divider); margin-top:8px;"></div></div>
+        <div class="kpi"><div class="label">Tipografia display</div><div style="font-family:var(--font-display); font-size:28px; margin-top:8px;">Aa Whisky</div></div>
+        <div class="kpi"><div class="label">Tipografia body</div><div style="font-size:16px; margin-top:8px;">Aa The quick fox.</div></div>
+      </div>
+    </section>
+
+    <footer>
+      Mock estático · referência visual · não é produto.
+      Toda a especificação real vive no Figma + documentação em <code>docs/</code>.
+    </footer>
+  </main>
+</div>
+
+<script>
+  document.querySelectorAll('.flavor-pill').forEach(p => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('.flavor-pill').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      document.body.classList.remove('flavor-piloto');
+      const f = p.dataset.flavor;
+      if (f) document.body.classList.add(f);
+    });
+  });
+  document.querySelectorAll('nav.sections a').forEach(a => {
+    a.addEventListener('click', () => {
+      document.querySelectorAll('nav.sections a').forEach(x => x.classList.remove('active'));
+      a.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
