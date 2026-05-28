@@ -3,7 +3,16 @@
   "version": "0.1.0",
   "description": "Planejamento, prototipo e automacao base para um app Flutter de gerenciamento de clubes de whiskey.",
   "private": true,
+  "workspaces": [
+    "apps/api"
+  ],
   "scripts": {
+    "api:dev": "npm run start:dev -w apps/api",
+    "api:build": "npm run build -w apps/api",
+    "api:test": "npm run test -w apps/api",
+    "db:generate": "npm run prisma:generate -w apps/api",
+    "db:migrate": "npm run prisma:migrate -w apps/api",
+    "db:seed": "npm run prisma:seed -w apps/api",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run"
   },

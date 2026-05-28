@@ -1,0 +1,23 @@
+{
+  "flavor": "bar_do_jao_staging",
+  "environment": "staging",
+  "tenantSlug": "bar-do-jao",
+  "apiBaseUrl": "http://localhost:3000/v1",
+  "brand": {
+    "name": "Bar do Jao",
+    "displayName": "Bar do Jao Whiskey Club",
+    "primaryColor": "#C47A2C",
+    "primarySoftColor": "#F5C978",
+    "secondaryColor": "#1D120C",
+    "accentColor": "#9F4F24"
+  },
+  "features": {
+    "events": true,
+    "reservations": true,
+    "checkin": true,
+    "memberBenefits": true,
+    "inventory": false,
+    "notifications": false,
+    "billing": false
+  }
+}

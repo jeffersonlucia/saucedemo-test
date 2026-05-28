@@ -28,6 +28,9 @@ Este repositorio contem:
 ```text
 .
 ├── index.html
+├── apps/
+│   ├── api/
+│   └── flutter_app/
 ├── docs/
 │   ├── 00-visao-produto.md
 │   ├── 01-requisitos.md
@@ -40,11 +43,16 @@ Este repositorio contem:
 │   ├── 08-operacao-lancamento.md
 │   ├── 09-mvp-bar-do-jao.md
 │   ├── 10-primeira-rodada-multi-agente.md
+│   ├── 11-execucao-tecnica-dia-1.md
 │   ├── adr/
 │   │   ├── 0001-mvp-stack-e-escopo.md
 │   │   └── 0002-app-flutter-unico.md
 │   └── notion/
 │       └── workspace-notion.md
+├── infra/
+│   └── docker/
+├── packages/
+│   └── api_contracts/
 └── cypress/
 ```
 
@@ -55,6 +63,31 @@ Este repositorio contem:
 3. Use `docs/notion/workspace-notion.md` para criar os databases no Notion.
 4. Abra `index.html` no navegador para revisar o mock base do Bar do Jao.
 5. Transforme as historias P0 em issues/boards.
+
+## Base tecnica iniciada
+
+- API NestJS em `apps/api`.
+- Schema e seed Prisma do Bar do Jao em `apps/api/prisma`.
+- Contrato OpenAPI inicial em `packages/api_contracts/openapi.yaml`.
+- Skeleton manual do app Flutter unico em `apps/flutter_app`.
+- PostgreSQL local em `infra/docker/docker-compose.yml`.
+
+Com Node instalado:
+
+```bash
+npm install
+npm run db:generate
+npm run api:build
+```
+
+Com Docker/Postgres:
+
+```bash
+docker compose -f infra/docker/docker-compose.yml up -d postgres
+npm run db:migrate
+npm run db:seed
+npm run api:dev
+```
 
 ## Principios de execucao
 
