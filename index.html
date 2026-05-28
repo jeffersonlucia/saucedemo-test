@@ -3,152 +3,170 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Whiskey Club OS - Mock Bar do Jao</title>
+  <title>Whiskey Club OS - Demo Bar do Jao</title>
   <style>
     :root {
       --bg: #120d0a;
-      --panel: #1f1610;
-      --panel-soft: #2a1d14;
-      --card: #2e2118;
+      --bg-2: #1b120d;
+      --panel: rgba(31, 22, 16, 0.88);
+      --card: rgba(46, 33, 24, 0.92);
+      --card-2: rgba(255, 255, 255, 0.055);
+      --line: rgba(255, 248, 237, 0.12);
       --text: #fff8ed;
       --muted: #c8aa82;
-      --gold: #d99a45;
-      --gold-soft: #f5c978;
+      --gold: #c47a2c;
+      --gold-2: #f5c978;
+      --copper: #9f4f24;
       --green: #60c18c;
       --red: #d86b62;
-      --line: rgba(255, 248, 237, 0.12);
-      --shadow: 0 24px 70px rgba(0, 0, 0, 0.32);
+      --warn: #f09a77;
+      --shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
       --radius: 24px;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      background:
-        radial-gradient(circle at top left, rgba(217, 154, 69, 0.22), transparent 34rem),
-        radial-gradient(circle at 85% 15%, rgba(245, 201, 120, 0.12), transparent 25rem),
-        var(--bg);
-      color: var(--text);
       min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(196, 122, 44, 0.30), transparent 28rem),
+        radial-gradient(circle at 85% 8%, rgba(245, 201, 120, 0.12), transparent 26rem),
+        linear-gradient(180deg, #140d09, #090706 72%);
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; }
 
-    .app {
+    .shell {
       display: grid;
-      grid-template-columns: 280px minmax(0, 1fr);
+      grid-template-columns: 300px minmax(0, 1fr);
       min-height: 100vh;
     }
 
     .sidebar {
-      background: rgba(18, 13, 10, 0.86);
-      border-right: 1px solid var(--line);
-      padding: 28px 22px;
       position: sticky;
       top: 0;
       height: 100vh;
+      padding: 24px;
+      border-right: 1px solid var(--line);
+      background: rgba(13, 9, 7, 0.82);
       backdrop-filter: blur(18px);
+      overflow: auto;
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 14px;
-      margin-bottom: 30px;
+      margin-bottom: 22px;
     }
 
-    .brand-mark {
-      width: 52px;
-      height: 52px;
-      border-radius: 18px;
-      background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+    .mark {
+      width: 54px;
+      height: 54px;
       display: grid;
       place-items: center;
+      border-radius: 18px;
       color: #21140d;
-      font-weight: 900;
+      font-weight: 950;
       letter-spacing: -0.08em;
-      box-shadow: 0 14px 40px rgba(217, 154, 69, 0.25);
+      background: linear-gradient(135deg, var(--gold-2), var(--gold));
+      box-shadow: 0 18px 55px rgba(196, 122, 44, 0.25);
     }
 
     .brand h1 {
-      font-size: 18px;
       margin: 0;
+      font-size: 18px;
+      letter-spacing: -0.04em;
     }
 
-    .brand span {
-      display: block;
+    .brand span, .muted {
       color: var(--muted);
-      font-size: 12px;
-      margin-top: 2px;
     }
 
-    .tenant-card {
-      background: linear-gradient(145deg, rgba(217, 154, 69, 0.16), rgba(255, 255, 255, 0.03));
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 10px;
+      color: var(--gold-2);
+      background: rgba(196, 122, 44, 0.10);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .tenant {
+      padding: 16px;
+      margin: 18px 0;
       border: 1px solid var(--line);
       border-radius: 22px;
-      padding: 18px;
-      margin-bottom: 26px;
+      background:
+        linear-gradient(145deg, rgba(196, 122, 44, 0.18), rgba(255, 255, 255, 0.035));
     }
 
-    .tenant-card small {
+    .tenant small {
+      display: block;
+      margin-bottom: 6px;
       color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.14em;
       font-size: 10px;
+      font-weight: 900;
     }
 
-    .tenant-card strong {
-      display: block;
-      margin-top: 6px;
-      font-size: 16px;
-    }
-
-    .tenant-card p {
-      margin: 8px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.4;
-    }
-
-    .nav {
+    .mode-tabs, .nav {
       display: grid;
       gap: 8px;
     }
 
-    .nav a {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 14px;
+    .mode-tabs {
+      grid-template-columns: repeat(3, 1fr);
+      margin: 18px 0;
+    }
+
+    .mode-tabs button, .nav button, .ghost, .primary, .danger {
+      border: 1px solid var(--line);
       border-radius: 16px;
-      color: #ead6bd;
-      font-size: 14px;
-    }
-
-    .nav a.active,
-    .nav a:hover {
-      background: rgba(217, 154, 69, 0.16);
       color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 11px 12px;
+      font-weight: 800;
     }
 
-    .nav b {
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--gold-soft);
-      border-radius: 999px;
-      padding: 2px 8px;
-      font-size: 11px;
+    .mode-tabs button.active, .nav button.active {
+      color: #21140d;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--gold-2), var(--gold));
     }
 
-    main {
+    .nav button {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      text-align: left;
+    }
+
+    .primary {
+      color: #21140d;
+      border: 0;
+      background: linear-gradient(135deg, var(--gold-2), var(--gold));
+    }
+
+    .danger {
+      border-color: rgba(216, 107, 98, 0.45);
+      color: #ffd8d5;
+      background: rgba(216, 107, 98, 0.15);
+    }
+
+    .main {
       padding: 32px;
-      max-width: 1480px;
+      max-width: 1500px;
       width: 100%;
       margin: 0 auto;
     }
@@ -156,752 +174,1050 @@
     .topbar {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 26px;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 24px;
     }
 
     .eyebrow {
-      color: var(--gold-soft);
+      color: var(--gold-2);
       text-transform: uppercase;
       letter-spacing: 0.18em;
       font-size: 11px;
-      font-weight: 800;
+      font-weight: 950;
     }
 
-    .topbar h2 {
+    h2 {
       margin: 8px 0 0;
-      font-size: clamp(28px, 4vw, 48px);
-      letter-spacing: -0.05em;
-      line-height: 0.98;
+      font-size: clamp(30px, 4.8vw, 56px);
+      line-height: 0.95;
+      letter-spacing: -0.06em;
     }
+
+    h3 { margin: 0; }
 
     .topbar p {
-      margin: 10px 0 0;
-      color: var(--muted);
       max-width: 760px;
-      line-height: 1.6;
+      color: var(--muted);
+      line-height: 1.65;
     }
 
-    .actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
+    .grid { display: grid; gap: 18px; }
+    .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .two { grid-template-columns: minmax(0, 1.2fr) minmax(360px, 0.8fr); align-items: start; }
+    .three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
-    .button {
-      border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--text);
-      border-radius: 999px;
-      padding: 12px 16px;
-      font-weight: 800;
-      font-size: 13px;
-    }
-
-    .button.primary {
-      background: linear-gradient(135deg, var(--gold-soft), var(--gold));
-      color: #21140d;
-      border: 0;
-    }
-
-    .grid {
-      display: grid;
-      gap: 18px;
-    }
-
-    .stats {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      margin-bottom: 20px;
-    }
-
-    .stat,
-    .panel,
-    .phone {
-      background: rgba(31, 22, 16, 0.82);
+    .card, .stat, .panel {
       border: 1px solid var(--line);
       border-radius: var(--radius);
+      background: var(--panel);
       box-shadow: var(--shadow);
     }
 
     .stat {
+      min-height: 135px;
       padding: 20px;
-      min-height: 138px;
     }
 
-    .stat span {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
+    .stat span { color: var(--muted); font-size: 13px; }
     .stat strong {
       display: block;
       margin-top: 16px;
       font-size: 34px;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.05em;
     }
 
     .trend {
       display: inline-flex;
-      align-items: center;
-      gap: 6px;
       margin-top: 12px;
       color: var(--green);
       font-size: 12px;
-      font-weight: 800;
-    }
-
-    .trend.warn {
-      color: var(--red);
-    }
-
-    .workspace {
-      grid-template-columns: minmax(0, 1.4fr) minmax(340px, 0.8fr);
-      align-items: start;
+      font-weight: 900;
     }
 
     .panel {
       padding: 22px;
+      margin-top: 18px;
     }
 
-    .panel-header {
+    .panel-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
-    .panel-header h3 {
-      margin: 0;
-      font-size: 18px;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      color: var(--gold-soft);
-      padding: 6px 10px;
-      font-size: 12px;
-      font-weight: 800;
-      background: rgba(217, 154, 69, 0.09);
-    }
-
-    .event-list {
+    .row {
       display: grid;
-      gap: 12px;
-    }
-
-    .event {
-      display: grid;
-      grid-template-columns: 74px minmax(0, 1fr) auto;
+      grid-template-columns: auto minmax(0, 1fr) auto;
       gap: 14px;
       align-items: center;
       padding: 14px;
-      background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--line);
-      border-radius: 20px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.04);
+      margin-bottom: 10px;
     }
 
-    .date {
-      width: 64px;
-      height: 64px;
-      border-radius: 18px;
-      background: var(--panel-soft);
+    .avatar, .datebox {
+      width: 50px;
+      height: 50px;
       display: grid;
       place-items: center;
-      text-align: center;
-      color: var(--gold-soft);
-      font-weight: 900;
-      line-height: 1;
+      border-radius: 16px;
+      color: var(--gold-2);
+      background: rgba(196, 122, 44, 0.15);
+      font-weight: 950;
     }
 
-    .date small {
-      display: block;
-      color: var(--muted);
-      font-size: 10px;
-      margin-bottom: 4px;
-    }
+    .datebox { text-align: center; line-height: 1; }
+    .datebox small { display: block; font-size: 10px; color: var(--muted); }
 
-    .event h4 {
+    .row h4 {
       margin: 0;
       font-size: 15px;
     }
 
-    .event p {
-      margin: 6px 0 0;
+    .row p {
+      margin: 5px 0 0;
       color: var(--muted);
       font-size: 13px;
     }
 
-    .progress {
-      min-width: 150px;
-    }
-
-    .progress span {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .bar {
-      height: 9px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 99px;
-      overflow: hidden;
-      margin-top: 8px;
-    }
-
-    .bar i {
-      display: block;
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--gold-soft), var(--gold));
-    }
-
-    .split {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      margin-top: 18px;
-    }
-
-    .member-row,
-    .stock-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .member-row:last-child,
-    .stock-row:last-child {
-      border-bottom: 0;
-    }
-
-    .avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: rgba(217, 154, 69, 0.16);
-      color: var(--gold-soft);
-      font-weight: 900;
-    }
-
-    .row-main {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-    }
-
-    .row-main strong {
-      display: block;
-      font-size: 14px;
-    }
-
-    .row-main span,
-    .stock-row span {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .status {
+    .badge {
+      display: inline-flex;
       padding: 6px 9px;
-      border-radius: 99px;
-      font-size: 12px;
-      font-weight: 800;
+      border-radius: 999px;
       color: #12301f;
-      background: #79d99f;
+      background: var(--green);
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
     }
 
-    .status.warn {
-      color: #3a150f;
-      background: #f09a77;
+    .badge.warn { color: #3a150f; background: var(--warn); }
+    .badge.dark { color: var(--gold-2); background: rgba(255, 255, 255, 0.08); border: 1px solid var(--line); }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
+
+    .form {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      color: var(--text);
+      background: rgba(0, 0, 0, 0.22);
+      outline: none;
+    }
+
+    textarea { min-height: 90px; resize: vertical; }
 
     .phone {
-      padding: 14px;
-      border-radius: 38px;
-      max-width: 390px;
+      max-width: 420px;
       margin: 0 auto;
-      background: #0b0908;
+      padding: 13px;
+      border-radius: 38px;
+      background: #080605;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
     }
 
-    .phone-screen {
+    .screen {
       min-height: 720px;
-      border-radius: 30px;
       overflow: hidden;
-      background:
-        linear-gradient(180deg, rgba(217, 154, 69, 0.22), transparent 35%),
-        #17100c;
-      padding: 22px;
+      border-radius: 30px;
       border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .mobile-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-
-    .mobile-top span {
-      color: var(--muted);
-      font-size: 13px;
+      padding: 22px;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(245, 201, 120, 0.18), transparent 18rem),
+        linear-gradient(180deg, #1b120d, #100b08);
     }
 
     .member-card {
-      background: linear-gradient(145deg, #f5c978, #9f6124);
-      color: #21140d;
-      border-radius: 28px;
+      min-height: 190px;
       padding: 22px;
-      min-height: 186px;
+      border-radius: 28px;
+      color: #21140d;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.24), transparent),
+        linear-gradient(135deg, var(--gold-2), var(--gold));
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      box-shadow: 0 22px 54px rgba(217, 154, 69, 0.22);
-    }
-
-    .member-card small {
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      font-weight: 900;
+      box-shadow: 0 22px 54px rgba(196, 122, 44, 0.22);
     }
 
     .member-card h3 {
-      margin: 8px 0 0;
+      margin: 6px 0 0;
       font-size: 26px;
       letter-spacing: -0.04em;
     }
 
     .qr {
+      width: 92px;
+      height: 92px;
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(7, 1fr);
       gap: 3px;
-      width: 78px;
-      height: 78px;
       align-self: flex-end;
-      background: rgba(255, 255, 255, 0.42);
-      padding: 7px;
-      border-radius: 14px;
-    }
-
-    .qr i {
-      background: #21140d;
-      border-radius: 2px;
-    }
-
-    .mobile-section {
-      margin-top: 22px;
-    }
-
-    .mobile-section h4 {
-      margin: 0 0 12px;
-      font-size: 16px;
-    }
-
-    .mobile-event {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      padding: 14px;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid var(--line);
-      margin-bottom: 10px;
-    }
-
-    .bottle {
-      width: 48px;
-      height: 64px;
-      border-radius: 18px 18px 10px 10px;
-      background: linear-gradient(180deg, #5b351b, #26150c);
-      border: 1px solid rgba(245, 201, 120, 0.24);
-      position: relative;
-    }
-
-    .bottle:before {
-      content: "";
-      position: absolute;
-      top: -14px;
-      left: 16px;
-      width: 16px;
-      height: 18px;
-      background: #5b351b;
-      border-radius: 6px 6px 0 0;
-    }
-
-    .mobile-event strong {
-      display: block;
-      font-size: 14px;
-    }
-
-    .mobile-event span {
-      color: var(--muted);
-      display: block;
-      font-size: 12px;
-      margin-top: 4px;
-    }
-
-    .bottom-nav {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin-top: 18px;
-      background: rgba(0, 0, 0, 0.22);
-      border: 1px solid var(--line);
-      border-radius: 22px;
       padding: 8px;
-    }
-
-    .bottom-nav a {
-      text-align: center;
-      padding: 10px 0;
-      color: var(--muted);
-      font-size: 11px;
       border-radius: 16px;
-      font-weight: 800;
+      background: rgba(255, 255, 255, 0.45);
     }
 
-    .bottom-nav a.active {
-      color: #21140d;
-      background: var(--gold-soft);
-    }
+    .qr i { border-radius: 2px; background: #21140d; opacity: 0.95; }
+    .qr i.off { opacity: 0.16; }
 
-    .flavor-strip {
-      margin-top: 18px;
+    .timeline {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      gap: 10px;
     }
 
-    .flavor {
-      padding: 14px;
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 20;
+      max-width: 380px;
+      padding: 14px 16px;
+      border: 1px solid rgba(96, 193, 140, 0.35);
       border-radius: 18px;
-      background: rgba(255, 255, 255, 0.04);
+      color: #dfffe9;
+      background: rgba(24, 70, 44, 0.94);
+      box-shadow: var(--shadow);
+      transform: translateY(120%);
+      transition: transform 180ms ease;
+    }
+
+    .toast.show { transform: translateY(0); }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: none;
+      place-items: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.72);
+    }
+
+    .modal-backdrop.show { display: grid; }
+    .modal {
+      width: min(560px, 100%);
+      padding: 24px;
+      border-radius: 28px;
       border: 1px solid var(--line);
+      background: #1d140f;
+      box-shadow: var(--shadow);
     }
 
-    .flavor strong {
-      display: block;
-      font-size: 13px;
-    }
-
-    .flavor span {
-      display: block;
-      color: var(--muted);
+    .api-box {
+      overflow: auto;
+      max-height: 360px;
+      padding: 16px;
+      border-radius: 18px;
+      background: #080605;
+      border: 1px solid var(--line);
+      color: #e9d7c0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-size: 12px;
-      margin-top: 5px;
+      line-height: 1.6;
     }
 
-    @media (max-width: 1120px) {
-      .app {
-        grid-template-columns: 1fr;
-      }
+    .empty {
+      padding: 28px;
+      border: 1px dashed var(--line);
+      border-radius: 20px;
+      color: var(--muted);
+      text-align: center;
+    }
 
-      .sidebar {
-        position: static;
-        height: auto;
-      }
-
-      .stats,
-      .workspace,
-      .split {
-        grid-template-columns: 1fr;
-      }
-
-      .topbar {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .actions {
-        justify-content: flex-start;
-      }
+    @media (max-width: 1100px) {
+      .shell { grid-template-columns: 1fr; }
+      .sidebar { position: static; height: auto; }
+      .stats, .two, .three { grid-template-columns: 1fr; }
+      .topbar { flex-direction: column; }
     }
 
     @media (max-width: 680px) {
-      main {
-        padding: 20px;
-      }
-
-      .event {
-        grid-template-columns: 1fr;
-      }
-
-      .progress {
-        min-width: 0;
-      }
-
-      .flavor-strip {
-        grid-template-columns: 1fr;
-      }
+      .main { padding: 20px; }
+      .row { grid-template-columns: 1fr; }
+      .actions { justify-content: flex-start; }
+      .mode-tabs { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <div class="app">
+  <div class="shell">
     <aside class="sidebar">
       <div class="brand">
-        <div class="brand-mark">WC</div>
+        <div class="mark">WC</div>
         <div>
           <h1>Whiskey Club OS</h1>
-          <span>multi-tenant cockpit</span>
+          <span class="muted">demo navegavel</span>
         </div>
       </div>
 
-      <div class="tenant-card">
-        <small>Flavor ativo</small>
-        <strong>Bar do Jao</strong>
-        <p>Unidade Matriz - tema boteco premium aplicado por tenant e unidade.</p>
+      <div class="tenant">
+        <small>Tenant piloto</small>
+        <strong>Bar do Jao - Matriz</strong>
+        <p class="muted">App unico: admin, staff, membro e web. Tudo aqui roda no navegador.</p>
       </div>
 
-      <nav class="nav" aria-label="Navegacao principal">
-        <a class="active" href="#">Dashboard <b>Admin</b></a>
-        <a href="#">Membros <b>248</b></a>
-        <a href="#">Eventos <b>12</b></a>
-        <a href="#">Reservas <b>89</b></a>
-        <a href="#">Estoque <b>7 alertas</b></a>
-        <a href="#">Planos <b>4</b></a>
-        <a href="#">Comunicados</a>
-        <a href="#">Branding e flavors</a>
-      </nav>
+      <div class="mode-tabs" aria-label="Troca de modo">
+        <button id="tab-admin" class="active" data-mode="admin">Admin</button>
+        <button id="tab-staff" data-mode="staff">Staff</button>
+        <button id="tab-member" data-mode="member">Membro</button>
+      </div>
+
+      <nav class="nav" id="nav"></nav>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Controles</h3>
+        </div>
+        <div class="form">
+          <button class="primary" id="seed-demo">Resetar demo</button>
+          <button class="ghost" id="export-state">Exportar JSON</button>
+          <button class="ghost" id="open-api">Ver API fake</button>
+        </div>
+      </div>
     </aside>
 
-    <main>
+    <main class="main">
       <section class="topbar">
         <div>
-          <div class="eyebrow">Mock base para produto Flutter</div>
-          <h2>Gestao premium para clubes de whiskey.</h2>
-          <p>
-            Um cockpit para donos e gerentes controlarem membros, eventos, reservas,
-            check-in, estoque e indicadores, com experiencia white-label para o cliente final.
-          </p>
+          <div class="eyebrow">Bar do Jao Whiskey Club</div>
+          <h2 id="page-title">Cockpit do Jao</h2>
+          <p id="page-subtitle">Gerencie membros, planos, eventos, reservas e check-in em uma demo viva no navegador.</p>
         </div>
         <div class="actions">
-          <a class="button" href="docs/00-visao-produto.md">Ver plano</a>
-          <a class="button primary" href="docs/09-mvp-bar-do-jao.md">MVP Bar do Jao</a>
+          <span class="pill">tenant: bar-do-jao</span>
+          <span class="pill" id="clock">--:--</span>
         </div>
       </section>
 
-      <section class="grid stats" aria-label="Indicadores">
-        <article class="stat">
-          <span>Membros ativos</span>
-          <strong>248</strong>
-          <div class="trend">+12% no mes</div>
-        </article>
-        <article class="stat">
-          <span>Receita recorrente</span>
-          <strong>R$ 39,8k</strong>
-          <div class="trend">+8 assinaturas</div>
-        </article>
-        <article class="stat">
-          <span>Reservas proximas</span>
-          <strong>89</strong>
-          <div class="trend">76% ocupacao</div>
-        </article>
-        <article class="stat">
-          <span>Estoque baixo</span>
-          <strong>7</strong>
-          <div class="trend warn">acao necessaria</div>
-        </article>
-      </section>
+      <section id="view"></section>
+    </main>
+  </div>
 
-      <section class="grid workspace">
-        <div>
-          <article class="panel">
-            <div class="panel-header">
-              <h3>Agenda e reservas</h3>
-              <span class="pill">Bar do Jao - Matriz</span>
-            </div>
-            <div class="event-list">
-              <div class="event">
-                <div class="date"><span><small>MAI</small>30</span></div>
-                <div>
-                  <h4>Degustacao Speyside Single Malt</h4>
-                  <p>Plano Gold e Black - 20h30 - 2 garrafas raras no pairing.</p>
-                </div>
-                <div class="progress">
-                  <span>28/32 reservas</span>
-                  <div class="bar"><i style="width: 88%"></i></div>
-                </div>
-              </div>
-              <div class="event">
-                <div class="date"><span><small>JUN</small>06</span></div>
-                <div>
-                  <h4>Masterclass Bourbon & Rye</h4>
-                  <p>Aberto a membros ativos - lista de espera automatica.</p>
-                </div>
-                <div class="progress">
-                  <span>18/40 reservas</span>
-                  <div class="bar"><i style="width: 45%"></i></div>
-                </div>
-              </div>
-              <div class="event">
-                <div class="date"><span><small>JUN</small>14</span></div>
-                <div>
-                  <h4>Noite dos convidados</h4>
-                  <p>Beneficio Black - ate 2 convidados por membro.</p>
-                </div>
-                <div class="progress">
-                  <span>34/36 reservas</span>
-                  <div class="bar"><i style="width: 94%"></i></div>
-                </div>
-              </div>
-            </div>
-          </article>
+  <div class="modal-backdrop" id="modal">
+    <div class="modal">
+      <div class="panel-head">
+        <h3 id="modal-title">Modal</h3>
+        <button class="ghost" id="close-modal">Fechar</button>
+      </div>
+      <div id="modal-body"></div>
+    </div>
+  </div>
 
-          <div class="split">
-            <article class="panel">
-              <div class="panel-header">
-                <h3>Membros recentes</h3>
-                <span class="pill">CRM</span>
-              </div>
-              <div class="member-row">
-                <div class="row-main">
-                  <div class="avatar">AM</div>
-                  <div><strong>Ana Martins</strong><span>Plano Black - ativa</span></div>
-                </div>
-                <span class="status">ok</span>
-              </div>
-              <div class="member-row">
-                <div class="row-main">
-                  <div class="avatar">RC</div>
-                  <div><strong>Rafael Costa</strong><span>Plano Gold - renovacao</span></div>
-                </div>
-                <span class="status">ok</span>
-              </div>
-              <div class="member-row">
-                <div class="row-main">
-                  <div class="avatar">LB</div>
-                  <div><strong>Luiz Braga</strong><span>Plano Silver - pendente</span></div>
-                </div>
-                <span class="status warn">acao</span>
-              </div>
-            </article>
+  <div class="toast" id="toast"></div>
 
-            <article class="panel">
-              <div class="panel-header">
-                <h3>Estoque critico</h3>
-                <span class="pill">Inventario</span>
-              </div>
-              <div class="stock-row">
-                <div>
-                  <strong>Macallan 12 Double Cask</strong>
-                  <span>2 garrafas - minimo 4</span>
-                </div>
-                <span class="status warn">baixo</span>
-              </div>
-              <div class="stock-row">
-                <div>
-                  <strong>Ardbeg 10</strong>
-                  <span>1 garrafa - evento em 5 dias</span>
-                </div>
-                <span class="status warn">risco</span>
-              </div>
-              <div class="stock-row">
-                <div>
-                  <strong>Woodford Reserve</strong>
-                  <span>6 garrafas - saudavel</span>
-                </div>
-                <span class="status">ok</span>
-              </div>
-            </article>
-          </div>
+  <script>
+    const STORAGE_KEY = "whiskey-club-os-browser-demo-v2";
 
-          <section class="flavor-strip" aria-label="Configuracoes de flavor">
-            <div class="flavor">
-              <strong>Brand tokens</strong>
-              <span>Cores, logo, radius e tipografia por tenant.</span>
-            </div>
-            <div class="flavor">
-              <strong>Feature flags</strong>
-              <span>Eventos, estoque, convidados e billing por cliente.</span>
-            </div>
-            <div class="flavor">
-              <strong>Unit context</strong>
-              <span>Agenda, estoque e equipe filtrados por unidade.</span>
+    const initialState = {
+      tenant: {
+        name: "Bar do Jao",
+        unit: "Bar do Jao - Matriz",
+        slug: "bar-do-jao",
+        brand: {
+          primary: "#C47A2C",
+          accent: "#F5C978"
+        }
+      },
+      plans: [
+        { id: "silver", name: "Silver", price: 149, benefits: ["Carteirinha", "Agenda de eventos"] },
+        { id: "gold", name: "Gold", price: 249, benefits: ["Reserva prioritaria", "1 convidado por mes"] },
+        { id: "black", name: "Black", price: 399, benefits: ["2 convidados", "Degustacoes premium", "15% off"] }
+      ],
+      members: [
+        { id: "m1", name: "Bruno Almeida", email: "membro@example.com", phone: "11988880000", plan: "black", status: "active", visits: 8, benefitsUsed: 3 },
+        { id: "m2", name: "Ana Martins", email: "ana@example.com", phone: "11977770000", plan: "gold", status: "active", visits: 5, benefitsUsed: 1 },
+        { id: "m3", name: "Luiz Braga", email: "luiz@example.com", phone: "11966660000", plan: "silver", status: "past_due", visits: 2, benefitsUsed: 0 }
+      ],
+      events: [
+        { id: "e1", title: "Degustacao Bourbon da Casa", date: "2026-06-04", time: "20:30", capacity: 32, plans: ["gold", "black"], status: "published", description: "Primeira experiencia piloto do Bar do Jao." },
+        { id: "e2", title: "Speyside Single Malt", date: "2026-06-12", time: "20:00", capacity: 24, plans: ["black"], status: "published", description: "Selecao premium para membros Black." },
+        { id: "e3", title: "Noite dos Convidados", date: "2026-06-20", time: "19:30", capacity: 40, plans: ["gold", "black"], status: "draft", description: "Evento com convidados e harmonizacao." }
+      ],
+      reservations: [
+        { id: "r1", eventId: "e1", memberId: "m1", status: "confirmed", guests: 1, qr: "BDJ-R1-BRUNO" },
+        { id: "r2", eventId: "e1", memberId: "m2", status: "confirmed", guests: 0, qr: "BDJ-R2-ANA" },
+        { id: "r3", eventId: "e2", memberId: "m1", status: "confirmed", guests: 0, qr: "BDJ-R3-BRUNO" }
+      ],
+      checkins: [],
+      activity: [
+        "Tenant bar-do-jao provisionado",
+        "Branding ambar/madeira aplicado",
+        "Evento Bourbon publicado"
+      ]
+    };
+
+    let state = loadState();
+    let mode = "admin";
+    let section = "dashboard";
+    let selectedMemberId = "m1";
+
+    const view = document.querySelector("#view");
+    const nav = document.querySelector("#nav");
+    const toast = document.querySelector("#toast");
+    const modal = document.querySelector("#modal");
+    const modalTitle = document.querySelector("#modal-title");
+    const modalBody = document.querySelector("#modal-body");
+
+    function loadState() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || structuredClone(initialState);
+      } catch (_) {
+        return structuredClone(initialState);
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function resetState() {
+      state = structuredClone(initialState);
+      saveState();
+      notify("Demo resetada. Bar do Jao voltou para o seed inicial.");
+      render();
+    }
+
+    function notify(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.clearTimeout(notify.timer);
+      notify.timer = window.setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    function addActivity(message) {
+      state.activity.unshift(message);
+      state.activity = state.activity.slice(0, 8);
+      saveState();
+    }
+
+    function money(value) {
+      return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value);
+    }
+
+    function planName(id) {
+      return state.plans.find((plan) => plan.id === id)?.name || "Sem plano";
+    }
+
+    function member(id) {
+      return state.members.find((item) => item.id === id);
+    }
+
+    function eventById(id) {
+      return state.events.find((item) => item.id === id);
+    }
+
+    function eventReservations(eventId) {
+      return state.reservations.filter((item) => item.eventId === eventId && item.status !== "cancelled");
+    }
+
+    function seatsUsed(eventId) {
+      return eventReservations(eventId).reduce((sum, item) => sum + 1 + Number(item.guests || 0), 0);
+    }
+
+    function activeMembers() {
+      return state.members.filter((item) => item.status === "active");
+    }
+
+    function revenue() {
+      return activeMembers().reduce((sum, item) => sum + (state.plans.find((plan) => plan.id === item.plan)?.price || 0), 0);
+    }
+
+    function navItems() {
+      if (mode === "admin") {
+        return [
+          ["dashboard", "Dashboard", activeMembers().length],
+          ["members", "Membros", state.members.length],
+          ["plans", "Planos", state.plans.length],
+          ["events", "Eventos", state.events.length],
+          ["reservations", "Reservas", state.reservations.length],
+          ["lab", "Produto Lab", "AI"]
+        ];
+      }
+      if (mode === "staff") {
+        return [
+          ["checkin", "Check-in", eventReservations("e1").length],
+          ["doorlist", "Lista da porta", state.reservations.length],
+          ["lookup", "Buscar membro", "fast"]
+        ];
+      }
+      return [
+        ["home", "Home", "Black"],
+        ["member-events", "Eventos", state.events.filter((event) => event.status === "published").length],
+        ["card", "Carteirinha", "QR"],
+        ["benefits", "Beneficios", "15%"]
+      ];
+    }
+
+    function setMode(nextMode) {
+      mode = nextMode;
+      section = mode === "admin" ? "dashboard" : mode === "staff" ? "checkin" : "home";
+      render();
+    }
+
+    function setSection(nextSection) {
+      section = nextSection;
+      render();
+    }
+
+    function renderNav() {
+      nav.innerHTML = navItems().map(([id, label, count]) => `
+        <button class="${section === id ? "active" : ""}" data-section="${id}">
+          <span>${label}</span><span>${count}</span>
+        </button>
+      `).join("");
+
+      nav.querySelectorAll("button").forEach((button) => {
+        button.addEventListener("click", () => setSection(button.dataset.section));
+      });
+
+      document.querySelectorAll(".mode-tabs button").forEach((button) => {
+        button.classList.toggle("active", button.dataset.mode === mode);
+      });
+    }
+
+    function render() {
+      renderNav();
+      const title = document.querySelector("#page-title");
+      const subtitle = document.querySelector("#page-subtitle");
+
+      const titles = {
+        admin: ["Cockpit do Jao", "Gerencie membros, planos, eventos, reservas e operacao do Bar do Jao."],
+        staff: ["Operacao de porta", "Check-in rapido para evento cheio, com QR demo e busca manual."],
+        member: ["Experiencia do membro", "Carteirinha, beneficios, eventos e reserva em poucos cliques."]
+      };
+
+      title.textContent = titles[mode][0];
+      subtitle.textContent = titles[mode][1];
+
+      if (mode === "admin") renderAdmin();
+      if (mode === "staff") renderStaff();
+      if (mode === "member") renderMember();
+    }
+
+    function renderAdmin() {
+      if (section === "dashboard") return renderDashboard();
+      if (section === "members") return renderMembers();
+      if (section === "plans") return renderPlans();
+      if (section === "events") return renderEvents();
+      if (section === "reservations") return renderReservations();
+      return renderLab();
+    }
+
+    function renderDashboard() {
+      const published = state.events.filter((event) => event.status === "published");
+      const noShows = state.reservations.filter((item) => item.status === "no_show").length;
+      view.innerHTML = `
+        <div class="grid stats">
+          ${stat("Membros ativos", activeMembers().length, "+ demo vivo")}
+          ${stat("Receita mensal", money(revenue()), "manual no MVP")}
+          ${stat("Eventos publicados", published.length, "agenda aberta")}
+          ${stat("No-show", noShows, "base para metricas")}
+        </div>
+        <div class="grid two">
+          <section class="panel">
+            <div class="panel-head"><h3>Proximos eventos</h3><button class="primary" data-action="quick-event">Criar evento demo</button></div>
+            ${state.events.map(renderEventRow).join("")}
+          </section>
+          <section class="panel">
+            <div class="panel-head"><h3>Atividade do produto</h3><span class="pill">localStorage</span></div>
+            <div class="timeline">
+              ${state.activity.map((item) => `<div class="row"><div class="avatar">✓</div><div><h4>${item}</h4><p>Atualizado no navegador</p></div><span class="badge dark">log</span></div>`).join("")}
             </div>
           </section>
         </div>
+      `;
+      bindAction("quick-event", () => {
+        const id = "e" + Date.now();
+        state.events.push({
+          id,
+          title: "Degustacao surpresa do Jao",
+          date: "2026-06-28",
+          time: "20:00",
+          capacity: 20,
+          plans: ["silver", "gold", "black"],
+          status: "draft",
+          description: "Evento criado no navegador para testar fluxo admin."
+        });
+        addActivity("Novo evento demo criado pelo admin");
+        notify("Evento demo criado.");
+        render();
+      });
+    }
 
-        <aside class="phone" aria-label="Mock mobile do cliente final">
-          <div class="phone-screen">
-              <div class="mobile-top">
-              <div>
-                <strong>Bar do Jao</strong>
-                <span>Boa noite, Bruno</span>
-              </div>
-              <span>Matriz</span>
-            </div>
-
-            <div class="member-card">
-              <div>
-                <small>Carteirinha Black</small>
-                <h3>Bruno Almeida</h3>
-              </div>
-              <div class="qr" aria-hidden="true">
-                <i></i><i></i><i></i><i></i><i></i>
-                <i></i><i style="opacity:.2"></i><i></i><i style="opacity:.2"></i><i></i>
-                <i></i><i></i><i style="opacity:.2"></i><i></i><i></i>
-                <i style="opacity:.2"></i><i></i><i></i><i style="opacity:.2"></i><i></i>
-                <i></i><i></i><i style="opacity:.2"></i><i></i><i></i>
-              </div>
-            </div>
-
-            <div class="mobile-section">
-              <h4>Proximas experiencias</h4>
-              <div class="mobile-event">
-                <div class="bottle"></div>
-                <div>
-                  <strong>Speyside Single Malt</strong>
-                  <span>30 mai - reserva confirmada</span>
+    function renderMembers() {
+      view.innerHTML = `
+        <div class="grid two">
+          <section class="panel">
+            <div class="panel-head"><h3>Membros</h3><span class="pill">${state.members.length} cadastrados</span></div>
+            ${state.members.map((item) => `
+              <div class="row">
+                <div class="avatar">${item.name.split(" ").map((part) => part[0]).slice(0, 2).join("")}</div>
+                <div><h4>${item.name}</h4><p>${planName(item.plan)} · ${item.email} · ${item.visits} visitas</p></div>
+                <div class="actions">
+                  <span class="badge ${item.status === "active" ? "" : "warn"}">${item.status}</span>
+                  <button class="ghost" data-member="${item.id}">Detalhe</button>
                 </div>
               </div>
-              <div class="mobile-event">
-                <div class="bottle"></div>
-                <div>
-                  <strong>Bourbon & Rye</strong>
-                  <span>06 jun - 18 vagas restantes</span>
-                </div>
-              </div>
-            </div>
+            `).join("")}
+          </section>
+          <section class="panel">
+            <div class="panel-head"><h3>Novo membro</h3><span class="pill">admin</span></div>
+            <form class="form" id="member-form">
+              <input name="name" placeholder="Nome do membro" required>
+              <input name="email" type="email" placeholder="email@exemplo.com" required>
+              <input name="phone" placeholder="Telefone/WhatsApp" required>
+              <select name="plan">${state.plans.map((plan) => `<option value="${plan.id}">${plan.name}</option>`).join("")}</select>
+              <button class="primary">Cadastrar membro</button>
+            </form>
+          </section>
+        </div>
+      `;
+      document.querySelectorAll("[data-member]").forEach((button) => {
+        button.addEventListener("click", () => showMember(button.dataset.member));
+      });
+      document.querySelector("#member-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const data = new FormData(event.target);
+        const id = "m" + Date.now();
+        state.members.push({
+          id,
+          name: data.get("name"),
+          email: data.get("email"),
+          phone: data.get("phone"),
+          plan: data.get("plan"),
+          status: "active",
+          visits: 0,
+          benefitsUsed: 0
+        });
+        addActivity(`Membro ${data.get("name")} cadastrado`);
+        saveState();
+        notify("Membro cadastrado no navegador.");
+        render();
+      });
+    }
 
-            <div class="mobile-section">
-              <h4>Beneficios do plano</h4>
-              <div class="mobile-event">
-                <div class="avatar">2x</div>
-                <div>
-                  <strong>Convidados mensais</strong>
-                  <span>Use ate 2 convites em eventos elegiveis.</span>
-                </div>
-              </div>
-              <div class="mobile-event">
-                <div class="avatar">15%</div>
-                <div>
-                  <strong>Desconto em experiencias</strong>
-                  <span>Aplicado automaticamente na reserva.</span>
-                </div>
-              </div>
-            </div>
+    function showMember(memberId) {
+      const item = member(memberId);
+      openModal("Detalhe do membro", `
+        <div class="row">
+          <div class="avatar">${item.name[0]}</div>
+          <div><h4>${item.name}</h4><p>${item.email} · ${item.phone}</p></div>
+          <span class="badge ${item.status === "active" ? "" : "warn"}">${item.status}</span>
+        </div>
+        <div class="grid three">
+          ${stat("Plano", planName(item.plan), "manual")}
+          ${stat("Visitas", item.visits, "historico")}
+          ${stat("Beneficios usados", item.benefitsUsed, "saldo MVP")}
+        </div>
+        <div class="actions" style="margin-top:16px">
+          <button class="primary" onclick="markBenefit('${item.id}')">Registrar beneficio</button>
+          <button class="danger" onclick="toggleMemberStatus('${item.id}')">Alternar status</button>
+        </div>
+      `);
+    }
 
-            <nav class="bottom-nav" aria-label="Navegacao mobile">
-              <a class="active" href="#">Home</a>
-              <a href="#">Eventos</a>
-              <a href="#">Clube</a>
-              <a href="#">Perfil</a>
-            </nav>
+    window.markBenefit = function markBenefit(memberId) {
+      const item = member(memberId);
+      item.benefitsUsed += 1;
+      addActivity(`Beneficio registrado para ${item.name}`);
+      saveState();
+      closeModal();
+      notify("Beneficio registrado.");
+      render();
+    };
+
+    window.toggleMemberStatus = function toggleMemberStatus(memberId) {
+      const item = member(memberId);
+      item.status = item.status === "active" ? "past_due" : "active";
+      addActivity(`Status de ${item.name} alterado para ${item.status}`);
+      saveState();
+      closeModal();
+      notify("Status atualizado.");
+      render();
+    };
+
+    function renderPlans() {
+      view.innerHTML = `
+        <div class="grid three">
+          ${state.plans.map((plan) => `
+            <section class="panel">
+              <div class="panel-head"><h3>${plan.name}</h3><span class="pill">${money(plan.price)}/mes</span></div>
+              ${plan.benefits.map((benefit) => `<div class="row"><div class="avatar">★</div><div><h4>${benefit}</h4><p>Beneficio do plano ${plan.name}</p></div></div>`).join("")}
+            </section>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function renderEvents() {
+      view.innerHTML = `
+        <div class="grid two">
+          <section class="panel">
+            <div class="panel-head"><h3>Agenda admin</h3><span class="pill">capacidade em tempo real</span></div>
+            ${state.events.map(renderEventRow).join("")}
+          </section>
+          <section class="panel">
+            <div class="panel-head"><h3>Criar evento</h3><span class="pill">MVP</span></div>
+            <form class="form" id="event-form">
+              <input name="title" placeholder="Nome do evento" required>
+              <input name="date" type="date" required>
+              <input name="time" type="time" required>
+              <input name="capacity" type="number" min="1" value="24" required>
+              <textarea name="description" placeholder="Descricao"></textarea>
+              <button class="primary">Publicar evento</button>
+            </form>
+          </section>
+        </div>
+      `;
+      document.querySelector("#event-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const data = new FormData(event.target);
+        state.events.push({
+          id: "e" + Date.now(),
+          title: data.get("title"),
+          date: data.get("date"),
+          time: data.get("time"),
+          capacity: Number(data.get("capacity")),
+          plans: ["silver", "gold", "black"],
+          status: "published",
+          description: data.get("description") || "Evento criado no browser."
+        });
+        addActivity(`Evento ${data.get("title")} publicado`);
+        saveState();
+        notify("Evento publicado.");
+        render();
+      });
+    }
+
+    function renderReservations() {
+      view.innerHTML = `
+        <section class="panel">
+          <div class="panel-head"><h3>Reservas</h3><span class="pill">${state.reservations.length} registros</span></div>
+          ${state.reservations.map(renderReservationRow).join("") || `<div class="empty">Sem reservas ainda.</div>`}
+        </section>
+      `;
+    }
+
+    function renderLab() {
+      view.innerHTML = `
+        <div class="grid two">
+          <section class="panel">
+            <div class="panel-head"><h3>Produto Lab</h3><span class="pill">surpresa browser</span></div>
+            <p class="muted">Este painel mostra como PM, PO, UX, QA e engenharia poderiam usar a propria demo para validar o MVP.</p>
+            <div class="grid three">
+              ${stat("P0 pronto para build", "12", "historias")}
+              ${stat("Risco aberto", "Flutter env", "setup")}
+              ${stat("Tenant isolation", "gate", "QA")}
+            </div>
+            <div class="form">
+              <button class="primary" data-action="simulate-interview">Simular feedback do Jao</button>
+              <button class="ghost" data-action="simulate-release">Rodar go/no-go demo</button>
+            </div>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><h3>Backlog vivo</h3><span class="pill">proximo sprint</span></div>
+            ${["Conectar PrismaService", "Implementar members API", "Implementar reserva transacional", "Criar login Flutter", "Criar smoke tests"].map((item, index) => `
+              <div class="row"><div class="avatar">${index + 1}</div><div><h4>${item}</h4><p>Preparado para agente especialista</p></div><span class="badge dark">next</span></div>
+            `).join("")}
+          </section>
+        </div>
+      `;
+      bindAction("simulate-interview", () => {
+        openModal("Feedback simulado do Jao", `
+          <div class="api-box">"Se eu conseguir ver quem esta ativo, quem reservou e validar na porta sem planilha, eu ja pago pelo piloto. So nao me coloca pagamento complexo agora. Primeiro me deixa operar o clube."</div>
+        `);
+      });
+      bindAction("simulate-release", () => {
+        openModal("Go/no-go demo", `
+          ${["Tenant configurado", "Brand aplicado", "Login demo", "Reserva no browser", "Check-in no browser", "Audit/audit plan"].map((item) => `
+            <div class="row"><div class="avatar">✓</div><div><h4>${item}</h4><p>Gate visual aprovado para prototipo</p></div><span class="badge">ok</span></div>
+          `).join("")}
+        `);
+      });
+    }
+
+    function renderStaff() {
+      if (section === "doorlist") return renderDoorList();
+      if (section === "lookup") return renderLookup();
+      return renderCheckin();
+    }
+
+    function renderCheckin() {
+      const event = state.events[0];
+      const pending = eventReservations(event.id).filter((reservation) => reservation.status === "confirmed");
+      view.innerHTML = `
+        <div class="grid two">
+          <section class="panel">
+            <div class="panel-head"><h3>Check-in rapido</h3><span class="pill">${event.title}</span></div>
+            <div class="card" style="padding:24px;text-align:center">
+              <div style="font-size:76px">▦</div>
+              <h3>Escaneie o QR ou use um token demo</h3>
+              <p class="muted">Tokens: BDJ-R1-BRUNO, BDJ-R2-ANA, BDJ-R3-BRUNO</p>
+              <form class="form" id="checkin-form">
+                <input name="qr" placeholder="Cole o token QR" value="${pending[0]?.qr || ""}">
+                <button class="primary">Confirmar check-in</button>
+              </form>
+            </div>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><h3>Resultado esperado</h3><span class="pill">staff mode</span></div>
+            ${pending.map(renderReservationRow).join("") || `<div class="empty">Todos os presentes ja fizeram check-in.</div>`}
+          </section>
+        </div>
+      `;
+      document.querySelector("#checkin-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        doCheckin(new FormData(event.target).get("qr"));
+      });
+    }
+
+    function renderDoorList() {
+      view.innerHTML = `
+        <section class="panel">
+          <div class="panel-head"><h3>Lista da porta</h3><span class="pill">busca visual</span></div>
+          ${state.reservations.map(renderReservationRow).join("")}
+        </section>
+      `;
+    }
+
+    function renderLookup() {
+      view.innerHTML = `
+        <section class="panel">
+          <div class="panel-head"><h3>Busca rapida</h3><span class="pill">nome ou telefone</span></div>
+          <input id="lookup-input" placeholder="Digite Bruno, Ana, telefone...">
+          <div id="lookup-results" style="margin-top:14px"></div>
+        </section>
+      `;
+      const input = document.querySelector("#lookup-input");
+      input.addEventListener("input", () => {
+        const q = input.value.toLowerCase();
+        const results = state.members.filter((item) => `${item.name} ${item.phone} ${item.email}`.toLowerCase().includes(q));
+        document.querySelector("#lookup-results").innerHTML = results.map((item) => `
+          <div class="row"><div class="avatar">${item.name[0]}</div><div><h4>${item.name}</h4><p>${planName(item.plan)} · ${item.status}</p></div><button class="ghost" onclick="showMember('${item.id}')">Abrir</button></div>
+        `).join("") || `<div class="empty">Digite para buscar.</div>`;
+      });
+      input.dispatchEvent(new Event("input"));
+    }
+
+    function doCheckin(qr) {
+      const reservation = state.reservations.find((item) => item.qr === qr);
+      if (!reservation) return notify("QR invalido ou nao encontrado.");
+      if (reservation.status === "checked_in") return notify("Check-in duplicado bloqueado.");
+      if (reservation.status !== "confirmed") return notify("Reserva nao esta confirmada.");
+      reservation.status = "checked_in";
+      state.checkins.push({ id: "c" + Date.now(), reservationId: reservation.id, at: new Date().toISOString() });
+      addActivity(`Check-in confirmado: ${member(reservation.memberId).name}`);
+      saveState();
+      notify("Check-in confirmado em poucos segundos.");
+      render();
+    }
+
+    function renderMember() {
+      if (section === "member-events") return renderMemberEvents();
+      if (section === "card") return renderMemberCard();
+      if (section === "benefits") return renderBenefits();
+      return renderMemberHome();
+    }
+
+    function renderMemberHome() {
+      const current = member(selectedMemberId);
+      view.innerHTML = `
+        <div class="grid two">
+          <div class="phone">
+            <div class="screen">
+              <div class="panel-head"><h3>Boa noite, Bruno</h3><span class="pill">Matriz</span></div>
+              ${memberCard(current)}
+              <div style="height:18px"></div>
+              <h3>Proximas experiencias</h3>
+              <div style="height:10px"></div>
+              ${state.events.filter((event) => event.status === "published").map((event) => `
+                <div class="row"><div class="datebox"><small>${event.date.slice(5, 7)}</small>${event.date.slice(8, 10)}</div><div><h4>${event.title}</h4><p>${event.time} · ${event.capacity - seatsUsed(event.id)} vagas</p></div><button class="ghost" onclick="reserveEvent('${event.id}')">Reservar</button></div>
+              `).join("")}
+            </div>
           </div>
-        </aside>
-      </section>
-    </main>
-  </div>
+          <section class="panel">
+            <div class="panel-head"><h3>Experiencia B2C</h3><span class="pill">membro</span></div>
+            ${stat("Plano atual", planName(current.plan), "ativo")}
+            ${stat("Beneficios usados", current.benefitsUsed, "historico")}
+            ${stat("Reservas", state.reservations.filter((item) => item.memberId === current.id).length, "eventos")}
+          </section>
+        </div>
+      `;
+    }
+
+    function renderMemberEvents() {
+      view.innerHTML = `
+        <section class="panel">
+          <div class="panel-head"><h3>Eventos disponiveis</h3><span class="pill">reservar sem ajuda</span></div>
+          ${state.events.filter((event) => event.status === "published").map((event) => `
+            <div class="row">
+              <div class="datebox"><small>${event.date.slice(5, 7)}</small>${event.date.slice(8, 10)}</div>
+              <div><h4>${event.title}</h4><p>${event.description} · ${event.capacity - seatsUsed(event.id)} vagas livres</p></div>
+              <button class="primary" onclick="reserveEvent('${event.id}')">Reservar</button>
+            </div>
+          `).join("")}
+        </section>
+      `;
+    }
+
+    function renderMemberCard() {
+      view.innerHTML = `
+        <div class="phone"><div class="screen">${memberCard(member(selectedMemberId))}</div></div>
+      `;
+    }
+
+    function renderBenefits() {
+      const current = member(selectedMemberId);
+      const plan = state.plans.find((item) => item.id === current.plan);
+      view.innerHTML = `
+        <section class="panel">
+          <div class="panel-head"><h3>Beneficios ${plan.name}</h3><span class="pill">${money(plan.price)}/mes</span></div>
+          ${plan.benefits.map((benefit) => `<div class="row"><div class="avatar">★</div><div><h4>${benefit}</h4><p>Disponivel para ${current.name}</p></div><span class="badge">ativo</span></div>`).join("")}
+        </section>
+      `;
+    }
+
+    window.reserveEvent = function reserveEvent(eventId) {
+      const current = member(selectedMemberId);
+      const event = eventById(eventId);
+      const already = state.reservations.find((item) => item.eventId === eventId && item.memberId === current.id && item.status !== "cancelled");
+      if (already) return notify("Voce ja tem reserva nesse evento.");
+      if (!event.plans.includes(current.plan)) return notify("Seu plano nao e elegivel para esse evento.");
+      const status = seatsUsed(eventId) >= event.capacity ? "waitlisted" : "confirmed";
+      state.reservations.push({
+        id: "r" + Date.now(),
+        eventId,
+        memberId: current.id,
+        status,
+        guests: 0,
+        qr: "BDJ-" + Date.now().toString(36).toUpperCase()
+      });
+      addActivity(`${current.name} reservou ${event.title}`);
+      saveState();
+      notify(status === "confirmed" ? "Reserva confirmada." : "Evento cheio: voce entrou na lista de espera.");
+      render();
+    };
+
+    function memberCard(current) {
+      return `
+        <div class="member-card">
+          <div>
+            <small>Carteirinha ${planName(current.plan)}</small>
+            <h3>${current.name}</h3>
+            <p>Status: ${current.status}</p>
+          </div>
+          ${qrBlock()}
+        </div>
+      `;
+    }
+
+    function qrBlock() {
+      return `<div class="qr" aria-label="QR demo">${Array.from({ length: 49 }, (_, index) => `<i class="${[1,5,8,10,13,15,18,24,30,33,37,41,43,47].includes(index) ? "off" : ""}"></i>`).join("")}</div>`;
+    }
+
+    function renderEventRow(event) {
+      const used = seatsUsed(event.id);
+      return `
+        <div class="row">
+          <div class="datebox"><small>${event.date.slice(5, 7)}</small>${event.date.slice(8, 10)}</div>
+          <div><h4>${event.title}</h4><p>${event.time} · ${used}/${event.capacity} lugares · planos ${event.plans.map(planName).join(", ")}</p></div>
+          <span class="badge ${event.status === "published" ? "" : "warn"}">${event.status}</span>
+        </div>
+      `;
+    }
+
+    function renderReservationRow(reservation) {
+      const event = eventById(reservation.eventId);
+      const current = member(reservation.memberId);
+      return `
+        <div class="row">
+          <div class="avatar">${current.name[0]}</div>
+          <div><h4>${current.name}</h4><p>${event.title} · convidados ${reservation.guests} · QR ${reservation.qr}</p></div>
+          <div class="actions">
+            <span class="badge ${reservation.status === "confirmed" || reservation.status === "checked_in" ? "" : "warn"}">${reservation.status}</span>
+            ${mode === "staff" && reservation.status === "confirmed" ? `<button class="primary" onclick="doCheckin('${reservation.qr}')">Check-in</button>` : ""}
+          </div>
+        </div>
+      `;
+    }
+
+    function stat(label, value, hint) {
+      return `
+        <article class="stat">
+          <span>${label}</span>
+          <strong>${value}</strong>
+          <div class="trend">${hint}</div>
+        </article>
+      `;
+    }
+
+    function bindAction(action, handler) {
+      document.querySelectorAll(`[data-action="${action}"]`).forEach((item) => item.addEventListener("click", handler));
+    }
+
+    function openModal(title, body) {
+      modalTitle.textContent = title;
+      modalBody.innerHTML = body;
+      modal.classList.add("show");
+    }
+
+    function closeModal() {
+      modal.classList.remove("show");
+    }
+
+    document.querySelectorAll(".mode-tabs button").forEach((button) => {
+      button.addEventListener("click", () => setMode(button.dataset.mode));
+    });
+    document.querySelector("#seed-demo").addEventListener("click", resetState);
+    document.querySelector("#export-state").addEventListener("click", () => {
+      openModal("Estado atual da demo", `<pre class="api-box">${JSON.stringify(state, null, 2)}</pre>`);
+    });
+    document.querySelector("#open-api").addEventListener("click", () => {
+      openModal("API fake do browser", `<pre class="api-box">${JSON.stringify({
+        "GET /v1/tenants/current/config": state.tenant,
+        "GET /v1/admin/reports/overview": {
+          activeMembers: activeMembers().length,
+          monthlyRevenue: revenue(),
+          reservations: state.reservations.length,
+          checkins: state.checkins.length
+        },
+        "POST /v1/events/:eventId/reservations": "use o modo Membro",
+        "POST /v1/admin/reservations/:reservationId/check-in": "use o modo Staff"
+      }, null, 2)}</pre>`);
+    });
+    document.querySelector("#close-modal").addEventListener("click", closeModal);
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) closeModal();
+    });
+
+    setInterval(() => {
+      document.querySelector("#clock").textContent = new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+    }, 1000);
+
+    window.doCheckin = doCheckin;
+    window.showMember = showMember;
+
+    render();
+  </script>
 </body>
 </html>

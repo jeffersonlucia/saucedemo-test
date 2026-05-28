@@ -44,6 +44,7 @@ Este repositorio contem:
 │   ├── 09-mvp-bar-do-jao.md
 │   ├── 10-primeira-rodada-multi-agente.md
 │   ├── 11-execucao-tecnica-dia-1.md
+│   ├── 12-browser-demo.md
 │   ├── adr/
 │   │   ├── 0001-mvp-stack-e-escopo.md
 │   │   └── 0002-app-flutter-unico.md
@@ -60,8 +61,24 @@ Este repositorio contem:
 1. Leia `docs/09-mvp-bar-do-jao.md` para entender o MVP fechado.
 2. Leia `docs/10-primeira-rodada-multi-agente.md` para ver decisoes, contratos e prompts da proxima rodada.
 3. Use `docs/notion/workspace-notion.md` para criar os databases no Notion.
-4. Abra `index.html` no navegador para revisar o mock base do Bar do Jao.
+4. Abra `index.html` no navegador para usar a demo interativa do Bar do Jao.
 5. Transforme as historias P0 em issues/boards.
+
+## Demo no navegador
+
+O `index.html` virou uma SPA estatica com estado em `localStorage`.
+
+Ela permite:
+
+- alternar entre modo Admin, Staff e Membro;
+- cadastrar membros;
+- criar eventos;
+- reservar como membro;
+- fazer check-in por token QR demo;
+- exportar o estado atual em JSON;
+- visualizar uma API fake do browser.
+
+Detalhes em `docs/12-browser-demo.md`.
 
 ## Base tecnica iniciada
 
