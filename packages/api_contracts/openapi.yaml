@@ -1,0 +1,211 @@
+openapi: 3.0.3
+info:
+  title: Whiskey Club OS API
+  version: 0.1.0
+  description: Contrato inicial do MVP Bar do Jao.
+servers:
+  - url: http://localhost:3000/v1
+    description: Local
+security:
+  - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    TenantSlug:
+      name: X-Tenant-Slug
+      in: header
+      required: false
+      schema:
+        type: string
+        example: bar-do-jao
+  schemas:
+    Error:
+      type: object
+      required: [code, message, correlation_id]
+      properties:
+        code:
+          type: string
+          example: RESOURCE_NOT_FOUND
+        message:
+          type: string
+          example: Recurso nao encontrado
+        details:
+          type: object
+        correlation_id:
+          type: string
+          example: req_123
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+          example: jao.owner@example.com
+        password:
+          type: string
+          example: demo1234
+        tenantSlug:
+          type: string
+          example: bar-do-jao
+    TenantConfig:
+      type: object
+      properties:
+        tenantSlug:
+          type: string
+          example: bar-do-jao
+        brand:
+          type: object
+        features:
+          type: object
+paths:
+  /health:
+    get:
+      tags: [health]
+      summary: Healthcheck da API
+      security: []
+      responses:
+        "200":
+          description: API online
+  /auth/login:
+    post:
+      tags: [auth]
+      summary: Login do usuario
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Token de acesso e contexto inicial
+        "401":
+          description: Credenciais invalidas
+  /auth/refresh:
+    post:
+      tags: [auth]
+      summary: Renova access token
+      responses:
+        "200":
+          description: Token renovado
+  /auth/logout:
+    post:
+      tags: [auth]
+      summary: Revoga sessao atual
+      responses:
+        "204":
+          description: Sessao encerrada
+  /auth/me:
+    get:
+      tags: [auth]
+      summary: Usuario atual, roles, unidades e features
+      parameters:
+        - $ref: "#/components/parameters/TenantSlug"
+      responses:
+        "200":
+          description: Contexto autenticado
+  /tenants/current:
+    get:
+      tags: [tenants]
+      summary: Tenant ativo
+      parameters:
+        - $ref: "#/components/parameters/TenantSlug"
+      responses:
+        "200":
+          description: Tenant e unidades
+  /tenants/current/config:
+    get:
+      tags: [tenants]
+      summary: Branding e feature flags do tenant
+      parameters:
+        - $ref: "#/components/parameters/TenantSlug"
+      responses:
+        "200":
+          description: Configuracao remota
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenantConfig"
+  /admin/members:
+    get:
+      tags: [members]
+      summary: Lista membros do tenant
+      responses:
+        "200":
+          description: Lista paginada
+    post:
+      tags: [members]
+      summary: Cadastra membro
+      responses:
+        "201":
+          description: Membro criado
+  /admin/plans:
+    get:
+      tags: [plans]
+      summary: Lista planos
+      responses:
+        "200":
+          description: Lista de planos
+    post:
+      tags: [plans]
+      summary: Cria plano
+      responses:
+        "201":
+          description: Plano criado
+  /events:
+    get:
+      tags: [events]
+      summary: Lista eventos visiveis ao membro
+      responses:
+        "200":
+          description: Lista de eventos
+  /admin/events:
+    post:
+      tags: [events]
+      summary: Cria evento administrativo
+      responses:
+        "201":
+          description: Evento criado
+  /events/{eventId}/reservations:
+    post:
+      tags: [reservations]
+      summary: Reserva evento como membro
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "201":
+          description: Reserva confirmada ou lista de espera
+  /admin/reservations/{reservationId}/check-in:
+    post:
+      tags: [checkin]
+      summary: Faz check-in por reserva
+      parameters:
+        - name: reservationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Check-in confirmado
+        "409":
+          description: Check-in duplicado
+  /admin/reports/overview:
+    get:
+      tags: [reports]
+      summary: Dashboard operacional do owner/manager
+      responses:
+        "200":
+          description: Indicadores P0

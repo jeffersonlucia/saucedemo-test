@@ -1,15 +1,26 @@
 {
-  "name": "saucedemo-e2e-cypress",
-  "version": "1.0.0",
-  "description": "Automação E2E Cypress para https://www.saucedemo.com/",
+  "name": "whiskey-club-os",
+  "version": "0.1.0",
+  "description": "Planejamento, prototipo e automacao base para um app Flutter de gerenciamento de clubes de whiskey.",
   "private": true,
+  "workspaces": [
+    "apps/api"
+  ],
   "scripts": {
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "start": "node scripts/serve-demo.mjs",
+    "run": "npm start",
+    "demo": "node scripts/serve-demo.mjs",
+    "demo:smoke": "node scripts/smoke-demo.mjs",
+    "demo:check-js": "node scripts/check-inline-js.mjs",
+    "api:dev": "npm run start:dev -w apps/api",
+    "api:build": "npm run build -w apps/api",
+    "api:test": "npm run test -w apps/api",
+    "db:generate": "npm run prisma:generate -w apps/api",
+    "db:migrate": "npm run prisma:migrate -w apps/api",
+    "db:seed": "npm run prisma:seed -w apps/api",
+    "check": "npm run demo:check-js && npm run demo:smoke && npm run db:generate && npm run api:build && npm run api:test && npm audit"
   },
-  "devDependencies": {
-    "cypress": "^14.5.4",
-    "mochawesome": "^7.1.4",
-    "mochawesome-report-generator": "^6.3.2"
+  "overrides": {
+    "qs": "^6.15.2"
   }
 }

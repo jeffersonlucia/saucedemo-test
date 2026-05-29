@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Whiskey Club OS - Apresentacao</title>
+  <style>
+    :root {
+      --bg: #120d0a;
+      --panel: #1f1610;
+      --card: #2e2118;
+      --text: #fff8ed;
+      --muted: #c8aa82;
+      --gold: #c47a2c;
+      --gold-2: #f5c978;
+      --green: #60c18c;
+      --line: rgba(255, 248, 237, 0.14);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(196, 122, 44, 0.30), transparent 24rem),
+        linear-gradient(180deg, #160f0b, #090706);
+    }
+
+    main {
+      width: min(980px, 100%);
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    section {
+      min-height: 92vh;
+      display: grid;
+      align-content: center;
+      gap: 18px;
+      padding: 36px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      color: var(--gold-2);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    h1, h2 {
+      margin: 0;
+      letter-spacing: -0.06em;
+      line-height: 0.96;
+    }
+
+    h1 { font-size: clamp(42px, 12vw, 84px); }
+    h2 { font-size: clamp(34px, 9vw, 64px); }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(18px, 4vw, 24px);
+      line-height: 1.45;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: rgba(31, 22, 16, 0.88);
+      padding: 22px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .item {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 18px;
+    }
+
+    .item strong {
+      display: block;
+      color: var(--gold-2);
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+
+    .item span {
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .flow {
+      display: grid;
+      gap: 12px;
+      counter-reset: step;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 16px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line);
+    }
+
+    .step:before {
+      counter-increment: step;
+      content: counter(step);
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: #21140d;
+      font-weight: 950;
+      background: linear-gradient(135deg, var(--gold-2), var(--gold));
+    }
+
+    .step b { display: block; margin-bottom: 4px; }
+    .step small { color: var(--muted); font-size: 15px; line-height: 1.4; }
+
+    .pill {
+      display: inline-flex;
+      width: fit-content;
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: #21140d;
+      background: linear-gradient(135deg, var(--gold-2), var(--gold));
+      font-weight: 900;
+    }
+
+    .footer {
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+      padding: 24px 0;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section>
+      <div class="eyebrow">Whiskey Club OS</div>
+      <h1>Um app para gerenciar clubes de whiskey.</h1>
+      <p>
+        O Bar do Jao ganha uma plataforma propria para controlar membros,
+        planos, eventos, reservas, beneficios e check-in. O cliente final ganha
+        uma experiencia simples para consumir melhor o clube.
+      </p>
+      <span class="pill">MVP: Bar do Jao</span>
+    </section>
+
+    <section>
+      <div class="eyebrow">Problema</div>
+      <h2>Hoje tudo fica espalhado.</h2>
+      <div class="grid">
+        <div class="item"><strong>Planilhas</strong><span>Membros, pagamentos e beneficios ficam dificeis de acompanhar.</span></div>
+        <div class="item"><strong>WhatsApp</strong><span>Reservas, avisos e duvidas se misturam em conversas.</span></div>
+        <div class="item"><strong>Operacao manual</strong><span>Check-in, presenca e beneficios dependem da memoria da equipe.</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Para o dono</div>
+      <h2>O Jao enxerga e opera o clube.</h2>
+      <div class="flow">
+        <div class="step"><div><b>Cadastra planos e membros</b><small>Silver, Gold, Black, status ativo ou pendente, telefone e beneficios.</small></div></div>
+        <div class="step"><div><b>Cria eventos e degustacoes</b><small>Define data, vagas, planos permitidos e lista de reservas.</small></div></div>
+        <div class="step"><div><b>Acompanha o dashboard</b><small>Vê membros ativos, reservas, no-show, receita estimada e proximos eventos.</small></div></div>
+        <div class="step"><div><b>Reduz erro operacional</b><small>Staff valida na porta por QR ou busca rapida, sem planilha.</small></div></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Para o cliente final</div>
+      <h2>O membro entende o que tem direito.</h2>
+      <div class="flow">
+        <div class="step"><div><b>Abre sua carteirinha</b><small>Vê plano, status e QR Code para usar no bar.</small></div></div>
+        <div class="step"><div><b>Consulta beneficios</b><small>Entende convites, descontos, degustacoes e vantagens do plano.</small></div></div>
+        <div class="step"><div><b>Reserva eventos</b><small>Escolhe degustacoes elegiveis e confirma vaga sem depender do WhatsApp.</small></div></div>
+        <div class="step"><div><b>Chega e faz check-in</b><small>Mostra o QR Code e entra com validacao rapida.</small></div></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Como funciona</div>
+      <h2>Um app unico, tres modos.</h2>
+      <div class="grid">
+        <div class="item"><strong>Admin</strong><span>Dono e gerente controlam membros, planos, eventos, reservas e indicadores.</span></div>
+        <div class="item"><strong>Staff</strong><span>Equipe usa check-in, lista da porta e busca rapida de membro.</span></div>
+        <div class="item"><strong>Membro</strong><span>Cliente acessa carteirinha, beneficios, eventos e reservas.</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">MVP</div>
+      <h2>O primeiro produto foca no essencial.</h2>
+      <div class="grid">
+        <div class="item"><strong>Inclui</strong><span>Membros, planos, beneficios, eventos, reservas, check-in e dashboard.</span></div>
+        <div class="item"><strong>Depois</strong><span>Pagamento real, estoque avancado, comunicados e app publicado por cliente.</span></div>
+        <div class="item"><strong>Valida</strong><span>Se o dono paga porque opera melhor e se o membro usa porque percebe valor.</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Resultado esperado</div>
+      <h2>Menos bagunca. Mais clube.</h2>
+      <p>
+        O dono ganha controle. A equipe ganha velocidade. O cliente final ganha
+        clareza, reserva facil e uma experiencia premium conectada ao Bar do Jao.
+      </p>
+      <span class="pill">Whiskey Club OS</span>
+    </section>
+
+    <div class="footer">Apresentacao simples - MVP Bar do Jao</div>
+  </main>
+</body>
+</html>
