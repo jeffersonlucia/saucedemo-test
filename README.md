@@ -96,6 +96,10 @@ Ela permite:
 
 Detalhes em `docs/12-browser-demo.md`.
 
+## Apresentacao
+
+`apresentacao.html` e uma apresentacao simples, mobile-friendly, explicando o produto para o dono do local e para o cliente final.
+
 ## Base tecnica iniciada
 
 - API NestJS em `apps/api`.
